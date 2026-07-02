@@ -1,153 +1,153 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+本文件为 Claude Code (claude.ai/code) 在此代码库中工作时提供指导。
 
-## Project Overview
+## 项目概述
 
-Panopticon is a web-based military simulation platform compatible with OpenAI Gym. The project consists of two main components:
+Panopticon 是一个基于 Web 的军事仿真平台，兼容 OpenAI Gym。项目由两个主要组件组成：
 
-- **client/**: React + TypeScript frontend with Vite build system
-- **gym/**: Python package (BLADE) for reinforcement learning environment
+- **client/**：React + TypeScript 前端，使用 Vite 构建系统
+- **gym/**：Python 包 (BLADE)，用于强化学习环境
 
-## Development Commands
+## 开发命令
 
-### Client (Frontend)
+### 客户端（前端）
 
 ```bash
 cd client
 
-# Install dependencies
+# 安装依赖
 npm install
 
-# Start development server (port 3000)
+# 启动开发服务器（端口 3000）
 npm run start
-# or
+# 或
 npm run dev
 
-# Build for production
+# 生产环境构建
 npm run build
 
-# Run linting
+# 运行 lint 检查
 npm run lint
 
-# Format code
+# 代码格式化
 npm run format
 
-# Run tests
+# 运行测试
 npm test
 
-# Run tests in watch mode
+# 监视模式运行测试
 npm run test:watch
 
-# Run specific test suites
-npm run test:game      # Game logic tests
-npm run test:units     # Unit tests
-npm run test:utils     # Utility tests
+# 运行特定测试套件
+npm run test:game      # 游戏逻辑测试
+npm run test:units     # 单位测试
+npm run test:utils     # 工具函数测试
 ```
 
-### Gym (Python Backend)
+### Gym（Python 后端）
 
 ```bash
 cd gym
 
-# Create and activate virtual environment
+# 创建并激活虚拟环境
 python -m venv env
-source env/bin/activate  # On Windows: env\Scripts\activate
+source env/bin/activate  # Windows 系统: env\Scripts\activate
 
-# Install in editable mode
+# 以可编辑模式安装
 pip install -e .
 
-# Install with gym dependencies
+# 安装包含 gym 依赖
 pip install -e .[gym]
 
-# Run demo script
+# 运行演示脚本
 python scripts/simple_demo/demo.py
 ```
 
-## Architecture
+## 架构
 
-### Client Architecture
+### 客户端架构
 
-The client is a React application using TypeScript and Vite:
+客户端是一个使用 TypeScript 和 Vite 的 React 应用：
 
-**Core Game Logic** (`src/game/`):
-- `Game.ts`: Main game controller managing simulation state, time compression, and unit interactions
-- `Scenario.ts`: Scenario configuration and unit management
-- `Side.ts`: Represents military factions/sides in simulation
-- `Doctrine.ts`: Military doctrine and rules of engagement
-- `Relationships.ts`: Diplomatic relationships between sides
+**核心游戏逻辑** (`src/game/`)：
+- `Game.ts`：主游戏控制器，管理仿真状态、时间压缩和单位交互
+- `Scenario.ts`：想定配置和单位管理
+- `Side.ts`：表示仿真中的军事阵营/方
+- `Doctrine.ts`：军事条令和交战规则
+- `Relationships.ts`：各方之间的外交关系
 
-**Unit Types** (`src/game/units/`):
-- `Aircraft.ts`: Aircraft units with flight dynamics
-- `Ship.ts`: Naval vessels
-- `Airbase.ts`: Military airbases
-- `Facility.ts`: Ground facilities
-- `Weapon.ts`: Weapon systems
-- `ReferencePoint.ts`: Geographic reference points
+**单位类型** (`src/game/units/`)：
+- `Aircraft.ts`：飞机单位，包含飞行动力学
+- `Ship.ts`：海军舰艇
+- `Airbase.ts`：军事空军基地
+- `Facility.ts`：地面设施
+- `Weapon.ts`：武器系统
+- `ReferencePoint.ts`：地理参考点
 
-**Mission System** (`src/game/mission/`):
-- `PatrolMission.ts`: Patrol route management
-- `StrikeMission.ts`: Strike mission coordination
+**任务系统** (`src/game/mission/`)：
+- `PatrolMission.ts`：巡逻路线管理
+- `StrikeMission.ts`：打击任务协调
 
-**Combat Engine** (`src/game/engine/`):
-- `weaponEngagement.ts`: Weapon engagement logic, threat detection, and targeting
+**战斗引擎** (`src/game/engine/`)：
+- `weaponEngagement.ts`：武器交战逻辑、威胁检测和目标锁定
 
-**GUI Layer** (`src/gui/`):
-- `map/`: OpenLayers-based map visualization
-- `mapLayers/`: Map layer management (base maps, features, styles)
+**GUI 层** (`src/gui/`)：
+- `map/`：基于 OpenLayers 的地图可视化
+- `mapLayers/`：地图图层管理（底图、要素、样式）
 
-**Database** (`src/game/db/`):
-- `UnitDb.ts`: Unit database and lookups
-- `models/`: Data models for different unit types
+**数据库** (`src/game/db/`)：
+- `UnitDb.ts`：单位数据库和查询
+- `models/`：不同单位类型的数据模型
 
-### Gym Architecture
+### Gym 架构
 
-The gym package provides an OpenAI Gym-compatible environment:
+Gym 包提供兼容 OpenAI Gym 的环境：
 
-**Core Components** (`blade/`):
-- `Game.py`: Python implementation of game logic
-- `Scenario.py`: Scenario management
-- `Side.py`: Military side representation
-- `envs/blade.py`: Gymnasium environment wrapper (`BLADE` class)
+**核心组件** (`blade/`)：
+- `Game.py`：游戏逻辑的 Python 实现
+- `Scenario.py`：想定管理
+- `Side.py`：军事方表示
+- `envs/blade.py`：Gymnasium 环境封装（`BLADE` 类）
 
-**Key Features**:
-- Observation and action spaces using Gymnasium's Text space
-- Configurable reward, observation, and termination filters
-- Integration with stable-baselines3 for RL training
+**主要特性**：
+- 使用 Gymnasium 的 Text 空间作为观测和动作空间
+- 可配置的奖励、观测和终止过滤器
+- 与 stable-baselines3 集成用于强化学习训练
 
-### Data Flow
+### 数据流
 
-1. Scenarios are defined in JSON format (see `client/src/scenarios/`)
-2. `Scenario.ts` loads and parses scenario data
-3. `Game.ts` manages simulation loop and unit updates
-4. `weaponEngagement.ts` handles combat calculations
-5. GUI components render state on OpenLayers map
+1. 想定以 JSON 格式定义（参见 `client/src/scenarios/`）
+2. `Scenario.ts` 加载并解析想定数据
+3. `Game.ts` 管理仿真循环和单位更新
+4. `weaponEngagement.ts` 处理战斗计算
+5. GUI 组件在 OpenLayers 地图上渲染状态
 
-## Testing
+## 测试
 
-Tests use Vitest with jsdom environment:
+测试使用 Vitest 和 jsdom 环境：
 
-- Test files: `*.spec.ts` colocated with source files
-- Setup: `src/testing/setup.ts`
-- Helpers: `src/testing/helpers.ts`
+- 测试文件：`*.spec.ts` 与源文件并置
+- 设置文件：`src/testing/setup.ts`
+- 辅助工具：`src/testing/helpers.ts`
 
-## Code Style
+## 代码风格
 
-- TypeScript strict mode enabled
-- ESLint + Prettier for formatting
-- Path aliases: `@/` maps to `src/`
+- 启用 TypeScript 严格模式
+- 使用 ESLint + Prettier 进行格式化
+- 路径别名：`@/` 映射到 `src/`
 
-## Key Dependencies
+## 关键依赖
 
-**Client**:
-- React 18 with TypeScript
-- OpenLayers (ol) for map visualization
-- MUI (Material-UI) for UI components
-- Auth0 for authentication
-- Vite for build tooling
+**客户端**：
+- React 18 + TypeScript
+- OpenLayers (ol) 用于地图可视化
+- MUI (Material-UI) 用于 UI 组件
+- Auth0 用于身份验证
+- Vite 用于构建工具
 
-**Gym**:
+**Gym**：
 - Python 3.12.3
 - Gymnasium 0.29.1
 - stable-baselines3 2.4.1
-- Shapely for geometric operations
+- Shapely 用于几何运算
