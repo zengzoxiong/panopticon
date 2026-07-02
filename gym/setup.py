@@ -21,6 +21,6 @@ setup(
         "blade.utils",
         "blade.envs",
     ],
-    install_requires=["shapely==2.0.6"],
+    install_requires=["shapely>=2.0.6,<3"],
     extras_require={"gym": ["gymnasium==0.29.1", "stable-baselines3==2.4.1"]},
 )

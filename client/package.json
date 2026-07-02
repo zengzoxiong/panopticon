@@ -5,7 +5,7 @@
   "type": "module",
   "engines": {
     "node": ">=18.20.7 <=23.9.0",
-    "npm": "9.6.3 || >=10.5.0 <=10.9.2"
+    "npm": "9.6.3 || >=10.5.0"
   },
   "scripts": {
     "standalone": "vite --port 3000 --mode standalone",
@@ -22,12 +22,12 @@
     "test:utils": "npm run test src/utils/"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.3.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.0",
     "@mui/material": "^7.0.0",
     "@mui/system": "^7.0.0",
-    "@auth0/auth0-react": "^2.3.0",
     "dotenv": "^16.5.0",
     "ol": "^10.4.0",
     "react": "^18.3.1",
