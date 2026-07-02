@@ -1,27 +1,17 @@
 # Panopticon
 
-> **[中文版本 / Chinese Version](README_zh.md)**
+> **[English Version / 英文版本](README_en.md)**
 
-[Panopticon AI](https://panopticon-ai.com/) is a web-based military simulation platform compatible with OpenAI Gym. Our project is open source,
-with code available to military modeling and simulation researchers researchers.
-We hope to advance the state of the art in military AI research.
+[Panopticon AI](https://panopticon-ai.com/) 是一个基于Web的军事仿真平台，兼容 OpenAI Gym。我们的项目是开源的，
+代码面向军事建模与仿真研究人员开放。
+我们希望推动军事AI研究的技术发展。
 
-Platform: [our app](https://app.panopticon-ai.com/).
+平台：[我们的应用](https://app.panopticon-ai.com/)。
 
 ![image](https://github.com/user-attachments/assets/839cace4-dcbd-4abf-81b0-0b93afbfd8a8)
 
-Our Discord Channel: [[https://discord.gg/gtUZAbbV](https://discord.gg/gtUZAbbV)](https://discord.gg/afHenKqu)
+我们的 Discord 频道：[[https://discord.gg/gtUZAbbV](https://discord.gg/gtUZAbbV)](https://discord.gg/afHenKqu)
 
-## Documentation
+## 文档
 
-See the [docs](https://docs.panopticon-ai.com/) for full details, including installation guides, walkthroughs, platform/gameplay information, and more.
-
-## Contributing
-
-We appreciate and value contributions!
-
-Please make sure to read the [Contributing Guidelines](https://github.com/Panopticon-AI-team/panopticon/blob/main/CONTRIBUTING.md) before making a pull request.
-
-## Licenses
-
-This project is licensed under the [Apache License 2.0](https://github.com/Panopticon-AI-team/panopticon/blob/main/LICENSE).
+详情请参阅[文档](docs/zh/index.md)，包括安装指南、操作教程、平台/游戏玩法信息等。
