@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -81,6 +82,7 @@ const tableValueCellStyle = {
 type CARD_CONTENT_CONTEXT = "default" | "editing" | "weapons";
 
 export default function FacilityCard(props: Readonly<FacilityCardProps>) {
+  const { t } = useTranslation();
   const [cardContentContext, setCardContentContext] =
     useState<CARD_CONTENT_CONTEXT>("default");
   const [tempEditData, setTempEditData] = useState({
@@ -214,7 +216,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
           <TextField
             autoComplete="off"
             id="facility-name-text-field"
-            label="Name"
+            label={t('facility.name')}
             defaultValue={props.facility.name}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
@@ -227,7 +229,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
           <TextField
             autoComplete="off"
             id="facility-type-text-field"
-            label="Type"
+            label={t('facility.type')}
             defaultValue={props.facility.className}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
@@ -240,7 +242,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
           <TextField
             autoComplete="off"
             id="facility-range-text-field"
-            label="Range"
+            label={t('facility.range')}
             defaultValue={props.facility.range}
             onChange={_handleTextFieldChange}
             sx={inputStyle}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import Card from "@mui/material/Card";
 import { colorPalette } from "@/utils/constants";
 import {
@@ -70,6 +71,7 @@ const editorButtonStyle = {
 };
 
 const SideEditor = (props: SideEditorProps) => {
+  const { t } = useTranslation();
   const [sideName, setSideName] = useState(props.side?.name ?? "");
   const [sideColor, setSideColor] = useState<SIDE_COLOR>(
     props.side?.color ?? SIDE_COLOR.BLUE
@@ -154,7 +156,7 @@ const SideEditor = (props: SideEditorProps) => {
           {/** Side Name Text Field */}
           <TextField
             id="side-name"
-            label="Name"
+            label={t('side.name')}
             value={sideName}
             onChange={(event) => {
               setSideName(event.target.value);
@@ -209,7 +211,7 @@ const SideEditor = (props: SideEditorProps) => {
             <SelectField
               id="hostiles-selector"
               labelId="hostiles-selector-label"
-              label="Enemies"
+              label={t('side.enemies')}
               selectItems={otherSides.map((side: Side) => {
                 return {
                   name: side.name,
@@ -228,7 +230,7 @@ const SideEditor = (props: SideEditorProps) => {
           <SelectField
             id="allies-selector"
             labelId="allies-selector-label"
-            label="Allies"
+            label={t('side.allies')}
             selectItems={otherSides.map((side: Side) => {
               return {
                 name: side.name,

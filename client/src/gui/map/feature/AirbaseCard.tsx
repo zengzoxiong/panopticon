@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -81,6 +82,7 @@ const tableValueCellStyle = {
 type CARD_CONTENT_CONTEXT = "default" | "editing" | "aircraft";
 
 export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
+  const { t } = useTranslation();
   const [cardContentContext, setCardContentContext] =
     useState<CARD_CONTENT_CONTEXT>("default");
   const [tempEditData, setTempEditData] = useState({
@@ -190,7 +192,7 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
           <TextField
             autoComplete="off"
             id="airbase-name-text-field"
-            label="Name"
+            label={t('airbase.name')}
             defaultValue={props.airbase.name}
             onChange={_handleTextFieldChange}
             sx={inputStyle}

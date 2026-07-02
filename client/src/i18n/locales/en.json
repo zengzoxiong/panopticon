@@ -5,13 +5,16 @@
       "loadScenario": "Load Scenario",
       "saveToCloud": "Save to cloud",
       "downloadScenario": "Download Scenario",
-      "scenarioName": "Scenario Name"
+      "scenarioName": "Scenario Name",
+      "editScenarioName": "Edit Scenario Name"
     },
     "scenario": {
       "play": "Play Scenario",
       "pause": "Pause Scenario",
       "step": "Step Scenario",
-      "restart": "Restart Scenario"
+      "restart": "Restart Scenario",
+      "undo": "Undo",
+      "speed": "Speed"
     },
     "recording": {
       "record": "Record",
@@ -33,7 +36,13 @@
       "databaseTools": "Database Tools",
       "godMode": "God Mode",
       "simulationLogs": "Simulation Logs",
-      "layerControls": "Layer Controls"
+      "layerControls": "Layer Controls",
+      "eraser": "Eraser"
+    },
+    "sections": {
+      "recording": "Recording",
+      "entities": "Entities",
+      "missions": "Missions"
     },
     "drawer": {
       "openDrawer": "Open Drawer",
@@ -48,28 +57,66 @@
       "selectLanguage": "Select Language",
       "english": "English",
       "chinese": "中文"
+    },
+    "filter": {
+      "filter": "Filter"
     }
   },
   "aircraft": {
     "currentFuel": "Current Fuel",
-    "fuelConsumption": "Fuel Consumption"
+    "fuelConsumption": "Fuel Consumption",
+    "name": "Name",
+    "type": "Type",
+    "speed": "Speed",
+    "range": "Range"
   },
   "ship": {
-    "currentFuel": "Current Fuel"
+    "currentFuel": "Current Fuel",
+    "name": "Name",
+    "type": "Type",
+    "speed": "Speed",
+    "range": "Range"
+  },
+  "airbase": {
+    "name": "Name"
+  },
+  "facility": {
+    "name": "Name",
+    "type": "Type",
+    "range": "Range"
+  },
+  "referencePoint": {
+    "name": "Name"
   },
   "mission": {
     "missionType": "Mission Type",
-    "missionName": "Mission Name"
+    "missionName": "Mission Name",
+    "area": "Area",
+    "target": "Target",
+    "units": "Units",
+    "mission": "Mission",
+    "type": "Type",
+    "name": "Name"
+  },
+  "side": {
+    "name": "Name",
+    "enemies": "Enemies",
+    "allies": "Allies"
   },
   "simulationLogs": {
     "messageTypes": "Message Types",
-    "filterLogs": "Filter Logs"
+    "filterLogs": "Filter Logs",
+    "sides": "Sides"
   },
   "common": {
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "selectAircraft": "Select Aircraft",
+    "panopticonDemo": "Panopticon Demo",
+    "southChinaSeaStrike": "South China Sea Strike",
+    "upload": "Upload..."
   }
 }

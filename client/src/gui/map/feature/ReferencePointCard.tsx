@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -69,6 +70,7 @@ const tableValueCellStyle = {
 export default function ReferencePointCard(
   props: Readonly<ReferencePointCardProps>
 ) {
+  const { t } = useTranslation();
   const [editing, setEditing] = useState(false);
   const [tempEditData, setTempEditData] = useState({
     name: props.referencePoint.name,
@@ -168,7 +170,7 @@ export default function ReferencePointCard(
           <TextField
             autoComplete="off"
             id="referencePoint-name-text-field"
-            label="Name"
+            label={t('referencePoint.name')}
             defaultValue={props.referencePoint.name}
             onChange={_handleTextFieldChange}
             sx={inputStyle}

@@ -206,7 +206,7 @@ export default function SimulationLogs(props: SimulationLogsProps) {
               <SelectField
                 id="sides-selector"
                 labelId="sides-selector-label"
-                label="Sides"
+                label={t('simulationLogs.sides')}
                 selectItems={scenarioSides.map((side: Side) => {
                   return {
                     name: side.name,
@@ -313,7 +313,7 @@ export default function SimulationLogs(props: SimulationLogsProps) {
             action={
               <>
                 <Stack direction="row" spacing={1}>
-                  <Tooltip title="Filter Logs" placement="top" arrow>
+                  <Tooltip title={t('simulationLogs.filterLogs')} placement="top" arrow>
                     <IconButton
                       id="filter-button"
                       aria-controls={

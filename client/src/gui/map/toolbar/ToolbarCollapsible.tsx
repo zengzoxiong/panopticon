@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import Collapse from "@mui/material/Collapse";
 import {
   Button,
@@ -59,6 +60,7 @@ interface ToolbarCollapsibleProps {
 export default function ToolbarCollapsible(
   props: Readonly<ToolbarCollapsibleProps>
 ) {
+  const { t } = useTranslation();
   const PrependIcon = props.prependIcon;
   const AppendIcon = props.appendIcon;
   const filterOptions: { label: string; value: string }[] =
@@ -145,7 +147,7 @@ export default function ToolbarCollapsible(
         {/** Filter Menu/Button  */}
         {props.enableFilter && filterOptions.length && (
           <>
-            <Tooltip title="Filter">
+            <Tooltip title={t('toolbar.filter.filter')}>
               <IconButton
                 id="filter-button"
                 aria-controls={anchorEl ? "filter-menu" : undefined}

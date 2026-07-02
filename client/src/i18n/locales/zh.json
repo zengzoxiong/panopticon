@@ -1,17 +1,20 @@
 {
   "toolbar": {
     "file": {
-      "newScenario": "新建作战想定",
-      "loadScenario": "加载作战想定",
+      "newScenario": "新建想定",
+      "loadScenario": "加载想定",
       "saveToCloud": "保存到云端",
-      "downloadScenario": "下载作战想定",
-      "scenarioName": "作战想定名称"
+      "downloadScenario": "下载想定",
+      "scenarioName": "想定名称",
+      "editScenarioName": "编辑想定名称"
     },
     "scenario": {
-      "play": "播放作战想定",
-      "pause": "暂停作战想定",
-      "step": "步进作战想定",
-      "restart": "重启作战想定"
+      "play": "播放想定",
+      "pause": "暂停想定",
+      "step": "步进想定",
+      "restart": "重启想定",
+      "undo": "撤销",
+      "speed": "速度"
     },
     "recording": {
       "record": "录制",
@@ -24,7 +27,7 @@
     },
     "units": {
       "addAircraft": "添加飞机",
-      "addSam": "添加萨姆导弹",
+      "addSam": "添加萨姆",
       "addShip": "添加舰船",
       "addReferencePoint": "参考点",
       "addMission": "添加任务"
@@ -33,7 +36,13 @@
       "databaseTools": "数据库工具",
       "godMode": "上帝模式",
       "simulationLogs": "仿真日志",
-      "layerControls": "图层控制"
+      "layerControls": "图层控制",
+      "eraser": "橡皮擦"
+    },
+    "sections": {
+      "recording": "录制",
+      "entities": "实体",
+      "missions": "任务"
     },
     "drawer": {
       "openDrawer": "打开侧边栏",
@@ -48,28 +57,66 @@
       "selectLanguage": "选择语言",
       "english": "English",
       "chinese": "中文"
+    },
+    "filter": {
+      "filter": "过滤"
     }
   },
   "aircraft": {
     "currentFuel": "当前燃料",
-    "fuelConsumption": "燃料消耗"
+    "fuelConsumption": "燃料消耗",
+    "name": "名称",
+    "type": "类型",
+    "speed": "速度",
+    "range": "航程"
   },
   "ship": {
-    "currentFuel": "当前燃料"
+    "currentFuel": "当前燃料",
+    "name": "名称",
+    "type": "类型",
+    "speed": "速度",
+    "range": "航程"
+  },
+  "airbase": {
+    "name": "名称"
+  },
+  "facility": {
+    "name": "名称",
+    "type": "类型",
+    "range": "射程"
+  },
+  "referencePoint": {
+    "name": "名称"
   },
   "mission": {
     "missionType": "任务类型",
-    "missionName": "任务名称"
+    "missionName": "任务名称",
+    "area": "区域",
+    "target": "目标",
+    "units": "单位",
+    "mission": "任务",
+    "type": "类型",
+    "name": "名称"
+  },
+  "side": {
+    "name": "名称",
+    "enemies": "敌人",
+    "allies": "盟友"
   },
   "simulationLogs": {
     "messageTypes": "消息类型",
-    "filterLogs": "过滤日志"
+    "filterLogs": "过滤日志",
+    "sides": "各方"
   },
   "common": {
     "loading": "加载中...",
     "error": "错误",
     "success": "成功",
     "cancel": "取消",
-    "confirm": "确认"
+    "confirm": "确认",
+    "selectAircraft": "选择飞机",
+    "panopticonDemo": "Panopticon 演示",
+    "southChinaSeaStrike": "南海打击",
+    "upload": "上传..."
   }
 }

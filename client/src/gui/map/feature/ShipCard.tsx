@@ -293,7 +293,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
           <TextField
             autoComplete="off"
             id="ship-name-text-field"
-            label="Name"
+            label={t('ship.name')}
             defaultValue={props.ship.name}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
@@ -306,7 +306,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
           <TextField
             autoComplete="off"
             id="ship-type-text-field"
-            label="Type"
+            label={t('ship.type')}
             defaultValue={props.ship.className}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
@@ -319,7 +319,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
           <TextField
             autoComplete="off"
             id="ship-speed-text-field"
-            label="Speed"
+            label={t('ship.speed')}
             defaultValue={props.ship.speed.toFixed(0)}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
@@ -345,7 +345,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
           <TextField
             autoComplete="off"
             id="ship-range-text-field"
-            label="Range"
+            label={t('ship.range')}
             defaultValue={props.ship.range}
             onChange={_handleTextFieldChange}
             sx={inputStyle}

@@ -847,9 +847,9 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
   }
 
   const ScenarioDb = [
-    { name: "default_scenario", displayName: "Panopticon Demo" },
-    { name: "SCS", displayName: "South China Sea Strike" },
-    { name: "_upload", displayName: "Upload..." },
+    { name: "default_scenario", displayName: t('common.panopticonDemo') },
+    { name: "SCS", displayName: t('common.southChinaSeaStrike') },
+    { name: "_upload", displayName: t('common.upload') },
   ];
 
   const presetScenarioSelectionMenu = () => {
@@ -1361,7 +1361,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           </MenuItem>
         </Menu>
         {/**  Enable Eraser */}
-        <Tooltip title="Eraser">
+        <Tooltip title={t('toolbar.tools.eraser')}>
           <IconButton onClick={handleEraserModeToggle}>
             <img
               src={EraserIcon}
@@ -1752,7 +1752,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                     }
                     autoComplete="off"
                     id="scenario-name-text-field"
-                    label="Scenario Name"
+                    label={t('toolbar.file.scenarioName')}
                     sx={{ width: "100%" }}
                     onChange={handleScenarioNameChange}
                     defaultValue={scenarioName}
@@ -1798,7 +1798,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                 <Tooltip title={t('toolbar.scenario.step')}>
                   <Chip
                     variant="outlined"
-                    label="Step"
+                    label={t('toolbar.scenario.step')}
                     onClick={handleStepClick}
                   />
                 </Tooltip>
@@ -1857,13 +1857,13 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             }
           >
             <ToolbarCollapsible
-              title="Recording"
+              title={t('toolbar.sections.recording')}
               prependIcon={RadioButtonCheckedIcon}
               content={recordingSection()}
               open={false}
             />
             <ToolbarCollapsible
-              title="Entities"
+              title={t('toolbar.sections.entities')}
               prependIcon={DocumentScannerOutlinedIcon}
               content={entitiesSection()}
               enableFilter={true}
@@ -1893,7 +1893,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
               open={false}
             />
             <ToolbarCollapsible
-              title="Missions"
+              title={t('toolbar.sections.missions')}
               prependIcon={AirlineStopsOutlinedIcon}
               content={missionSection()}
               appendIcon={AddBoxIcon}

@@ -144,7 +144,7 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
         <SelectField
           id="mission-creator-area-selector"
           labelId="mission-creator-area-selector-label"
-          label="Area"
+          label={t('mission.area')}
           value={selectedReferencePoints}
           selectItems={sortedReferencePoints.map((item) => {
             return {
@@ -167,7 +167,7 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
         <SelectField
           id="mission-creator-target-selector"
           labelId="mission-creator-target-selector-label"
-          label="Target"
+          label={t('mission.target')}
           value={selectedTargets}
           selectItems={sortedTargets.map((item) => {
             return {
@@ -238,7 +238,7 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
           <SelectField
             id="mission-creator-unit-selector"
             labelId="mission-creator-unit-selector-label"
-            label="Units"
+            label={t('mission.units')}
             selectItems={sortedAircraft.map((item) => {
               return {
                 name: item.name,

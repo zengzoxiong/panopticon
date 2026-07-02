@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useTranslation } from 'react-i18next';
 import Draggable from "react-draggable";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -85,6 +86,7 @@ const parseSelectedMissionType = (selectedMission: Mission): string => {
 };
 
 const MissionEditorCard = (props: MissionEditorCardProps) => {
+  const { t } = useTranslation();
   const nodeRef = React.useRef(null);
   const [selectedMission, setSelectedMission] = useState<Mission>(
     props.missions.find((mission) => mission.id === props.selectedMissionId) ||
@@ -224,7 +226,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
         <SelectField
           id="mission-editor-area-selector"
           labelId="mission-editor-area-selector-label"
-          label="Area"
+          label={t('mission.area')}
           selectItems={sortedReferencePoints.map((item) => {
             return {
               name: item.name,
@@ -247,7 +249,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
         <SelectField
           id="mission-editor-target-selector"
           labelId="mission-editor-target-selector-label"
-          label="Target"
+          label={t('mission.target')}
           selectItems={sortedTargets.map((item) => {
             return {
               name: item.name,
@@ -291,7 +293,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
         <FormControl fullWidth sx={{ mb: 2 }}>
           <SelectField
             id="mission-editor-mission-selector"
-            label="Mission"
+            label={t('mission.mission')}
             labelId="mission-editor-mission-selector-label"
             selectItems={missionNames.map((item, index) => {
               return {
@@ -309,7 +311,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
         <FormControl fullWidth sx={{ mb: 2 }}>
           <SelectField
             id="mission-editor-type-selector"
-            label="Type"
+            label={t('mission.type')}
             labelId="mission-editor-type-selector-label"
             selectItems={missionTypes.map((item) => {
               return {
@@ -324,7 +326,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
         {/** Mission Name Text Field */}
         <TextField
           id="mission-name"
-          label="Name"
+          label={t('mission.name')}
           value={missionName}
           onChange={(event) => {
             setMissionName(event.target.value);
@@ -334,7 +336,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
         <FormControl fullWidth sx={{ mb: 2 }}>
           <SelectField
             id="mission-editor-unit-selector"
-            label="Units"
+            label={t('mission.units')}
             labelId="mission-editor-unit-selector-label"
             selectItems={sortedAircraft.map((item) => {
               return {

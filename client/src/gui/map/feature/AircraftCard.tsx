@@ -374,7 +374,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
           <TextField
             autoComplete="off"
             id="aircraft-name-text-field"
-            label="Name"
+            label={t('aircraft.name')}
             defaultValue={props.aircraft.name}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
@@ -387,7 +387,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
           <TextField
             autoComplete="off"
             id="aircraft-type-text-field"
-            label="Type"
+            label={t('aircraft.type')}
             defaultValue={props.aircraft.className}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
@@ -400,7 +400,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
           <TextField
             autoComplete="off"
             id="aircraft-speed-text-field"
-            label="Speed"
+            label={t('aircraft.speed')}
             defaultValue={props.aircraft.speed.toFixed(0)}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
@@ -439,7 +439,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
           <TextField
             autoComplete="off"
             id="aircraft-range-text-field"
-            label="Range"
+            label={t('aircraft.range')}
             defaultValue={props.aircraft.range.toFixed(0)}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
