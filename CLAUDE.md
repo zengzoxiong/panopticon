@@ -151,3 +151,9 @@ Gym 包提供兼容 OpenAI Gym 的环境：
 - Gymnasium 0.29.1
 - stable-baselines3 2.4.1
 - Shapely 用于几何运算
+
+## 当前需要完成任务
+- [x] 按照技术文档要求，安装本地依赖 ✅
+- [x] 运行前后端，进行demo测试 ✅
+- [x] 前端增加language设置，允许切换语言（Language）：中文(Chinese)/英语(English) ✅
+- [x] 生成中英翻译对照表，由用户审核后再构建中文翻译版本 ✅

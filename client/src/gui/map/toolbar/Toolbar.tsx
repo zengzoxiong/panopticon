@@ -75,6 +75,7 @@ import {
 } from "@/utils/colors";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginLogout from "@/gui/map/toolbar/LoginLogout";
+import LanguageSelector from "@/gui/map/toolbar/LanguageSelector";
 import { randomUUID } from "@/utils/generateUUID";
 import HealthCheck from "@/gui/map/toolbar/HealthCheck";
 import {
@@ -1598,6 +1599,13 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           </Stack>
           <Box sx={{ flexGrow: 1 }} />
           <HealthCheck />
+          <Divider
+            orientation="vertical"
+            variant="middle"
+            flexItem
+            sx={{ borderColor: COLOR_PALETTE.DARK_GRAY, mr: 1.6 }}
+          />
+          <LanguageSelector />
           <Divider
             orientation="vertical"
             variant="middle"

@@ -1,0 +1,75 @@
+{
+  "toolbar": {
+    "file": {
+      "newScenario": "新建作战想定",
+      "loadScenario": "加载作战想定",
+      "saveToCloud": "保存到云端",
+      "downloadScenario": "下载作战想定",
+      "scenarioName": "作战想定名称"
+    },
+    "scenario": {
+      "play": "播放作战想定",
+      "pause": "暂停作战想定",
+      "step": "步进作战想定",
+      "restart": "重启作战想定"
+    },
+    "recording": {
+      "record": "录制",
+      "stopRecording": "停止录制",
+      "uploadRecording": "上传录制",
+      "playRecording": "播放录制",
+      "pauseRecording": "暂停录制",
+      "seekBackwards": "快退",
+      "seekForwards": "快进"
+    },
+    "units": {
+      "addAircraft": "添加飞机",
+      "addSam": "添加萨姆导弹",
+      "addShip": "添加舰船",
+      "addReferencePoint": "参考点",
+      "addMission": "添加任务"
+    },
+    "tools": {
+      "databaseTools": "数据库工具",
+      "godMode": "上帝模式",
+      "simulationLogs": "仿真日志",
+      "layerControls": "图层控制"
+    },
+    "drawer": {
+      "openDrawer": "打开侧边栏",
+      "closeDrawer": "关闭侧边栏"
+    },
+    "auth": {
+      "login": "登录",
+      "logout": "登出",
+      "loggedInAs": "已登录为"
+    },
+    "language": {
+      "selectLanguage": "选择语言",
+      "english": "English",
+      "chinese": "中文"
+    }
+  },
+  "aircraft": {
+    "currentFuel": "当前燃料",
+    "fuelConsumption": "燃料消耗"
+  },
+  "ship": {
+    "currentFuel": "当前燃料"
+  },
+  "mission": {
+    "missionType": "任务类型",
+    "missionName": "任务名称"
+  },
+  "simulationLogs": {
+    "messageTypes": "消息类型",
+    "filterLogs": "过滤日志"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "confirm": "确认"
+  }
+}

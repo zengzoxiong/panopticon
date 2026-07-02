@@ -1,0 +1,75 @@
+{
+  "toolbar": {
+    "file": {
+      "newScenario": "New Scenario",
+      "loadScenario": "Load Scenario",
+      "saveToCloud": "Save to cloud",
+      "downloadScenario": "Download Scenario",
+      "scenarioName": "Scenario Name"
+    },
+    "scenario": {
+      "play": "Play Scenario",
+      "pause": "Pause Scenario",
+      "step": "Step Scenario",
+      "restart": "Restart Scenario"
+    },
+    "recording": {
+      "record": "Record",
+      "stopRecording": "Stop Recording",
+      "uploadRecording": "Upload Recording",
+      "playRecording": "Play Recording",
+      "pauseRecording": "Pause Recording",
+      "seekBackwards": "Seek Backwards",
+      "seekForwards": "Seek Forwards"
+    },
+    "units": {
+      "addAircraft": "Add Aircraft",
+      "addSam": "Add Sam",
+      "addShip": "Add Ship",
+      "addReferencePoint": "Reference Point",
+      "addMission": "Add Mission"
+    },
+    "tools": {
+      "databaseTools": "Database Tools",
+      "godMode": "God Mode",
+      "simulationLogs": "Simulation Logs",
+      "layerControls": "Layer Controls"
+    },
+    "drawer": {
+      "openDrawer": "Open Drawer",
+      "closeDrawer": "Close Drawer"
+    },
+    "auth": {
+      "login": "Log In",
+      "logout": "Log Out",
+      "loggedInAs": "Logged in as"
+    },
+    "language": {
+      "selectLanguage": "Select Language",
+      "english": "English",
+      "chinese": "中文"
+    }
+  },
+  "aircraft": {
+    "currentFuel": "Current Fuel",
+    "fuelConsumption": "Fuel Consumption"
+  },
+  "ship": {
+    "currentFuel": "Current Fuel"
+  },
+  "mission": {
+    "missionType": "Mission Type",
+    "missionName": "Mission Name"
+  },
+  "simulationLogs": {
+    "messageTypes": "Message Types",
+    "filterLogs": "Filter Logs"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  }
+}
