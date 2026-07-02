@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import Draggable from "react-draggable";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -54,6 +55,7 @@ interface SimulationLogsProps {
 }
 
 export default function SimulationLogs(props: SimulationLogsProps) {
+  const { t } = useTranslation();
   const nodeRef = useRef(null);
   const logsContainerRef = useRef<HTMLDivElement>(null);
   const lastRenderedLogIdRef = useRef<string | null>(null);
@@ -223,7 +225,7 @@ export default function SimulationLogs(props: SimulationLogsProps) {
             <SelectField
               id="message-types-selector"
               labelId="message-types-selector-label"
-              label="Message Types"
+              label={t('simulationLogs.messageTypes')}
               selectItems={Object.values(SimulationLogType).map((type) => {
                 return {
                   name: type.toString().replace(/_/g, " "),

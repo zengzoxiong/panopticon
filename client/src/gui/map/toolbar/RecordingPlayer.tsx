@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { IconButton, Slider, Tooltip } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { Pause, PlayArrow, SkipNext, SkipPrevious } from "@mui/icons-material";
@@ -17,6 +18,7 @@ interface RecordingPlayerProps {
 }
 
 export default function RecordingPlayer(props: Readonly<RecordingPlayerProps>) {
+  const { t } = useTranslation();
   const [recordingPaused, setRecordingPaused] = useState<boolean>(
     props.recordingPaused
   );
@@ -86,19 +88,19 @@ export default function RecordingPlayer(props: Readonly<RecordingPlayerProps>) {
           alignItems: "center",
         }}
       >
-        <Tooltip title={"Seek Backwards"}>
+        <Tooltip title={t('toolbar.recording.seekBackwards')}>
           <IconButton onClick={stepRecordingBackwards}>
             {<SkipPrevious />}
           </IconButton>
         </Tooltip>
         <Tooltip
-          title={!recordingPaused ? "Pause Recording" : "Play Recording"}
+          title={!recordingPaused ? t('toolbar.recording.pauseRecording') : t('toolbar.recording.playRecording')}
         >
           <IconButton onClick={handlePlayRecordingClick}>
             {!recordingPaused ? <Pause /> : <PlayArrow />}
           </IconButton>
         </Tooltip>
-        <Tooltip title={"Seek Forwards"}>
+        <Tooltip title={t('toolbar.recording.seekForwards')}>
           <IconButton onClick={stepRecordingForwards}>
             {<SkipNext />}
           </IconButton>

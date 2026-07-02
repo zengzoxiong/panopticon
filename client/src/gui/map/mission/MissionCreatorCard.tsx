@@ -1,4 +1,5 @@
 import { useRef, useState, useContext } from "react";
+import { useTranslation } from 'react-i18next';
 import Draggable from "react-draggable";
 import Card from "@mui/material/Card";
 import { colorPalette } from "@/utils/constants";
@@ -66,6 +67,7 @@ const createPlaceholderMissionName = (missionType: "Patrol" | "Strike") => {
 };
 
 const MissionCreatorCard = (props: MissionCreatorCardProps) => {
+  const { t } = useTranslation();
   const nodeRef = useRef(null);
   const [selectedMissionType, setSelectedMissionType] = useState<
     "Patrol" | "Strike" // TODO: Create enum for mission types
@@ -212,7 +214,7 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
               { name: "Strike", value: "Strike" },
             ]}
             labelId="mission-creator-type-selector-label"
-            label="Mission Type"
+            label={t('mission.missionType')}
             value={selectedMissionType}
             onChange={(value) => {
               setSelectedMissionType(value as "Patrol" | "Strike");
@@ -225,7 +227,7 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
         {/** Mission Name Text Field */}
         <TextField
           id="mission-name"
-          label="Mission Name"
+          label={t('mission.missionName')}
           value={missionName}
           onChange={(event) => {
             setMissionName(event.target.value);

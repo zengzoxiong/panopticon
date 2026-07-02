@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import {
   AppBar,
   Avatar,
@@ -170,6 +171,7 @@ interface CloudScenario {
 
 export default function Toolbar(props: Readonly<ToolBarProps>) {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { t } = useTranslation();
   const [cloudScenarios, setCloudScenarios] = useState<CloudScenario[]>([]);
   const getCloudScenarios = async () => {
     if (!import.meta.env.VITE_ENV || import.meta.env.VITE_ENV === "standalone")
@@ -955,7 +957,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
         >
           <Chip
             variant="outlined"
-            label={recordingScenario ? "Stop Recording" : "Record"}
+            label={recordingScenario ? t('toolbar.recording.stopRecording') : t('toolbar.recording.record')}
             onClick={handleRecordScenarioClick}
           />
           <Chip
@@ -963,7 +965,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             label={`every ${formatSecondsToString(props.game.playbackRecorder.recordEverySeconds)}`}
             onClick={props.toggleRecordEverySeconds}
           />
-          <Tooltip title="Upload Recording">
+          <Tooltip title={t('toolbar.recording.uploadRecording')}>
             <IconButton onClick={props.loadRecordingOnClick}>
               <UploadFileOutlinedIcon
                 fontSize="medium"
@@ -1047,7 +1049,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
         }
       >
         {/** Add Aircraft Menu/Button */}
-        <Tooltip title="Add Aircraft">
+        <Tooltip title={t('toolbar.units.addAircraft')}>
           <IconButton
             id="add-aircraft-icon-button"
             aria-controls={
@@ -1162,7 +1164,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           ))}
         </Menu>
         {/** Add Sam Menu/Button */}
-        <Tooltip title="Add Sam">
+        <Tooltip title={t('toolbar.units.addSam')}>
           <IconButton
             id="add-sam-icon-button"
             aria-controls={samClassMenuOpen ? "sam-classes-menu" : undefined}
@@ -1218,7 +1220,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           ))}
         </Menu>
         {/** Add Ship Menu/Button */}
-        <Tooltip title="Add Ship">
+        <Tooltip title={t('toolbar.units.addShip')}>
           <IconButton
             id="add-ship-icon-button"
             aria-controls={shipClassMenuOpen ? "ship-classes-menu" : undefined}
@@ -1280,7 +1282,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           </IconButton>
         </Tooltip>
         {/**  Unit Db Functions */}
-        <Tooltip title="Database Tools">
+        <Tooltip title={t('toolbar.tools.databaseTools')}>
           <IconButton onClick={handleUnitDbToolsIconClick}>
             <Storage />
           </IconButton>
@@ -1375,7 +1377,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           </IconButton>
         </Tooltip>
         {/**  Enable God Mode */}
-        <Tooltip title="God Mode">
+        <Tooltip title={t('toolbar.tools.godMode')}>
           <IconButton onClick={handleGodModeToggle}>
             <GodModeIcon
               sx={{
@@ -1387,7 +1389,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           </IconButton>
         </Tooltip>
         {/**  Open Simulation Logs*/}
-        <Tooltip title="Simulation Logs">
+        <Tooltip title={t('toolbar.tools.simulationLogs')}>
           <IconButton onClick={props.openSimulationLogs}>
             <Message
               sx={{
@@ -1502,7 +1504,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
       >
         <MapToolbar variant="dense" sx={toolbarStyle} disableGutters>
           {props.drawerOpen ? (
-            <Tooltip title="Close Drawer">
+            <Tooltip title={t('toolbar.drawer.closeDrawer')}>
               <IconButton
                 color="inherit"
                 aria-label="close drawer"
@@ -1519,7 +1521,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
               </IconButton>
             </Tooltip>
           ) : (
-            <Tooltip title="Open Drawer">
+            <Tooltip title={t('toolbar.drawer.openDrawer')}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -1658,7 +1660,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   alignItems: "center",
                 }}
               >
-                <Tooltip title="New Scenario">
+                <Tooltip title={t('toolbar.file.newScenario')}>
                   <IconButton onClick={newScenario}>
                     <InsertDriveFileIcon
                       fontSize="medium"
@@ -1666,7 +1668,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                     />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Load Scenario">
+                <Tooltip title={t('toolbar.file.loadScenario')}>
                   <IconButton onClick={handleLoadScenarioIconClick}>
                     <UploadFileOutlinedIcon
                       fontSize="medium"
@@ -1679,7 +1681,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                     isAuthenticated
                       ? cloudScenarios.length > 4
                         ? "Cloud save limit reached. Please delete a scenario from the cloud to save a new one."
-                        : "Save to cloud"
+                        : t('toolbar.file.saveToCloud')
                       : "Login to save senario to cloud"
                   }
                 >
@@ -1697,7 +1699,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                 <Tooltip
                   title={
                     isAuthenticated || import.meta.env.VITE_ENV !== "production"
-                      ? "Download Scenario"
+                      ? t('toolbar.file.downloadScenario')
                       : "Login to download scenario"
                   }
                 >
@@ -1715,7 +1717,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   </IconButton>
                 </Tooltip>
                 {/* Scenario Name Edit Menu/Button  */}
-                <Tooltip title="Edit Scenario Name">
+                <Tooltip title={t('toolbar.file.scenarioName')}>
                   <IconButton onClick={handleOpenScenarioEditNameMenu}>
                     <EditIcon />
                   </IconButton>
@@ -1731,7 +1733,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
               }}
             >
               <Typography variant="h6" sx={{ textAlign: "center", p: 1 }}>
-                Edit Scenario Name
+                {t('toolbar.file.scenarioName')}
               </Typography>
 
               <form
@@ -1793,14 +1795,14 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   alignItems: "center",
                 }}
               >
-                <Tooltip title="Step Scenario">
+                <Tooltip title={t('toolbar.scenario.step')}>
                   <Chip
                     variant="outlined"
                     label="Step"
                     onClick={handleStepClick}
                   />
                 </Tooltip>
-                <Tooltip title="Restart Scenario">
+                <Tooltip title={t('toolbar.scenario.restart')}>
                   <IconButton onClick={reloadScenario}>
                     <RestartAltIcon />
                   </IconButton>
@@ -1809,7 +1811,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   <IconButton onClick={handleUndo}>{<Undo />}</IconButton>
                 </Tooltip>
                 <Tooltip
-                  title={!scenarioPaused ? "Pause Scenario" : "Play Scenario"}
+                  title={!scenarioPaused ? t('toolbar.scenario.pause') : t('toolbar.scenario.play')}
                 >
                   <IconButton onClick={handlePlayClick}>
                     {!scenarioPaused ? <Pause /> : <PlayArrow />}
@@ -1871,7 +1873,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   { label: "Airbase", value: "airbase" },
                   { label: "Sam", value: "facility" },
                   { label: "Ship", value: "ship" },
-                  { label: "Reference Point", value: "referencePoint" },
+                  { label: t('toolbar.units.addReferencePoint'), value: "referencePoint" },
                 ],
                 onApplyFilterOptions: (selectedOptions: string[]) => {
                   const sideIds = props.game.currentScenario.sides.map(
@@ -1897,7 +1899,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
               appendIcon={AddBoxIcon}
               appendIconProps={{
                 tooltipProps: {
-                  title: "Add Mission",
+                  title: t('toolbar.units.addMission'),
                 },
                 onClick: () => {
                   props.toggleMissionCreator();

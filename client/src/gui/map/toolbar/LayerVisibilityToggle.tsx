@@ -7,6 +7,7 @@ import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { colorPalette } from "@/utils/constants";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -26,6 +27,7 @@ export default function LayerVisibilityPanelToggle(
   props: Readonly<LayerVisibilityPanelToggleProps>
 ) {
   const { isAuthenticated } = useAuth0();
+  const { t } = useTranslation();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -153,7 +155,7 @@ export default function LayerVisibilityPanelToggle(
         }}
       >
         <Box sx={openLayersPanelButtonStyle}>
-          <Tooltip title="Layer Controls" placement="left">
+          <Tooltip title={t('toolbar.tools.layerControls')} placement="left">
             <IconButton disableRipple onClick={handleClick} size="medium">
               <LayersIcon />
             </IconButton>

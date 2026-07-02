@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -107,6 +108,7 @@ const tableValueCellStyle = {
 type CARD_CONTENT_CONTEXT = "default" | "editing" | "weapons" | "aircraft";
 
 export default function ShipCard(props: Readonly<ShipCardProps>) {
+  const { t } = useTranslation();
   const [cardContentContext, setCardContentContext] =
     useState<CARD_CONTENT_CONTEXT>("default");
   const [tempEditData, setTempEditData] = useState({
@@ -330,7 +332,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
           <TextField
             autoComplete="off"
             id="ship-current-fuel-text-field"
-            label="Current Fuel"
+            label={t('ship.currentFuel')}
             defaultValue={props.ship.currentFuel.toFixed(0)}
             onChange={_handleTextFieldChange}
             sx={inputStyle}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -100,6 +101,7 @@ const tableValueCellStyle = {
 type CARD_CONTENT_CONTEXT = "default" | "editing" | "weapons";
 
 export default function AircraftCard(props: Readonly<AircraftCardProps>) {
+  const { t } = useTranslation();
   const [cardContentContext, setCardContentContext] =
     useState<CARD_CONTENT_CONTEXT>("default");
   const [tempEditData, setTempEditData] = useState({
@@ -411,7 +413,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
           <TextField
             autoComplete="off"
             id="aircraft-current-fuel-text-field"
-            label="Current Fuel"
+            label={t('aircraft.currentFuel')}
             defaultValue={props.aircraft.currentFuel.toFixed(0)}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
@@ -424,7 +426,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
           <TextField
             autoComplete="off"
             id="aircraft-current-fuel-rate-text-field"
-            label="Fuel Consumption"
+            label={t('aircraft.fuelConsumption')}
             defaultValue={props.aircraft.fuelRate.toFixed(0)}
             onChange={_handleTextFieldChange}
             sx={inputStyle}
