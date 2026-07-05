@@ -155,7 +155,7 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
         <TableBody>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Coordinates:
+              {t('airbase.coordinates')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.airbase.latitude.toFixed(2)},{" "}
@@ -164,7 +164,7 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Altitude:
+              {t('airbase.altitude')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.airbase.altitude.toFixed(2)} FT
@@ -215,10 +215,10 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
             mr: 0.5,
           }}
         />
-        View Aicraft
+        {t('airbase.viewAircraft')}
       </ListItemButton>
       <ListItemButton onClick={_handleTeleportAirbase}>
-        <TelegramIcon sx={{ mr: 0.5 }} /> Edit Location
+        <TelegramIcon sx={{ mr: 0.5 }} /> {t('airbase.editLocation')}
       </ListItemButton>
     </Stack>
   );
@@ -232,7 +232,7 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
         onClick={handleSaveEditedAirbase}
         startIcon={<SaveIcon />}
       >
-        Save
+        {t('airbase.save')}
       </Button>
       <Button
         fullWidth
@@ -242,7 +242,7 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
         onClick={toggleEdit}
         startIcon={<CancelIcon />}
       >
-        Cancel
+        {t('airbase.cancel')}
       </Button>
     </Stack>
   );
@@ -256,7 +256,7 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
         sx={{ color: "white", borderColor: "white" }}
         onClick={toggleAircraft}
       >
-        Back
+        {t('airbase.back')}
       </Button>
     </Stack>
   );
@@ -288,7 +288,7 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
                       <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title={`More Actions`}>
+                  <Tooltip title={t('airbase.moreActions')}>
                     <Button
                       id="airbase-feature-actions-button"
                       aria-controls={
@@ -301,7 +301,7 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
                       size="small"
                       color="inherit"
                     >
-                      Actions
+                      {t('airbase.actions')}
                     </Button>
                   </Tooltip>
                   <Menu
@@ -334,10 +334,10 @@ export default function AirbaseCard(props: Readonly<AirbaseCardProps>) {
               sx={{ color: colorPalette.lightGray }}
             >
               <Typography variant="caption">
-                Type: {props.airbase.className}
+                {t('airbase.type')} {props.airbase.className}
               </Typography>
               <Typography variant="caption">
-                Side:{" "}
+                {t('airbase.side')}{" "}
                 <Typography variant="caption" component={"span"}>
                   {props.sideName}
                 </Typography>

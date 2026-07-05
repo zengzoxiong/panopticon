@@ -10,7 +10,7 @@ export const GameStatusProvider = ({
   children: React.ReactNode;
 }) => {
   const [currentGameStatus, setCurrentGameStatus] =
-    useState<string>("Scenario paused"); // TODO: Create enum for game statuses
+    useState<string>("status.scenarioPaused"); // 存储翻译键而非翻译后的字符串
 
   return (
     <GameStatusContext.Provider value={currentGameStatus}>

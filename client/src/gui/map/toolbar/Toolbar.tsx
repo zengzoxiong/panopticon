@@ -45,6 +45,7 @@ import {
   Pause,
   PlayArrow,
   Save,
+  SkipNext,
   Storage,
   Undo,
 } from "@mui/icons-material";
@@ -139,7 +140,7 @@ interface ToolBarProps {
   closeDrawer: () => void;
 }
 
-const scenarioNameRegex: RegExp = /^[a-zA-Z0-9 :-]{1,25}$/;
+const scenarioNameRegex: RegExp = /^[a-zA-Z0-9一-龥 :-]{1,25}$/;
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
@@ -742,12 +743,12 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
     } else {
       handleEntitySideChange([props.game.currentSideId]);
     }
-    toastContext?.addToast(`God Mode:  ${props.game.godMode ? "ON" : "OFF"}`);
+    toastContext?.addToast(t('toolbar.godModeToast', { status: props.game.godMode ? t('toolbar.on') : t('toolbar.off') }));
   };
 
   const handleEraserModeToggle = () => {
     props.game.toggleEraserMode();
-    toastContext?.addToast(`Eraser:  ${props.game.eraserMode ? "ON" : "OFF"}`);
+    toastContext?.addToast(t('toolbar.eraserToast', { status: props.game.eraserMode ? t('toolbar.on') : t('toolbar.off') }));
   };
 
   const keyboardEventHandler = (event: KeyboardEvent) => {
@@ -962,7 +963,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           />
           <Chip
             variant="outlined"
-            label={`every ${formatSecondsToString(props.game.playbackRecorder.recordEverySeconds)}`}
+            label={t('toolbar.everyInterval', { interval: formatSecondsToString(props.game.playbackRecorder.recordEverySeconds) })}
             onClick={props.toggleRecordEverySeconds}
           />
           <Tooltip title={t('toolbar.recording.uploadRecording')}>
@@ -1001,7 +1002,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
       (mission) => mission.sideId === currentSideId
     );
     if (!sideMissions || !Array.isArray(sideMissions) || !sideMissions.length) {
-      return <MenuItem disabled>No items available</MenuItem>;
+      return <MenuItem disabled>{t('mission.noItemsAvailable')}</MenuItem>;
     }
 
     return (
@@ -1014,10 +1015,10 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             title={
               <Stack direction={"column"} spacing={0.1}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Name: {mission.name.toUpperCase()}
+                  {t('mission.name')} {mission.name.toUpperCase()}
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Side: {props.game.currentScenario.getSideName(mission.sideId)}
+                  {t('mission.side')} {props.game.currentScenario.getSideName(mission.sideId)}
                 </Typography>
               </Stack>
             }
@@ -1086,7 +1087,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             }}
           >
             <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-              Select Aircraft
+              {t('toolbar.selectAircraft')}
             </Typography>
             <IconButton onClick={handleAircraftIconClose}>
               <ClearIcon sx={{ fontSize: 15, color: "red" }} />
@@ -1106,7 +1107,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           ))}
         </Menu>
         {/** Add Airbase Menu/Button */}
-        <Tooltip title="Add airbase from database">
+        <Tooltip title={t('toolbar.addAirbaseFromDb')}>
           <IconButton
             id="add-airbase-icon-button"
             aria-controls={
@@ -1144,7 +1145,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             }}
           >
             <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-              Select Airbase
+              {t('toolbar.selectAirbase')}
             </Typography>
             <IconButton onClick={handleAirbaseClose}>
               <ClearIcon sx={{ fontSize: 15, color: "red" }} />
@@ -1200,7 +1201,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             }}
           >
             <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-              Select Sam
+              {t('toolbar.selectSam')}
             </Typography>
             <IconButton onClick={handleSamIconClose}>
               <ClearIcon sx={{ fontSize: 15, color: "red" }} />
@@ -1256,7 +1257,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             }}
           >
             <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-              Select Ship
+              {t('toolbar.selectShip')}
             </Typography>
             <IconButton onClick={handleShipIconClose}>
               <ClearIcon sx={{ fontSize: 15, color: "red" }} />
@@ -1276,7 +1277,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
           ))}
         </Menu>
         {/** Add Reference Point */}
-        <Tooltip title="Add Reference Point">
+        <Tooltip title={t('toolbar.addReferencePoint')}>
           <IconButton onClick={handleReferencePointIconClick}>
             <EntityIcon type="referencePoint" />
           </IconButton>
@@ -1418,7 +1419,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
       !props.featureEntitiesPlotted.length ||
       !plottedSideFeatures.length
     ) {
-      return <MenuItem disabled>No items available</MenuItem>;
+      return <MenuItem disabled>{t('mission.noItemsAvailable')}</MenuItem>;
     }
 
     return (
@@ -1680,9 +1681,9 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   title={
                     isAuthenticated
                       ? cloudScenarios.length > 4
-                        ? "Cloud save limit reached. Please delete a scenario from the cloud to save a new one."
+                        ? t('toolbar.cloudSaveLimit')
                         : t('toolbar.file.saveToCloud')
-                      : "Login to save senario to cloud"
+                      : t('toolbar.loginToSave')
                   }
                 >
                   <IconButton onClick={saveScenarioToCloud}>
@@ -1700,7 +1701,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   title={
                     isAuthenticated || import.meta.env.VITE_ENV !== "production"
                       ? t('toolbar.file.downloadScenario')
-                      : "Login to download scenario"
+                      : t('toolbar.loginToDownload')
                   }
                 >
                   <IconButton onClick={exportScenario}>
@@ -1747,7 +1748,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                     error={scenarioNameError}
                     helperText={
                       scenarioNameError
-                        ? 'Must be alphanumeric, ":,-" allowed, max 25'
+                        ? t('toolbar.scenarioNameHelp')
                         : ""
                     }
                     autoComplete="off"
@@ -1796,18 +1797,16 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                 }}
               >
                 <Tooltip title={t('toolbar.scenario.step')}>
-                  <Chip
-                    variant="outlined"
-                    label={t('toolbar.scenario.step')}
-                    onClick={handleStepClick}
-                  />
+                  <IconButton onClick={handleStepClick}>
+                    <SkipNext />
+                  </IconButton>
                 </Tooltip>
                 <Tooltip title={t('toolbar.scenario.restart')}>
                   <IconButton onClick={reloadScenario}>
                     <RestartAltIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title={"Undo"}>
+                <Tooltip title={t('toolbar.undoTooltip')}>
                   <IconButton onClick={handleUndo}>{<Undo />}</IconButton>
                 </Tooltip>
                 <Tooltip
@@ -1817,7 +1816,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                     {!scenarioPaused ? <Pause /> : <PlayArrow />}
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Toggle Scenario Speed">
+                <Tooltip title={t('toolbar.toggleSpeed')}>
                   <Chip
                     onClick={props.toggleScenarioTimeCompressionOnClick}
                     variant="outlined"
@@ -1852,7 +1851,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   backgroundColor: "transparent",
                 }}
               >
-                Feature Controls
+                {t('toolbar.featureControls')}
               </ListSubheader>
             }
           >
@@ -1869,10 +1868,10 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
               enableFilter={true}
               filterProps={{
                 options: [
-                  { label: "Aircraft", value: "aircraft" },
-                  { label: "Airbase", value: "airbase" },
-                  { label: "Sam", value: "facility" },
-                  { label: "Ship", value: "ship" },
+                  { label: t('toolbar.aircraft'), value: "aircraft" },
+                  { label: t('toolbar.airbase'), value: "airbase" },
+                  { label: t('toolbar.sam'), value: "facility" },
+                  { label: t('toolbar.ship'), value: "ship" },
                   { label: t('toolbar.units.addReferencePoint'), value: "referencePoint" },
                 ],
                 onApplyFilterOptions: (selectedOptions: string[]) => {

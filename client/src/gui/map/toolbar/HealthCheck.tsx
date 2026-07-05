@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -6,6 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 const TIMEOUT_MS = 30000;
 
 export default function HealthCheck() {
+  const { t } = useTranslation();
   const env = import.meta.env.VITE_ENV;
   const apiUrl = import.meta.env.VITE_API_SERVER_URL;
 
@@ -40,18 +42,18 @@ export default function HealthCheck() {
 
   let content;
   if (!env || env === "standalone") {
-    content = <Typography>Standalone mode</Typography>;
+    content = <Typography>{t('health.standalone')}</Typography>;
   } else if (status === "checking") {
     content = (
       <Box display="flex" alignItems="center" gap={1}>
         <CircularProgress size={24} />
-        <Typography>Connecting to server...</Typography>
+        <Typography>{t('health.connecting')}</Typography>
       </Box>
     );
   } else if (status === "connected") {
-    content = <Typography>Server connected</Typography>;
+    content = <Typography>{t('health.connected')}</Typography>;
   } else {
-    content = <Typography>Server down</Typography>;
+    content = <Typography>{t('health.down')}</Typography>;
   }
 
   return (

@@ -43,6 +43,10 @@ npm run test:watch
 npm run test:game      # 游戏逻辑测试
 npm run test:units     # 单位测试
 npm run test:utils     # 工具函数测试
+
+# 结束进程
+netstat -ano | findstr :3000    # 查找占用的端口
+taskkill /PID {PID} /F          # 强制结束进程
 ```
 
 ### Gym（Python 后端）
@@ -153,7 +157,7 @@ Gym 包提供兼容 OpenAI Gym 的环境：
 - Shapely 用于几何运算
 
 ## 当前需要完成任务
-- [x] 按照技术文档要求，安装本地依赖 ✅
-- [x] 运行前后端，进行demo测试 ✅
-- [x] 前端增加language设置，允许切换语言（Language）：中文(Chinese)/英语(English) ✅
-- [ ] 已完成部分汉化，剩余内容完成汉化后立即构建
+- [x] 按照技术文档要求，安装本地依赖
+- [x] 运行前后端，进行demo测试 
+- [x] 前端增加language设置，允许切换语言（Language）：中文(Chinese)/英语(English)
+- [x] 完成前端所有内容的汉化

@@ -267,7 +267,7 @@ export default function SimulationLogs(props: SimulationLogsProps) {
 
   const createMessageLogComponent = (log: SimulationLog) => {
     const side = scenarioSidesMap[log.sideId];
-    const sideName = side?.name ?? "UNKNOWN";
+    const sideName = side?.name ?? t('simulationLogs.unknown');
     const sideColor = side?.color ?? SIDE_COLOR.BLACK;
     return (
       <Typography
@@ -340,7 +340,7 @@ export default function SimulationLogs(props: SimulationLogsProps) {
             }
             title={
               <Typography variant="body1" component="h1" sx={{ pl: 1 }}>
-                Simulation Logs
+                {t('simulationLogs.title')}
               </Typography>
             }
           />
@@ -348,7 +348,7 @@ export default function SimulationLogs(props: SimulationLogsProps) {
             <Box ref={logsContainerRef} sx={logsContainerStyle}>
               {simulationLogElements.length === 0 ? (
                 <Typography variant="body2" color="textSecondary">
-                  No logs yet.
+                  {t('simulationLogs.noLogs')}
                 </Typography>
               ) : (
                 simulationLogElements

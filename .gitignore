@@ -1,0 +1,188 @@
+# 根目录
+/findings.md
+/progress.md
+/task_plan.md
+/.claude_temp/
+/.claude_output/
+
+# ==================== Client (前端) ====================
+# Logs
+client/logs
+client/*.log
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/pnpm-debug.log*
+client/lerna-debug.log*
+
+client/node_modules
+client/dist
+client/dist-ssr
+client/*.local
+
+# Editor directories and files
+client/.vscode/*
+!client/.vscode/extensions.json
+client/.idea
+client/.DS_Store
+client/*.suo
+client/*.ntvs*
+client/*.njsproj
+client/*.sln
+client/*.sw?
+
+client/.env
+client/.env.development
+client/.env.production
+client/.env.standalone
+
+# ==================== Gym (Python 后端) ====================
+gym/scripts/*/data/*
+
+# Byte-compiled / optimized / DLL files
+gym/__pycache__/
+gym/*.py[cod]
+gym/*$py.class
+
+# C extensions
+gym/*.so
+
+# Distribution / packaging
+gym/.Python
+gym/build/
+gym/develop-eggs/
+gym/dist/
+gym/downloads/
+gym/eggs/
+gym/.eggs/
+gym/lib/
+gym/lib64/
+gym/parts/
+gym/sdist/
+gym/var/
+gym/wheels/
+gym/share/python-wheels/
+gym/*.egg-info/
+gym/.installed.cfg
+gym/*.egg
+gym/MANIFEST
+
+# PyInstaller
+gym/*.manifest
+gym/*.spec
+
+# Installer logs
+gym/pip-log.txt
+gym/pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+gym/htmlcov/
+gym/.tox/
+gym/.nox/
+gym/.coverage
+gym/.coverage.*
+gym/.cache
+gym/nosetests.xml
+gym/coverage.xml
+gym/*.cover
+gym/*.py,cover
+gym/.hypothesis/
+gym/.pytest_cache/
+gym/cover/
+
+# Translations
+gym/*.mo
+gym/*.pot
+
+# Django stuff:
+gym/*.log
+gym/local_settings.py
+gym/db.sqlite3
+gym/db.sqlite3-journal
+
+# Flask stuff:
+gym/instance/
+gym/.webassets-cache
+
+# Scrapy stuff:
+gym/.scrapy
+
+# Sphinx documentation
+gym/docs/_build/
+
+# PyBuilder
+gym/.pybuilder/
+gym/target/
+
+# Jupyter Notebook
+gym/.ipynb_checkpoints
+
+# IPython
+gym/profile_default/
+gym/ipython_config.py
+
+# pyenv
+# .python-version
+
+# pipenv
+#Pipfile.lock
+
+# poetry
+#poetry.lock
+
+# pdm
+#pdm.lock
+gym/.pdm.toml
+gym/.pdm-python
+gym/.pdm-build/
+
+# PEP 582
+gym/__pypackages__/
+
+# Celery stuff
+gym/celerybeat-schedule
+gym/celerybeat.pid
+
+# SageMath parsed files
+gym/*.sage.py
+
+# Environments
+gym/.env
+gym/.venv
+gym/env/
+gym/venv/
+gym/ENV/
+gym/env.bak/
+gym/venv.bak/
+
+# Spyder project settings
+gym/.spyderproject
+gym/.spyproject
+
+# Rope project settings
+gym/.ropeproject
+
+# mkdocs documentation
+gym/site
+
+# mypy
+gym/.mypy_cache/
+gym/.dmypy.json
+gym/dmypy.json
+
+# Pyre type checker
+gym/.pyre/
+
+# pytype static type analyzer
+gym/.pytype/
+
+# Cython debug symbols
+gym/cython_debug/
+
+# PyCharm
+#.idea/
+
+# stable_baselines
+gym/scripts/**/*.zip
+gym/scripts/**/*.jsonl
+gym/scripts/**/*.jsonl.gz

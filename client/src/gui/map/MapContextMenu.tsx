@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { UnitDbContext } from "@/gui/contextProviders/contexts/UnitDbContext";
@@ -25,6 +26,7 @@ export default function MapContextMenu({
   handleAddShip,
   handleAddFacility,
 }: Readonly<MapContextMenuProps>) {
+  const { t } = useTranslation();
   const [aircraftMenuAnchor, setAircraftMenuAnchor] =
     useState<HTMLElement | null>(null);
   const [shipMenuAnchor, setShipMenuAnchor] = useState<HTMLElement | null>(
@@ -67,7 +69,7 @@ export default function MapContextMenu({
           }}
           sx={{ borderRadius: 1 }}
         >
-          Add Reference Point
+          {t('map.addReferencePoint')}
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -76,27 +78,27 @@ export default function MapContextMenu({
           }}
           sx={{ borderRadius: 1 }}
         >
-          Add Airbase
+          {t('map.addAirbase')}
         </MenuItem>
         <MenuItem
           onClick={(e) => setAircraftMenuAnchor(e.currentTarget)}
           sx={{ justifyContent: "space-between", borderRadius: 1 }}
         >
-          <span>Add Aircraft</span>
+          <span>{t('map.addAircraft')}</span>
           <span>▶</span>
         </MenuItem>
         <MenuItem
           onClick={(e) => setShipMenuAnchor(e.currentTarget)}
           sx={{ justifyContent: "space-between", borderRadius: 1 }}
         >
-          <span>Add Ship</span>
+          <span>{t('map.addShip')}</span>
           <span>▶</span>
         </MenuItem>
         <MenuItem
           onClick={(e) => setFacilityMenuAnchor(e.currentTarget)}
           sx={{ justifyContent: "space-between", borderRadius: 1 }}
         >
-          <span>Add Facility</span>
+          <span>{t('map.addFacility')}</span>
           <span>▶</span>
         </MenuItem>
       </Menu>
@@ -120,16 +122,16 @@ export default function MapContextMenu({
             title={
               <Stack direction={"column"} spacing={0.1}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Speed: {aircraft.speed.toFixed(0)} kts
+                  {t('common.speed')} {aircraft.speed.toFixed(0)} kts
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Max Fuel: {aircraft.maxFuel.toFixed(2)} lbs
+                  {t('map.maxFuel')} {aircraft.maxFuel.toFixed(2)} lbs
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Fuel Consumption: {aircraft.fuelRate.toFixed(2)} lbs/hr
+                  {t('map.fuelConsumption')} {aircraft.fuelRate.toFixed(2)} lbs/hr
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Detection Range: {aircraft.range.toFixed(0)} nm
+                  {t('map.detectionRange')} {aircraft.range.toFixed(0)} nm
                 </Typography>
               </Stack>
             }
@@ -166,16 +168,16 @@ export default function MapContextMenu({
             title={
               <Stack direction={"column"} spacing={0.1}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Speed: {ship.speed.toFixed(0)} kts
+                  {t('common.speed')} {ship.speed.toFixed(0)} kts
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Max Fuel: {ship.maxFuel.toFixed(2)} lbs
+                  {t('map.maxFuel')} {ship.maxFuel.toFixed(2)} lbs
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Fuel Consumption: {ship.fuelRate.toFixed(2)} lbs/hr
+                  {t('map.fuelConsumption')} {ship.fuelRate.toFixed(2)} lbs/hr
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Detection Range: {ship.range.toFixed(0)} nm
+                  {t('map.detectionRange')} {ship.range.toFixed(0)} nm
                 </Typography>
               </Stack>
             }
@@ -212,7 +214,7 @@ export default function MapContextMenu({
             title={
               <Stack direction={"column"} spacing={0.1}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Detection Range: {facility.range.toFixed(0)} nm
+                  {t('map.detectionRange')} {facility.range.toFixed(0)} nm
                 </Typography>
               </Stack>
             }

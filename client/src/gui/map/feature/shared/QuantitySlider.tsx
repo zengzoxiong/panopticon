@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Popover,
   Card,
@@ -31,6 +32,7 @@ const QuantitySlider: React.FC<QuantitySliderProps> = ({
   handleCloseOnMap,
   handleConfirm,
 }) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState<number>(startValue);
 
   const onConfirm = () => {
@@ -64,7 +66,7 @@ const QuantitySlider: React.FC<QuantitySliderProps> = ({
               component="div"
               sx={{ color: "white", textAlign: "center" }}
             >
-              {title ?? "How many to launch?"}
+              {title ?? t('weapon.howManyToLaunch')}
             </Typography>
           }
         />
@@ -105,7 +107,7 @@ const QuantitySlider: React.FC<QuantitySliderProps> = ({
             size="small"
             onClick={onConfirm}
           >
-            Confirm
+            {t('common.confirm')}
           </Button>
           <Button
             fullWidth
@@ -114,7 +116,7 @@ const QuantitySlider: React.FC<QuantitySliderProps> = ({
             color="error"
             onClick={handleCloseOnMap}
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
         </CardActions>
       </Card>

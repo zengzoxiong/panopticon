@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { Typography } from "@mui/material";
 import { GameStatusContext } from "@/gui/contextProviders/contexts/GameStatusContext";
 
@@ -13,6 +14,7 @@ const currentActionContextDisplayStyle = {
 };
 
 export default function CurrentActionContextDisplay() {
+  const { t } = useTranslation();
   const CurrentGameStatusFromContext = useContext(GameStatusContext);
 
   return (
@@ -21,7 +23,7 @@ export default function CurrentActionContextDisplay() {
       component="p"
       sx={currentActionContextDisplayStyle}
     >
-      {CurrentGameStatusFromContext}
+      {t(CurrentGameStatusFromContext)}
     </Typography>
   );
 }

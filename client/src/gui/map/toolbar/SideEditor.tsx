@@ -162,7 +162,7 @@ const SideEditor = (props: SideEditorProps) => {
               setSideName(event.target.value);
             }}
             error={sideNameError}
-            helperText={sideNameError ? "Name is required" : ""}
+            helperText={sideNameError ? t('side.nameRequired') : ""}
           />
           {/** Side Color Select Field */}
           {/** Side Color Preview */}
@@ -276,7 +276,7 @@ const SideEditor = (props: SideEditorProps) => {
               onClick={handleAddSide}
               sx={editorButtonStyle}
             >
-              ADD
+              {t('side.addBtn')}
             </Button>
           ) : (
             <>
@@ -287,7 +287,7 @@ const SideEditor = (props: SideEditorProps) => {
                 onClick={handleDeleteSide}
                 sx={editorButtonStyle}
               >
-                DELETE
+                {t('side.deleteBtn')}
               </Button>
               <Button
                 fullWidth
@@ -296,7 +296,7 @@ const SideEditor = (props: SideEditorProps) => {
                 onClick={handleUpdateSide}
                 sx={editorButtonStyle}
               >
-                UPDATE
+                {t('side.updateBtn')}
               </Button>
             </>
           )}

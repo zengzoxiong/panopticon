@@ -8,7 +8,7 @@ const LogoutButton = () => {
   const { t } = useTranslation();
 
   return (
-    <Tooltip title={t('toolbar.auth.loggedInAs') + (user ? user.name : "Unknown User")}>
+    <Tooltip title={t('toolbar.auth.loggedInAs') + (user ? user.name : t('toolbar.auth.unknownUser'))}>
       <Chip
         variant="outlined"
         onClick={() =>

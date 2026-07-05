@@ -231,7 +231,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
         <TableBody>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Coordinates:
+              {t('ship.coordinates')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.ship.latitude.toFixed(2)},{" "}
@@ -240,7 +240,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Heading:
+              {t('ship.heading')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.ship.heading.toFixed(2)}
@@ -248,7 +248,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Speed:
+              {t('ship.speed')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.ship.speed.toFixed(0)} KTS
@@ -256,7 +256,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Detection Range:
+              {t('ship.detectionRange')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.ship.range.toFixed(0)} NM
@@ -264,7 +264,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Fuel:
+              {t('ship.fuel')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.ship.currentFuel.toFixed(0)} /{" "}
@@ -368,19 +368,19 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
             mr: 0.5,
           }}
         />
-        Plot Course
+        {t('ship.plotCourse')}
       </ListItemButton>
       <ListItemButton onClick={toggleAircraft}>
-        <FlightIcon sx={{ mr: 0.5 }} /> View Aircraft
+        <FlightIcon sx={{ mr: 0.5 }} /> {t('ship.viewAircraft')}
       </ListItemButton>
       <ListItemButton onClick={_handleShipAutoAttack}>
-        <RocketLaunchIcon sx={{ mr: 0.5 }} /> Auto Attack
+        <RocketLaunchIcon sx={{ mr: 0.5 }} /> {t('ship.autoAttack')}
       </ListItemButton>
       <ListItemButton onClick={toggleWeapons}>
-        <Radar sx={{ mr: 0.5 }} /> Manual Attack
+        <Radar sx={{ mr: 0.5 }} /> {t('ship.manualAttack')}
       </ListItemButton>
       <ListItemButton onClick={_handleTeleportShip}>
-        <TelegramIcon sx={{ mr: 0.5 }} /> Edit Location
+        <TelegramIcon sx={{ mr: 0.5 }} /> {t('ship.editLocation')}
       </ListItemButton>
     </Stack>
   );
@@ -394,7 +394,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
         onClick={handleSaveEditedShip}
         startIcon={<SaveIcon />}
       >
-        Save
+        {t('ship.save')}
       </Button>
       <Button
         fullWidth
@@ -404,7 +404,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
         onClick={toggleEdit}
         startIcon={<CancelIcon />}
       >
-        Cancel
+        {t('ship.cancel')}
       </Button>
     </Stack>
   );
@@ -418,7 +418,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
         sx={{ color: "white", borderColor: "white" }}
         onClick={toggleWeapons}
       >
-        Back
+        {t('ship.back')}
       </Button>
     </Stack>
   );
@@ -432,7 +432,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
         sx={{ color: "white", borderColor: "white" }}
         onClick={toggleAircraft}
       >
-        Back
+        {t('ship.back')}
       </Button>
     </Stack>
   );
@@ -464,7 +464,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
                       <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title={`More Actions`}>
+                  <Tooltip title={t('ship.moreActions')}>
                     <Button
                       id="ship-feature-actions-button"
                       aria-controls={
@@ -477,7 +477,7 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
                       size="small"
                       color="inherit"
                     >
-                      Actions
+                      {t('ship.actions')}
                     </Button>
                   </Tooltip>
                   <Menu
@@ -510,10 +510,10 @@ export default function ShipCard(props: Readonly<ShipCardProps>) {
               sx={{ color: colorPalette.lightGray }}
             >
               <Typography variant="caption">
-                Type: {props.ship.className}
+                {t('ship.type')} {props.ship.className}
               </Typography>
               <Typography variant="caption">
-                Side:{" "}
+                {t('ship.side')}{" "}
                 <Typography variant="caption" component={"span"}>
                   {props.sideName}
                 </Typography>

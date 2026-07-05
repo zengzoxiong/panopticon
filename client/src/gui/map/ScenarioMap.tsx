@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Feature, MapBrowserEvent, Map as OlMap, Overlay } from "ol";
 import { unByKey } from "ol/Observable";
 import View from "ol/View";
@@ -117,6 +118,7 @@ export default function ScenarioMap({
   projection,
   mobileView,
 }: Readonly<ScenarioMapProps>) {
+  const { t } = useTranslation();
   const mapRef = useRef<HTMLDivElement | null>(null);
   const defaultProjection = getProjection(DEFAULT_OL_PROJECTION_CODE);
   const [drawerOpen, setDrawerOpen] = useState(true);
@@ -479,7 +481,7 @@ export default function ScenarioMap({
         teleportUnit(game.selectedUnitId, event.coordinate);
         game.selectedUnitId = "";
         setCurrentGameStatusToContext(
-          game.scenarioPaused ? "Scenario paused" : "Scenario playing"
+          game.scenarioPaused ? 'status.scenarioPaused' : 'status.scenarioPlaying'
         );
         break;
       }
@@ -494,7 +496,7 @@ export default function ScenarioMap({
           game.currentAttackParams.autoAttack
         );
         resetAttack();
-        setCurrentGameStatusToContext("Target acquired");
+        setCurrentGameStatusToContext('status.targetAcquired');
         break;
       }
       case "shipSelectedAttackTarget": {
@@ -508,7 +510,7 @@ export default function ScenarioMap({
           game.currentAttackParams.autoAttack
         );
         resetAttack();
-        setCurrentGameStatusToContext("Target acquired");
+        setCurrentGameStatusToContext('status.targetAcquired');
         break;
       }
       case "aircraftCancelledAttack": {
@@ -740,7 +742,7 @@ export default function ScenarioMap({
       game.addingReferencePoint = false;
     }
     setCurrentGameStatusToContext(
-      game.scenarioPaused ? "Scenario paused" : "Scenario playing"
+      game.scenarioPaused ? 'status.scenarioPaused' : 'status.scenarioPlaying'
     );
     updateSelectedUnitClassName(null);
   }
@@ -853,11 +855,11 @@ export default function ScenarioMap({
     game.addingShip = false;
     game.addingReferencePoint = false;
     if (game.addingAircraft) {
-      setCurrentGameStatusToContext("Click on the map to add an aircraft");
+      setCurrentGameStatusToContext('prompt.addAircraft');
       updateSelectedUnitClassName(unitClassName);
     } else {
       setCurrentGameStatusToContext(
-        game.scenarioPaused ? "Scenario paused" : "Scenario playing"
+        game.scenarioPaused ? 'status.scenarioPaused' : 'status.scenarioPlaying'
       );
       updateSelectedUnitClassName(null);
     }
@@ -870,11 +872,11 @@ export default function ScenarioMap({
     game.addingShip = false;
     game.addingReferencePoint = false;
     if (game.addingFacility) {
-      setCurrentGameStatusToContext("Click on the map to add a facility");
+      setCurrentGameStatusToContext('prompt.addFacility');
       updateSelectedUnitClassName(unitClassName);
     } else {
       setCurrentGameStatusToContext(
-        game.scenarioPaused ? "Scenario paused" : "Scenario playing"
+        game.scenarioPaused ? 'status.scenarioPaused' : 'status.scenarioPlaying'
       );
       updateSelectedUnitClassName(null);
     }
@@ -887,11 +889,11 @@ export default function ScenarioMap({
     game.addingShip = false;
     game.addingReferencePoint = false;
     if (game.addingAirbase) {
-      setCurrentGameStatusToContext("Click on the map to add an airbase");
+      setCurrentGameStatusToContext('prompt.addAirbase');
       updateSelectedUnitClassName(unitClassName);
     } else {
       setCurrentGameStatusToContext(
-        game.scenarioPaused ? "Scenario paused" : "Scenario playing"
+        game.scenarioPaused ? 'status.scenarioPaused' : 'status.scenarioPlaying'
       );
       updateSelectedUnitClassName(null);
     }
@@ -904,11 +906,11 @@ export default function ScenarioMap({
     game.addingAirbase = false;
     game.addingReferencePoint = false;
     if (game.addingShip) {
-      setCurrentGameStatusToContext("Click on the map to add a ship");
+      setCurrentGameStatusToContext('prompt.addShip');
       updateSelectedUnitClassName(unitClassName);
     } else {
       setCurrentGameStatusToContext(
-        game.scenarioPaused ? "Scenario paused" : "Scenario playing"
+        game.scenarioPaused ? 'status.scenarioPaused' : 'status.scenarioPlaying'
       );
       updateSelectedUnitClassName(null);
     }
@@ -922,11 +924,11 @@ export default function ScenarioMap({
     game.addingShip = false;
     if (game.addingReferencePoint) {
       setCurrentGameStatusToContext(
-        "Click on the map to add a reference point"
+        'prompt.addReferencePoint'
       );
     } else {
       setCurrentGameStatusToContext(
-        game.scenarioPaused ? "Scenario paused" : "Scenario playing"
+        game.scenarioPaused ? 'status.scenarioPaused' : 'status.scenarioPlaying'
       );
     }
   }
@@ -970,10 +972,10 @@ export default function ScenarioMap({
       reader.onload = (event) => {
         const content = event.target?.result as string;
         if (!game.recordingPlayer.loadRecording(content)) {
-          toastContext?.addToast("Failed to load recording", "error");
+          toastContext?.addToast(t('message.loadRecordingFailed'), "error");
           return;
         } else {
-          toastContext?.addToast("Successfully loaded recording", "success");
+          toastContext?.addToast(t('message.loadRecordingSuccess'), "success");
         }
         setRecordingPlayerHasRecording(game.recordingPlayer.hasRecording());
         game.loadScenario(game.recordingPlayer.getCurrentStep());
@@ -1057,7 +1059,7 @@ export default function ScenarioMap({
 
   async function handlePlayGameClick() {
     game.recordStep(true);
-    setCurrentGameStatusToContext("Scenario playing");
+    setCurrentGameStatusToContext('status.scenarioPlaying');
     game.scenarioPaused = false;
     let gameEnded = game.checkGameEnded();
     while (!game.scenarioPaused && !gameEnded) {
@@ -1139,7 +1141,7 @@ export default function ScenarioMap({
 
   function setGamePaused() {
     game.scenarioPaused = true;
-    setCurrentGameStatusToContext("Scenario paused");
+    setCurrentGameStatusToContext('status.scenarioPaused');
   }
 
   function addAircraft(
@@ -1463,7 +1465,7 @@ export default function ScenarioMap({
       currentWeaponQuantity: 0,
     };
     setCurrentGameStatusToContext(
-      game.scenarioPaused ? "Scenario paused" : "Scenario playing"
+      game.scenarioPaused ? 'status.scenarioPaused' : 'status.scenarioPlaying'
     );
     changeCursorType("");
   }
@@ -1480,7 +1482,7 @@ export default function ScenarioMap({
       currentWeaponId: weaponId,
       currentWeaponQuantity: weaponQuantity,
     };
-    setCurrentGameStatusToContext("Select an enemy target to attack");
+    setCurrentGameStatusToContext('prompt.selectTarget');
     changeCursorType("crosshair");
   }
 
@@ -1496,7 +1498,7 @@ export default function ScenarioMap({
       currentWeaponId: weaponId,
       currentWeaponQuantity: weaponQuantity,
     };
-    setCurrentGameStatusToContext("Select an enemy target to attack");
+    setCurrentGameStatusToContext('prompt.selectTarget');
     changeCursorType("crosshair");
   }
 
@@ -1508,7 +1510,7 @@ export default function ScenarioMap({
       currentWeaponId: "",
       currentWeaponQuantity: 0,
     };
-    setCurrentGameStatusToContext("Select an enemy target to attack");
+    setCurrentGameStatusToContext('prompt.selectTarget');
     changeCursorType("crosshair");
   }
 
@@ -1520,7 +1522,7 @@ export default function ScenarioMap({
       currentWeaponId: "",
       currentWeaponQuantity: 0,
     };
-    setCurrentGameStatusToContext("Select an enemy target to attack");
+    setCurrentGameStatusToContext('prompt.selectTarget');
     changeCursorType("crosshair");
   }
 
@@ -1543,7 +1545,7 @@ export default function ScenarioMap({
       );
       aircraft.rtb = false;
       setCurrentGameStatusToContext(
-        "Click on the map to plot a route for the aircraft. Click on the same location twice or press the 'Escape' key to stop plotting."
+        'prompt.plotRouteAircraft'
       );
     }
   }
@@ -1563,7 +1565,7 @@ export default function ScenarioMap({
         ship.sideColor
       );
       setCurrentGameStatusToContext(
-        "Click on the map to plot a route for the ship. Click on the same location twice or press the 'Escape' key to stop plotting."
+        'prompt.plotRouteShip'
       );
     }
   }
@@ -1704,7 +1706,7 @@ export default function ScenarioMap({
     }
     game.createPatrolMission(missionName, assignedUnits, assignedArea);
     toastContext?.addToast(
-      `Created patrol mission [${missionName}] successfully!`,
+      t('message.createPatrolSuccess', { name: missionName }),
       "success"
     );
   }
@@ -1733,7 +1735,7 @@ export default function ScenarioMap({
       assignedArea
     );
     toastContext?.addToast(
-      `Updated patrol mission [${missionName}] successfully!`,
+      t('message.updatePatrolSuccess', { name: missionName }),
       "success"
     );
   }
@@ -1745,7 +1747,7 @@ export default function ScenarioMap({
   ) {
     game.createStrikeMission(missionName, assignedUnits, targetIds);
     toastContext?.addToast(
-      `Created strike mission [${missionName}] successfully!`,
+      t('message.createStrikeSuccess', { name: missionName }),
       "success"
     );
   }
@@ -1758,14 +1760,14 @@ export default function ScenarioMap({
   ) {
     game.updateStrikeMission(missionId, missionName, assignedUnits, targetIds);
     toastContext?.addToast(
-      `Updated strike mission [${missionName}] successfully!`,
+      t('message.updateStrikeSuccess', { name: missionName }),
       "success"
     );
   }
 
   function handleDeleteMission(missionId: string) {
     game.deleteMission(missionId);
-    toastContext?.addToast(`Deleted mission successfully!`, "success");
+    toastContext?.addToast(t('message.deleteMissionSuccess'), "success");
   }
 
   function openMissionEditor(selectedMissionId: string = "") {
@@ -1875,7 +1877,7 @@ export default function ScenarioMap({
   function queueUnitForTeleport(unitId: string) {
     game.selectedUnitId = unitId;
     teleportingUnit = true;
-    setCurrentGameStatusToContext("Click on the map to teleport the unit");
+    setCurrentGameStatusToContext('prompt.teleportUnit');
   }
 
   function switchCurrentSide(sideId: string) {
@@ -1883,7 +1885,7 @@ export default function ScenarioMap({
     game.switchCurrentSide(sideId);
     setCurrentSideId(game.currentSideId);
     toastContext?.addToast(
-      `Side changed: ${game.currentScenario.getSideName(game.currentSideId)}`
+      t('message.sideChanged', { sideName: game.currentScenario.getSideName(game.currentSideId) })
     );
   }
 
@@ -2154,7 +2156,7 @@ export default function ScenarioMap({
     game.commitRoute(game.selectedUnitId);
     game.selectedUnitId = "";
     setCurrentGameStatusToContext(
-      game.scenarioPaused ? "Scenario paused" : "Scenario playing"
+      game.scenarioPaused ? 'status.scenarioPaused' : 'status.scenarioPlaying'
     );
     refreshRouteLayer(game.currentScenario);
   }
@@ -2603,7 +2605,7 @@ export default function ScenarioMap({
               game.currentScenario.sides.length === 0
             ) {
               toastContext?.addToast(
-                "Please select a side before adding an aircraft.",
+                t('prompt.selectSideFirst'),
                 "error"
               );
               return;
@@ -2616,7 +2618,7 @@ export default function ScenarioMap({
               game.currentScenario.sides.length === 0
             ) {
               toastContext?.addToast(
-                "Please select a side before adding an aircraft.",
+                t('prompt.selectSideFirst'),
                 "error"
               );
               return;
@@ -2629,7 +2631,7 @@ export default function ScenarioMap({
               game.currentScenario.sides.length === 0
             ) {
               toastContext?.addToast(
-                "Please select a side before adding an aircraft.",
+                t('prompt.selectSideFirst'),
                 "error"
               );
               return;
@@ -2644,7 +2646,7 @@ export default function ScenarioMap({
               game.currentScenario.sides.length === 0
             ) {
               toastContext?.addToast(
-                "Please select a side before adding an aircraft.",
+                t('prompt.selectSideFirst'),
                 "error"
               );
               return;
@@ -2659,7 +2661,7 @@ export default function ScenarioMap({
               game.currentScenario.sides.length === 0
             ) {
               toastContext?.addToast(
-                "Please select a side before adding an aircraft.",
+                t('prompt.selectSideFirst'),
                 "error"
               );
               return;

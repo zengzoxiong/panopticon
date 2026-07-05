@@ -133,7 +133,7 @@ export default function ReferencePointCard(
         <TableBody>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Coordinates:
+              {t('referencePoint.coordinates')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.referencePoint.latitude.toFixed(2)},{" "}
@@ -142,7 +142,7 @@ export default function ReferencePointCard(
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Altitude:
+              {t('referencePoint.altitude')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.referencePoint.altitude.toFixed(2)} FT
@@ -188,7 +188,7 @@ export default function ReferencePointCard(
   const defaultCardActions = (
     <Stack spacing={0.5} direction="column" onMouseLeave={handleClose}>
       <ListItemButton onClick={_handleTeleportReferencePoint}>
-        <TelegramIcon sx={{ mr: 0.5 }} /> Edit Location
+        <TelegramIcon sx={{ mr: 0.5 }} /> {t('referencePoint.editLocation')}
       </ListItemButton>
     </Stack>
   );
@@ -202,7 +202,7 @@ export default function ReferencePointCard(
         onClick={handleSaveEditedReferencePoint}
         startIcon={<SaveIcon />}
       >
-        Save
+        {t('referencePoint.save')}
       </Button>
       <Button
         fullWidth
@@ -212,7 +212,7 @@ export default function ReferencePointCard(
         onClick={toggleEdit}
         startIcon={<CancelIcon />}
       >
-        Cancel
+        {t('referencePoint.cancel')}
       </Button>
     </Stack>
   );
@@ -244,7 +244,7 @@ export default function ReferencePointCard(
                       <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title={`More Actions`}>
+                  <Tooltip title={t('referencePoint.moreActions')}>
                     <Button
                       id="reference-point-feature-actions-button"
                       aria-controls={
@@ -259,7 +259,7 @@ export default function ReferencePointCard(
                       size="small"
                       color="inherit"
                     >
-                      Actions
+                      {t('referencePoint.actions')}
                     </Button>
                   </Tooltip>
                   <Menu
@@ -293,7 +293,7 @@ export default function ReferencePointCard(
               sx={{ color: colorPalette.lightGray }}
             >
               <Typography variant="caption">
-                Side:{" "}
+                {t('referencePoint.side')}{" "}
                 <Typography variant="caption" component={"span"}>
                   {props.sideName}
                 </Typography>

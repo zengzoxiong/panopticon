@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -62,24 +63,24 @@ interface HeadCell {
   numeric: boolean;
 }
 
-const headCells: readonly HeadCell[] = [
+const getHeadCells = (t: (key: string) => string): readonly HeadCell[] => [
   {
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Name",
+    label: t('table.name'),
   },
   {
     id: "className",
     numeric: false,
     disablePadding: false,
-    label: "Class",
+    label: t('table.class'),
   },
   {
     id: "currentFuel",
     numeric: true,
     disablePadding: false,
-    label: "Fuel (lbs)",
+    label: t('table.fuelLbs'),
   },
 ];
 
@@ -96,6 +97,7 @@ interface AircraftTableHeadProps {
 }
 
 function AircraftTableHead(props: AircraftTableHeadProps) {
+  const { t } = useTranslation();
   const {
     onSelectAllClick,
     order,
@@ -125,7 +127,7 @@ function AircraftTableHead(props: AircraftTableHeadProps) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
+        {getHeadCells(t).map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.id === "name" ? "left" : "right"}
@@ -158,6 +160,7 @@ interface AircraftTableToolbarProps {
   handleLaunchAircraft: () => void;
 }
 function AircraftTableToolbar(props: AircraftTableToolbarProps) {
+  const { t } = useTranslation();
   const { numSelected } = props;
   const unitDbContext = React.useContext(UnitDbContext);
 
@@ -196,7 +199,7 @@ function AircraftTableToolbar(props: AircraftTableToolbarProps) {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} aircraft selected
+          {t('aircraft.selected', { count: numSelected })}
         </Typography>
       ) : (
         <Typography
@@ -205,24 +208,24 @@ function AircraftTableToolbar(props: AircraftTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          Aircraft
+          {t('aircraft.name')}
         </Typography>
       )}
       {numSelected > 0 ? (
         <>
-          <Tooltip title={`Launch Aircraft`}>
+          <Tooltip title={t('aircraft.launch')}>
             <IconButton onClick={props.handleLaunchAircraft}>
               <Flight sx={{ color: "black" }} />
             </IconButton>
           </Tooltip>
-          <Tooltip title={`Delete Aircraft`}>
+          <Tooltip title={t('aircraft.delete')}>
             <IconButton onClick={props.handleDeleteAircraft}>
               <Delete sx={{ color: "red" }} />
             </IconButton>
           </Tooltip>
         </>
       ) : (
-        <Tooltip title={`Add Aircraft`}>
+        <Tooltip title={t('aircraft.add')}>
           <IconButton
             id={"add-aircraft-button"}
             onClick={handleClickAddAircraftButton}
@@ -253,16 +256,16 @@ function AircraftTableToolbar(props: AircraftTableToolbarProps) {
             title={
               <Stack direction={"column"} spacing={0.1}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Speed: {aircraft.speed.toFixed(0)} kts
+                  {t('common.speed')}: {aircraft.speed.toFixed(0)} kts
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Max Fuel: {aircraft.maxFuel.toFixed(2)} lbs
+                  {t('map.maxFuel')}: {aircraft.maxFuel.toFixed(2)} lbs
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Fuel Consumption: {aircraft.fuelRate.toFixed(2)} lbs/hr
+                  {t('map.fuelConsumption')}: {aircraft.fuelRate.toFixed(2)} lbs/hr
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Detection Range: {aircraft.range.toFixed(0)} nm
+                  {t('map.detectionRange')}: {aircraft.range.toFixed(0)} nm
                 </Typography>
               </Stack>
             }

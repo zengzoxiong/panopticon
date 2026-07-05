@@ -4,7 +4,7 @@ type GameStatusContextType = string;
 type SetGameStatusContextType = (status: string) => void;
 
 const GameStatusContext =
-  createContext<GameStatusContextType>("Scenario paused");
+  createContext<GameStatusContextType>("status.scenarioPaused");
 const SetGameStatusContext = createContext<SetGameStatusContextType>(
   (_status: string) => {}
 );

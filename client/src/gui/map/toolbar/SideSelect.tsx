@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Side from "@/game/Side";
 import {
   MenuItem,
@@ -23,6 +24,7 @@ interface SideSelectProps {
 }
 
 export default function SideSelect(props: Readonly<SideSelectProps>) {
+  const { t } = useTranslation();
   const [selectedSide, setSelectedSide] = useState<Side | undefined>(
     props.sides.find((side) => side.id === props.currentSideId)
   );
@@ -77,7 +79,7 @@ export default function SideSelect(props: Readonly<SideSelectProps>) {
             <span>{ellipsifySideName(selectedSide.name, 24)}</span>
           </Box>
         ) : (
-          <em>Select a side</em>
+          <em>{t('side.select')}</em>
         )
       }
     >
@@ -138,7 +140,7 @@ export default function SideSelect(props: Readonly<SideSelectProps>) {
         <ListItemIcon>
           <AddIcon fontSize="small" />
         </ListItemIcon>
-        <ListItemText primary="Add side" />
+        <ListItemText primary={t('side.add')} />
       </MenuItem>
     </Select>
   );

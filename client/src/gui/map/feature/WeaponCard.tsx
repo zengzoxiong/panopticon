@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -59,6 +60,7 @@ const tableValueCellStyle = {
 };
 
 export default function WeaponCard(props: Readonly<WeaponCardProps>) {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -94,7 +96,7 @@ export default function WeaponCard(props: Readonly<WeaponCardProps>) {
         <TableBody>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Coordinates:
+              {t('weapon.coordinates')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.weapon.latitude.toFixed(2)},{" "}
@@ -103,7 +105,7 @@ export default function WeaponCard(props: Readonly<WeaponCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Speed:
+              {t('weapon.speed')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.weapon.speed.toFixed(0)} KTS
@@ -111,7 +113,7 @@ export default function WeaponCard(props: Readonly<WeaponCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Altitude:
+              {t('weapon.altitude')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.weapon.altitude.toFixed(2)} FT
@@ -119,7 +121,7 @@ export default function WeaponCard(props: Readonly<WeaponCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Engagement Range:
+              {t('weapon.engagementRange')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.weapon.getEngagementRange().toFixed(0)} NM
@@ -133,7 +135,7 @@ export default function WeaponCard(props: Readonly<WeaponCardProps>) {
   const defaultCardActions = (
     <Stack spacing={0.5} direction="column" onMouseLeave={handleClose}>
       <ListItemButton onClick={_handleTeleportWeapon}>
-        <TelegramIcon sx={{ mr: 0.5 }} /> Edit Location
+        <TelegramIcon sx={{ mr: 0.5 }} /> {t('weapon.editLocation')}
       </ListItemButton>
     </Stack>
   );
@@ -153,12 +155,12 @@ export default function WeaponCard(props: Readonly<WeaponCardProps>) {
         <CardHeader
           action={
             <Stack direction={"row"} spacing={0}>
-              <Tooltip title={`Delete ${props.weapon.name}`}>
+              <Tooltip title={t('weapon.delete', { name: props.weapon.name })}>
                 <IconButton onClick={_handleDeleteWeapon}>
                   <DeleteIcon sx={{ color: "red" }} />
                 </IconButton>
               </Tooltip>
-              <Tooltip title={`More Actions`}>
+              <Tooltip title={t('weapon.moreActions')}>
                 <Button
                   id="facility-feature-actions-button"
                   aria-controls={
@@ -171,7 +173,7 @@ export default function WeaponCard(props: Readonly<WeaponCardProps>) {
                   size="small"
                   color="inherit"
                 >
-                  Actions
+                  {t('weapon.actions')}
                 </Button>
               </Tooltip>
               <Menu
@@ -202,10 +204,10 @@ export default function WeaponCard(props: Readonly<WeaponCardProps>) {
               sx={{ color: colorPalette.lightGray }}
             >
               <Typography variant="caption">
-                Type: {props.weapon.className}
+                {t('weapon.type')} {props.weapon.className}
               </Typography>
               <Typography variant="caption">
-                Side:{" "}
+                {t('weapon.side')}{" "}
                 <Typography variant="caption" component={"span"}>
                   {props.sideName}
                 </Typography>

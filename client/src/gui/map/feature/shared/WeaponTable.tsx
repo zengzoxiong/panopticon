@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Add, Delete, Remove, RocketLaunch } from "@mui/icons-material";
 import {
   IconButton,
@@ -63,6 +64,7 @@ interface WeaponTableProps {
 }
 
 export default function WeaponTable(props: Readonly<WeaponTableProps>) {
+  const { t } = useTranslation();
   const [unitWeapons, setUnitWeapons] = useState(props.unitWithWeapon.weapons);
   const unitDbContext = useContext(UnitDbContext);
 
@@ -156,7 +158,7 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
                 align="right"
                 sx={{ ...tableKeyCellStyle }}
               >
-                Name
+                {t('weapon.name')}
               </TableCell>
               <TableCell
                 component="th"
@@ -164,7 +166,7 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
                 align="right"
                 sx={{ ...tableKeyCellStyle, minWidth: "6em" }}
               >
-                Range
+                {t('weapon.range')}
               </TableCell>
               <TableCell
                 component="th"
@@ -172,7 +174,7 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
                 align="center"
                 sx={{ ...tableKeyCellStyle, minWidth: "8em" }}
               >
-                Quantity
+                {t('weapon.quantity')}
               </TableCell>
               <TableCell
                 align="right"
@@ -180,7 +182,7 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
                 scope="row"
                 sx={{ ...tableKeyCellStyle, minWidth: "5em" }}
               >
-                <Tooltip title={`Add Weapon`}>
+                <Tooltip title={t('weapon.add')}>
                   <IconButton
                     id={"add-weapons-button"}
                     onClick={handleClickAddWeaponButton}
@@ -199,7 +201,7 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
                   align="center"
                   sx={{ ...tableValueCellStyle, color: "gray" }}
                 >
-                  No Weapons Available
+                  {t('weapon.noWeaponsAvailable')}
                 </TableCell>
               </TableRow>
             )}
@@ -217,7 +219,7 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
                   </TableCell>
                   <TableCell align="center" sx={tableValueCellStyle}>
                     <>
-                      <Tooltip title={`Decrease Quantity`}>
+                      <Tooltip title={t('weapon.decreaseQuantity')}>
                         <IconButton
                           onClick={() =>
                             _handleUpdateWeaponQuantity(weapon.id, -1)
@@ -227,7 +229,7 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
                         </IconButton>
                       </Tooltip>
                       {weapon.currentQuantity}
-                      <Tooltip title={`Increase Quantity`}>
+                      <Tooltip title={t('weapon.increaseQuantity')}>
                         <IconButton
                           onClick={() =>
                             _handleUpdateWeaponQuantity(weapon.id, 1)
@@ -241,7 +243,7 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
                   <TableCell align="right" sx={tableValueCellStyle}>
                     <>
                       {props.handleUnitAttack && (
-                        <Tooltip title={`Launch Weapon`}>
+                        <Tooltip title={t('weapon.launch')}>
                           <IconButton
                             onClick={(
                               event: React.MouseEvent<HTMLButtonElement>
@@ -253,7 +255,7 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
                           </IconButton>
                         </Tooltip>
                       )}
-                      <Tooltip title={`Delete Weapon`}>
+                      <Tooltip title={t('weapon.deleteWeapon')}>
                         <IconButton
                           onClick={() => _handleDeleteWeapon(weapon.id)}
                         >
@@ -289,16 +291,16 @@ export default function WeaponTable(props: Readonly<WeaponTableProps>) {
             title={
               <Stack direction={"column"} spacing={0.1}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Speed: {weapon.speed.toFixed(0)} kts
+                  {t('common.speed')}: {weapon.speed.toFixed(0)} kts
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Max Fuel: {weapon.maxFuel.toFixed(2)} lbs
+                  {t('map.maxFuel')}: {weapon.maxFuel.toFixed(2)} lbs
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Fuel Consumption: {weapon.fuelRate.toFixed(2)} lbs/hr
+                  {t('map.fuelConsumption')}: {weapon.fuelRate.toFixed(2)} lbs/hr
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  Lethality: {(weapon.lethality * 100).toFixed(2)}%
+                  {t('weapon.lethality')}: {(weapon.lethality * 100).toFixed(2)}%
                 </Typography>
               </Stack>
             }

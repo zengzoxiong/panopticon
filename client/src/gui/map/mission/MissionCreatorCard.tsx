@@ -88,11 +88,11 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
 
   const validateMissionPropertiesInput = () => {
     if (missionName === "") {
-      toastContext?.addToast("Mission name cannot be empty", "error");
+      toastContext?.addToast(t('mission.nameRequired'), "error");
       return false;
     }
     if (selectedAircraft.length === 0) {
-      toastContext?.addToast("Please select at least one unit", "error");
+      toastContext?.addToast(t('mission.selectUnit'), "error");
       return false;
     }
     if (
@@ -100,13 +100,13 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
       selectedReferencePoints.length < 3
     ) {
       toastContext?.addToast(
-        "Please select at least three reference points to define an area",
+        t('mission.selectRefPoints'),
         "error"
       );
       return false;
     }
     if (selectedMissionType === "Strike" && selectedTargets.length === 0) {
-      toastContext?.addToast("Please select at least one target", "error");
+      toastContext?.addToast(t('mission.selectTarget'), "error");
       return false;
     }
     return true;
@@ -210,8 +210,8 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
           <SelectField
             id="mission-creator-type-selector"
             selectItems={[
-              { name: "Patrol", value: "Patrol" },
-              { name: "Strike", value: "Strike" },
+              { name: t('mission.patrol'), value: "Patrol" },
+              { name: t('mission.strike'), value: "Strike" },
             ]}
             labelId="mission-creator-type-selector-label"
             label={t('mission.missionType')}
@@ -257,7 +257,7 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
         {/** Create Mission Button */}
         <Stack spacing={2} direction={"row"} sx={{ justifyContent: "center" }}>
           <Button onClick={handleCreateMission} fullWidth variant="contained">
-            Create
+            {t('mission.create')}
           </Button>
         </Stack>
       </CardContent>
@@ -288,7 +288,7 @@ const MissionCreatorCard = (props: MissionCreatorCardProps) => {
             }
             title={
               <Typography variant="body1" component="h1" sx={{ pl: 1 }}>
-                Mission Creator
+                {t('mission.creator')}
               </Typography>
             }
           />

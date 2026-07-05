@@ -270,7 +270,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
           <TableBody>
             <TableRow sx={tableRowStyle}>
               <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-                Coordinates:
+                {t('aircraft.coordinates')}
               </TableCell>
               <TableCell align="right" sx={tableValueCellStyle}>
                 {data.latitude}, {data.longitude}
@@ -278,7 +278,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
             </TableRow>
             <TableRow sx={tableRowStyle}>
               <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-                Altitude:
+                {t('aircraft.altitude')}
               </TableCell>
               <TableCell align="right" sx={tableValueCellStyle}>
                 {data.altitude}
@@ -286,7 +286,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
             </TableRow>
             <TableRow sx={tableRowStyle}>
               <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-                Heading:
+                {t('aircraft.heading')}
               </TableCell>
               <TableCell align="right" sx={tableValueCellStyle}>
                 {data.heading}
@@ -294,7 +294,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
             </TableRow>
             <TableRow sx={tableRowStyle}>
               <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-                Speed:
+                {t('aircraft.speed')}
               </TableCell>
               <TableCell align="right" sx={tableValueCellStyle}>
                 {data.speed}
@@ -302,7 +302,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
             </TableRow>
             <TableRow sx={tableRowStyle}>
               <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-                Fuel:
+                {t('aircraft.fuel')}
               </TableCell>
               <TableCell align="right" sx={tableValueCellStyle}>
                 {props.aircraft.currentFuel.toFixed(0)} /{" "}
@@ -311,7 +311,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
             </TableRow>
             <TableRow sx={tableRowStyle}>
               <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-                Fuel Consumption:
+                {t('aircraft.fuelConsumption')}
               </TableCell>
               <TableCell align="right" sx={tableValueCellStyle}>
                 {props.aircraft.fuelRate.toFixed(2)} LBS/HR
@@ -319,7 +319,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
             </TableRow>
             <TableRow sx={tableRowStyle}>
               <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-                Detection Range:
+                {t('aircraft.range')}
               </TableCell>
               <TableCell align="right" sx={tableValueCellStyle}>
                 {props.aircraft.range.toFixed(0)} NM
@@ -327,7 +327,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
             </TableRow>
             <TableRow sx={tableRowStyle}>
               <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-                Mission:
+                {t('aircraft.mission')}
               </TableCell>
               <TableCell
                 align="right"
@@ -347,7 +347,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
                     : () => {}
                 }
               >
-                {props.currentMissionName ?? "N/A"}
+                {props.currentMissionName ?? t('aircraft.notAvailable')}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -462,24 +462,24 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
             mr: 0.5,
           }}
         />
-        Plot Course
+        {t('aircraft.plotCourse')}
       </ListItemButton>
       <ListItemButton onClick={_handleAutoAttack}>
         <RocketLaunchIcon sx={{ mr: 0.5 }} />
-        Auto Attack
+        {t('aircraft.autoAttack')}
       </ListItemButton>
       <ListItemButton onClick={toggleWeapons}>
         <Radar sx={{ mr: 0.5 }} />
-        Manual Attack
+        {t('aircraft.manualAttack')}
       </ListItemButton>
       <ListItemButton onClick={_handleAircraftRtb}>
-        <HomeIcon sx={{ mr: 0.5 }} /> Return To Base
+        <HomeIcon sx={{ mr: 0.5 }} /> {t('aircraft.returnToBase')}
       </ListItemButton>
       <ListItemButton onClick={_handleDuplicateAircraft}>
-        <AddIcon sx={{ mr: 0.5 }} /> Duplicate
+        <AddIcon sx={{ mr: 0.5 }} /> {t('aircraft.duplicate')}
       </ListItemButton>
       <ListItemButton onClick={_handleTeleportAircraft}>
-        <TelegramIcon sx={{ mr: 0.5 }} /> Edit Location
+        <TelegramIcon sx={{ mr: 0.5 }} /> {t('aircraft.editLocation')}
       </ListItemButton>
     </Stack>
   );
@@ -493,7 +493,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
         onClick={handleSaveEditedAircraft}
         startIcon={<SaveIcon />}
       >
-        Save
+        {t('aircraft.save')}
       </Button>
       <Button
         fullWidth
@@ -503,7 +503,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
         onClick={toggleEdit}
         startIcon={<CancelIcon />}
       >
-        Cancel
+        {t('aircraft.cancel')}
       </Button>
     </Stack>
   );
@@ -517,7 +517,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
         sx={{ color: "white", borderColor: "white" }}
         onClick={toggleWeapons}
       >
-        Back
+        {t('aircraft.back')}
       </Button>
     </Stack>
   );
@@ -539,17 +539,17 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
             <>
               {cardContentContext === "default" && (
                 <Stack direction={"row"} spacing={0}>
-                  <Tooltip title={`Edit ${props.aircraft.name}`}>
+                  <Tooltip title={t('common.edit')}>
                     <IconButton onClick={toggleEdit}>
                       <EditIcon sx={{ color: "white" }} />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title={`Delete ${props.aircraft.name}`}>
+                  <Tooltip title={t('common.delete')}>
                     <IconButton onClick={_handleDeleteAircraft}>
                       <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title={`More Actions`}>
+                  <Tooltip title={t('aircraft.moreActions')}>
                     <Button
                       id="aircraft-feature-actions-button"
                       aria-controls={
@@ -562,7 +562,7 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
                       size="small"
                       color="inherit"
                     >
-                      Actions
+                      {t('aircraft.actions')}
                     </Button>
                   </Tooltip>
                   <Menu
@@ -595,10 +595,10 @@ export default function AircraftCard(props: Readonly<AircraftCardProps>) {
               sx={{ color: colorPalette.lightGray }}
             >
               <Typography variant="caption">
-                Type: {props.aircraft.className}
+                {t('aircraft.type')}: {props.aircraft.className}
               </Typography>
               <Typography variant="caption">
-                Side:{" "}
+                {t('aircraft.side')}:{" "}
                 <Typography variant="caption" component={"span"}>
                   {props.sideName}
                 </Typography>

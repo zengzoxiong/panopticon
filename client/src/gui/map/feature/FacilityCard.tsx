@@ -171,7 +171,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
         <TableBody>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Coordinates:
+              {t('facility.coordinates')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.facility.latitude.toFixed(2)},{" "}
@@ -180,7 +180,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Altitude:
+              {t('facility.altitude')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.facility.altitude.toFixed(2)} FT
@@ -188,7 +188,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
           </TableRow>
           <TableRow sx={tableRowStyle}>
             <TableCell component="th" scope="row" sx={tableKeyCellStyle}>
-              Detection Range:
+              {t('facility.detectionRange')}
             </TableCell>
             <TableCell align="right" sx={tableValueCellStyle}>
               {props.facility.range.toFixed(0)} NM
@@ -260,10 +260,10 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
   const defaultCardActions = (
     <Stack spacing={0.5} direction="column" onMouseLeave={handleClose}>
       <ListItemButton onClick={toggleWeapons}>
-        <RocketLaunch sx={{ mr: 0.5 }} /> View Weapons
+        <RocketLaunch sx={{ mr: 0.5 }} /> {t('facility.viewWeapons')}
       </ListItemButton>
       <ListItemButton onClick={_handleTeleportFacility}>
-        <TelegramIcon sx={{ mr: 0.5 }} /> Edit Location
+        <TelegramIcon sx={{ mr: 0.5 }} /> {t('facility.editLocation')}
       </ListItemButton>
     </Stack>
   );
@@ -277,7 +277,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
         onClick={handleSaveEditedFacility}
         startIcon={<SaveIcon />}
       >
-        Save
+        {t('facility.save')}
       </Button>
       <Button
         fullWidth
@@ -287,7 +287,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
         onClick={toggleEdit}
         startIcon={<CancelIcon />}
       >
-        Cancel
+        {t('facility.cancel')}
       </Button>
     </Stack>
   );
@@ -301,7 +301,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
         sx={{ color: "white", borderColor: "white" }}
         onClick={toggleWeapons}
       >
-        Back
+        {t('facility.back')}
       </Button>
     </Stack>
   );
@@ -333,7 +333,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
                       <DeleteIcon sx={{ color: "red" }} />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title={`More Actions`}>
+                  <Tooltip title={t('facility.moreActions')}>
                     <Button
                       id="facility-feature-actions-button"
                       aria-controls={
@@ -346,7 +346,7 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
                       size="small"
                       color="inherit"
                     >
-                      Actions
+                      {t('facility.actions')}
                     </Button>
                   </Tooltip>
                   <Menu
@@ -379,10 +379,10 @@ export default function FacilityCard(props: Readonly<FacilityCardProps>) {
               sx={{ color: colorPalette.lightGray }}
             >
               <Typography variant="caption">
-                Type: {props.facility.className}
+                {t('facility.type')} {props.facility.className}
               </Typography>
               <Typography variant="caption">
-                Side:{" "}
+                {t('facility.side')}{" "}
                 <Typography variant="caption" component={"span"}>
                   {props.sideName}
                 </Typography>

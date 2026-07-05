@@ -140,11 +140,11 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
 
   const validateMissionPropertiesInput = () => {
     if (missionName === "") {
-      toastContext?.addToast("Mission name cannot be empty", "error");
+      toastContext?.addToast(t('mission.nameRequired'), "error");
       return false;
     }
     if (selectedAircraft.length === 0) {
-      toastContext?.addToast("Please select at least one unit", "error");
+      toastContext?.addToast(t('mission.selectUnit'), "error");
       return false;
     }
     if (
@@ -152,7 +152,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
       selectedReferencePoints.length < 3
     ) {
       toastContext?.addToast(
-        "Please select at least three reference points to define an area",
+        t('mission.selectRefPoints'),
         "error"
       );
       return false;
@@ -161,7 +161,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
       selectedMission instanceof StrikeMission &&
       selectedTargets.length === 0
     ) {
-      toastContext?.addToast("Please select at least one target", "error");
+      toastContext?.addToast(t('mission.selectTarget'), "error");
       return false;
     }
     return true;
@@ -362,7 +362,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
             onClick={handleUpdateMission}
             sx={editorButtonStyle}
           >
-            UPDATE
+            {t('mission.update')}
           </Button>
           <Button
             fullWidth
@@ -371,7 +371,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
             onClick={handleDeleteMission}
             sx={editorButtonStyle}
           >
-            Delete
+            {t('mission.delete')}
           </Button>
         </Stack>
       </CardContent>
@@ -403,7 +403,7 @@ const MissionEditorCard = (props: MissionEditorCardProps) => {
             }
             title={
               <Typography variant="body1" component="h1" sx={{ pl: 1 }}>
-                Mission Editor
+                {t('mission.editor')}
               </Typography>
             }
           />

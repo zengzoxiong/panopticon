@@ -76,8 +76,8 @@ export default function LayerVisibilityPanelToggle(
           <Tooltip
             title={
               isAuthenticated
-                ? "Switch maps. Shortcut: 5"
-                : "Log in to access more map layers"
+                ? t('layer.switchMaps')
+                : t('layer.loginMoreLayers')
             }
             placement="right"
           >
@@ -86,10 +86,10 @@ export default function LayerVisibilityPanelToggle(
               sx={toggleStyle}
               onClick={props.toggleBaseMapLayer}
             >
-              Toggle Base Map
+              {t('layer.toggleBaseMap')}
             </Button>
           </Tooltip>
-          <Tooltip title="Toggle routes. Shortcut: 6" placement="right">
+          <Tooltip title={t('layer.toggleRoutesTooltip')} placement="right">
             <Button
               variant="outlined"
               sx={toggleStyle}
@@ -97,11 +97,11 @@ export default function LayerVisibilityPanelToggle(
                 props.toggleRouteVisibility(!props.routeVisibility);
               }}
             >
-              Toggle Routes
+              {t('layer.toggleRoutes')}
             </Button>
           </Tooltip>
           <Tooltip
-            title="Toggle threat range rings. Shortcut: 7"
+            title={t('layer.toggleThreatRangeTooltip')}
             placement="right"
           >
             <Button
@@ -111,10 +111,10 @@ export default function LayerVisibilityPanelToggle(
                 props.toggleThreatRangeVisibility(!props.threatRangeVisibility);
               }}
             >
-              Toggle Threat Range
+              {t('layer.toggleThreatRange')}
             </Button>
           </Tooltip>
-          <Tooltip title="Toggle labels. Shortcut: 8" placement="right">
+          <Tooltip title={t('layer.toggleLabelsTooltip')} placement="right">
             <Button
               variant="outlined"
               sx={toggleStyle}
@@ -124,7 +124,7 @@ export default function LayerVisibilityPanelToggle(
                 );
               }}
             >
-              Toggle Labels
+              {t('layer.toggleLabels')}
             </Button>
           </Tooltip>
           <Button
@@ -136,7 +136,7 @@ export default function LayerVisibilityPanelToggle(
               );
             }}
           >
-            Toggle Reference Points
+            {t('layer.toggleReferencePoints')}
           </Button>
         </Stack>
       </CardActions>
