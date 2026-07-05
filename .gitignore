@@ -40,9 +40,9 @@ client/.env.standalone
 gym/scripts/*/data/*
 
 # Byte-compiled / optimized / DLL files
-gym/__pycache__/
-gym/*.py[cod]
-gym/*$py.class
+__pycache__/
+*.py[cod]
+*$py.class
 
 # C extensions
 gym/*.so

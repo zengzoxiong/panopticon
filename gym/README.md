@@ -1,14 +1,14 @@
-# Prerequisites
+# 前置条件
 1. Python 3.12.3
 2. pip
 
-# Quick Start Guide
-## Get BLADE
-1. Click on "Clone or download", and then "Download Zip". 
-2. Unzip the repo anywhere.
-3. Navigate to the folder than contains `setup.py` and install the repository using `pip install .` Anytime you make changes to the files in the project folder, you need to reinstall the package using `pip install .`. Alternatively, use `pip install -e .` to install the package in editable mode. After doing this you can change the code without needing to continue to install it. 
-4. [gymnasium](https://gymnasium.farama.org/) is a dependency for users who want to use BLADE as a Gym environment. In this case, use `pip install .[gym]` or `pip install -e .[gym]` for setup.
+# 快速入门指南
+## 获取 BLADE
+1. 点击 "Clone or download"，然后选择 "Download Zip"。
+2. 将仓库解压到任意位置。
+3. 导航到包含 `setup.py` 的文件夹，使用 `pip install .` 安装仓库。每次修改项目文件夹中的文件后，需要重新使用 `pip install .` 安装包。或者，使用 `pip install -e .` 以可编辑模式安装包。这样修改代码后无需重复安装。
+4. [gymnasium](https://gymnasium.farama.org/) 是希望将 BLADE 用作 Gym 环境的用户的依赖项。这种情况下，使用 `pip install .[gym]` 或 `pip install -e .[gym]` 进行安装。
 
-## Run a demo
-1. Run the provided demo in `scripts/simple_demo/demo.py`.
-2. The demo will output a scenario file that can be viewed using the frontend GUI.
+## 运行演示
+1. 运行 `scripts/simple_demo/demo.py` 中提供的演示脚本。
+2. 演示将输出一个想定文件，可使用前端 GUI 查看。

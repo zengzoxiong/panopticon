@@ -1,22 +1,22 @@
 # BLADE
 
-Client/gui for BLADE Gymnasium environment.
+BLADE Gymnasium 环境的客户端/GUI。
 
-> Please review the [client project structure](https://github.com/Panopticon-AI-team/panopticon/blob/main/CONTRIBUTING.md#client) to get familiar with the folder and file organization and their intended context.
-
----
-
-## Table of Contents
-
-- [Installation](#installation)
-  - [Clone Repository](#clone-repository)
-  - [Start Development Server](#start-development-server)
+> 请查阅[客户端项目结构](https://github.com/Panopticon-AI-team/panopticon/blob/main/CONTRIBUTING.md#client)以熟悉文件夹和文件的组织方式及其用途。
 
 ---
 
-## [Installation](#installation)
+## 目录
 
-### [Clone Repository](#clone-repository)
+- [安装](#安装)
+  - [克隆仓库](#克隆仓库)
+  - [启动开发服务器](#启动开发服务器)
+
+---
+
+## [安装](#安装)
+
+### [克隆仓库](#克隆仓库)
 
 ```bash
 git clone git@github.com:Panopticon-AI-team/panopticon.git
@@ -32,7 +32,7 @@ npm install
 
 ---
 
-### [Start Development Server](#start-development-server)
+### [启动开发服务器](#启动开发服务器)
 
 ```bash
 npm run start
