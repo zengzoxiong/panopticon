@@ -1,5 +1,6 @@
 import gymnasium
 import numpy as np
+import os
 from blade.Game import Game
 from blade.Scenario import Scenario
 from stable_baselines3 import PPO
@@ -7,7 +8,7 @@ from gymnasium.spaces import Box
 from blade.utils.utils import get_bearing_between_two_points
 
 DEBUG = False
-demo_folder = "./gym/scripts/stable_baselines"
+demo_folder = os.path.dirname(os.path.abspath(__file__))
 
 game = Game(
     current_scenario=Scenario(),

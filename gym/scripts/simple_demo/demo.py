@@ -4,7 +4,7 @@ import blade
 from blade.Game import Game
 from blade.Scenario import Scenario
 
-demo_folder = "./scripts/simple_demo"
+demo_folder = os.path.dirname(os.path.abspath(__file__))
 
 game = Game(
     current_scenario=Scenario(),
