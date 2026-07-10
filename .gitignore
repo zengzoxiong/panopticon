@@ -186,3 +186,16 @@ gym/cython_debug/
 gym/scripts/**/*.zip
 gym/scripts/**/*.jsonl
 gym/scripts/**/*.jsonl.gz
+
+# === Claude Code 文件管理规范 ===
+# 中间文件（临时脚本、解压文件、中间产物）
+.claude_temp/
+
+# 结果文件（生成的文档、图片、代码文件）- 保留在 .claude_output
+# .claude_output/  # 不忽略，需要跟踪
+
+# Understand-Anything 插件工作文件
+.understand-anything/intermediate/
+.understand-anything/tmp/
+.understand-anything/.trash-*
+.understand-anything/fingerprints.json

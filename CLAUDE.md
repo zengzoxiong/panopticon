@@ -160,4 +160,4 @@ Gym 包提供兼容 OpenAI Gym 的环境：
 - [x] 按照技术文档要求，安装本地依赖
 - [x] 运行前后端，进行demo测试 
 - [x] 前端增加language设置，允许切换语言（Language）：中文(Chinese)/英语(English)
-- [x] 完成前端所有内容的汉化
+- [ ] 使用understandanything-skill理清代码依赖，找出代码运行逻辑，找出代码的主入口

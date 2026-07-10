@@ -1,0 +1,135 @@
+# .understandignore — patterns for files/dirs to exclude from analysis
+# Syntax: same as .gitignore (globs, # comments, ! negation, trailing / for dirs)
+# Lines below are suggestions — uncomment to activate.
+# Use ! prefix to force-include something excluded by defaults.
+#
+# Built-in defaults (always excluded unless negated):
+#   node_modules/, .git/, dist/, build/, obj/, *.lock, *.min.js, etc.
+#
+# --- From .gitignore (uncomment to exclude) ---
+
+# /findings.md
+# /progress.md
+# /task_plan.md
+# /.claude_temp/
+# /.claude_output/
+# client/logs
+# client/*.log
+# client/npm-debug.log*
+# client/yarn-debug.log*
+# client/yarn-error.log*
+# client/pnpm-debug.log*
+# client/lerna-debug.log*
+# client/node_modules
+# client/dist
+# client/dist-ssr
+# client/*.local
+# client/.vscode/*
+# !client/.vscode/extensions.json
+# client/.idea
+# client/.DS_Store
+# client/*.suo
+# client/*.ntvs*
+# client/*.njsproj
+# client/*.sln
+# client/*.sw?
+# client/.env
+# client/.env.development
+# client/.env.production
+# client/.env.standalone
+# gym/scripts/*/data/*
+# *.py[cod]
+# *$py.class
+# gym/*.so
+# gym/.Python
+# gym/build/
+# gym/develop-eggs/
+# gym/dist/
+# gym/downloads/
+# gym/eggs/
+# gym/.eggs/
+# gym/lib/
+# gym/lib64/
+# gym/parts/
+# gym/sdist/
+# gym/var/
+# gym/wheels/
+# gym/share/python-wheels/
+# gym/*.egg-info/
+# gym/.installed.cfg
+# gym/*.egg
+# gym/MANIFEST
+# gym/*.manifest
+# gym/*.spec
+# gym/pip-log.txt
+# gym/pip-delete-this-directory.txt
+# gym/htmlcov/
+# gym/.tox/
+# gym/.nox/
+# gym/.coverage
+# gym/.coverage.*
+# gym/.cache
+# gym/nosetests.xml
+# gym/coverage.xml
+# gym/*.cover
+# gym/*.py,cover
+# gym/.hypothesis/
+# gym/.pytest_cache/
+# gym/cover/
+# gym/*.mo
+# gym/*.pot
+# gym/*.log
+# gym/local_settings.py
+# gym/db.sqlite3
+# gym/db.sqlite3-journal
+# gym/instance/
+# gym/.webassets-cache
+# gym/.scrapy
+# gym/docs/_build/
+# gym/.pybuilder/
+# gym/target/
+# gym/.ipynb_checkpoints
+# gym/profile_default/
+# gym/ipython_config.py
+# gym/.pdm.toml
+# gym/.pdm-python
+# gym/.pdm-build/
+# gym/__pypackages__/
+# gym/celerybeat-schedule
+# gym/celerybeat.pid
+# gym/*.sage.py
+# gym/.env
+# gym/.venv
+# gym/env/
+# gym/venv/
+# gym/ENV/
+# gym/env.bak/
+# gym/venv.bak/
+# gym/.spyderproject
+# gym/.spyproject
+# gym/.ropeproject
+# gym/site
+# gym/.mypy_cache/
+# gym/.dmypy.json
+# gym/dmypy.json
+# gym/.pyre/
+# gym/.pytype/
+# gym/cython_debug/
+# gym/scripts/**/*.zip
+# gym/scripts/**/*.jsonl
+# gym/scripts/**/*.jsonl.gz
+# .claude_temp/
+# .understand-anything/intermediate/
+# .understand-anything/tmp/
+# .understand-anything/.trash-*
+# .understand-anything/fingerprints.json
+
+# --- Detected directories (uncomment to exclude) ---
+
+# docs/
+
+# --- Test file patterns (uncomment to exclude) ---
+
+# *.test.*
+# *.spec.*
+# *.snap
