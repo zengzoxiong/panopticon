@@ -54,9 +54,9 @@ taskkill /PID {PID} /F          # 强制结束进程
 ```bash
 cd gym
 
-# 创建并激活虚拟环境
-python -m venv env
-source env/bin/activate  # Windows 系统: env\Scripts\activate
+# 创建并激活Conda环境
+conda create -n panopticon
+conda activate panopticon
 
 # 以可编辑模式安装
 pip install -e .
@@ -66,6 +66,9 @@ pip install -e .[gym]
 
 # 运行演示脚本
 python scripts/simple_demo/demo.py
+
+# 退出Conda环境
+conda deactivate
 ```
 
 ## 架构
@@ -155,6 +158,11 @@ Gym 包提供兼容 OpenAI Gym 的环境：
 - Gymnasium 0.29.1
 - stable-baselines3 2.4.1
 - Shapely 用于几何运算
+
+## 个人学习内容
+1. 本项目不是前后端分离的项目，前端与后端均具备自身完整的仿真逻辑，均可独立运行。
+2. 前端具备两种播放方式：根据想定文件（JSON）实时计算仿真、根据录像（JSONL）回放。后端可通过硬编码/强化学习的方式实现仿真。
+3. 项目的完整工作流：前端设计想定 → 后端进行强化学习 → 生成录制文件 → 前端回放展示。
 
 ## 当前需要完成任务
 - [x] 按照技术文档要求，安装本地依赖
