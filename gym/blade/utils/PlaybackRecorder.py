@@ -22,6 +22,7 @@ RECORDING_INTERVAL_SECONDS = 10
 
 # ACMI 对象类型映射：项目类型名称 -> ACMI 标准类型
 ACMI_TYPE_MAPPING = {
+    # 飞机类型
     "F-35A Lightning II": "Air+FixedWing",
     "F/A-18E Super Hornet": "Air+FixedWing",
     "Su-27": "Air+FixedWing",
@@ -29,16 +30,26 @@ ACMI_TYPE_MAPPING = {
     "B-52H Stratofortress": "Air+FixedWing+Heavy",
     "KC-135R Stratotanker": "Air+FixedWing+Tanker",
     "E-3B Sentry": "Air+FixedWing+AWACS",
+    # 舰艇类型
     "Arleigh Burke DDG": "Sea+Ship+Destroyer",
     "Ticonderoga CG": "Sea+Ship+Cruiser",
     "Nimitz CVN": "Sea+Ship+Carrier",
     "Virginia SSN": "Sea+Submarine",
+    # 防空系统
     "S-400": "Ground+SAM",
     "Patriot": "Ground+SAM",
     "MIM-104": "Ground+SAM",
+    # 武器类型
+    "Sample Weapon": "Weapon+Missile",
+    "Missile": "Weapon+Missile",
+    "SAM": "Weapon+Missile",
+    # 默认类型
     "Default Aircraft": "Air+FixedWing",
     "Default Ship": "Sea+Ship",
     "Default SAM": "Ground+SAM",
+    "Airbase": "Ground+Structure",
+    "Facility": "Ground+Structure",
+    "ReferencePoint": "Point+Marker",
 }
 
 # ACMI 颜色映射
@@ -230,26 +241,37 @@ class PlaybackRecorder:
 
         scenario = snapshot.get("currentScenario", {})
 
-        # 处理空军基地中的飞机
+        # 处理空军基地中的飞机（停在基地中的飞机）
         for airbase in scenario.get("airbases", []):
             for aircraft in airbase.get("aircraft", []):
                 acmi_line = self._extract_entity_acmi(aircraft, "Aircraft")
                 if acmi_line:
                     lines.append(acmi_line)
+                # 处理飞机携带的武器
+                for weapon in aircraft.get("weapons", []):
+                    weapon_acmi = self._extract_entity_acmi(weapon, "Weapon")
+                    if weapon_acmi:
+                        lines.append(weapon_acmi)
 
             # 处理基地本身
             if airbase.get("id"):
-                airbase["className"] = "Airbase"
-                airbase["altitude"] = 0
-                acmi_line = self._extract_entity_acmi(airbase, "Airbase")
+                airbase_copy = airbase.copy()
+                airbase_copy["className"] = "Airbase"
+                airbase_copy["altitude"] = 0
+                acmi_line = self._extract_entity_acmi(airbase_copy, "Airbase")
                 if acmi_line:
                     lines.append(acmi_line)
 
-        # 处理在飞行中的飞机（不在基地中）
-        for aircraft in scenario.get("aircraftInFlight", []):
+        # 处理飞行中的飞机（不在基地中的飞机）
+        for aircraft in scenario.get("aircraft", []):
             acmi_line = self._extract_entity_acmi(aircraft, "Aircraft")
             if acmi_line:
                 lines.append(acmi_line)
+            # 处理飞机携带的武器
+            for weapon in aircraft.get("weapons", []):
+                weapon_acmi = self._extract_entity_acmi(weapon, "Weapon")
+                if weapon_acmi:
+                    lines.append(weapon_acmi)
 
         # 处理舰艇
         for ship in scenario.get("ships", []):
@@ -257,7 +279,7 @@ class PlaybackRecorder:
             if acmi_line:
                 lines.append(acmi_line)
 
-        # 处理武器（导弹等）
+        # 处理顶层武器（已发射的武器）
         for weapon in scenario.get("weapons", []):
             acmi_line = self._extract_entity_acmi(weapon, "Weapon")
             if acmi_line:
@@ -265,10 +287,26 @@ class PlaybackRecorder:
 
         # 处理设施
         for facility in scenario.get("facilities", []):
-            facility["altitude"] = 0
-            acmi_line = self._extract_entity_acmi(facility, "Facility")
+            facility_copy = facility.copy()
+            facility_copy["altitude"] = 0
+            acmi_line = self._extract_entity_acmi(facility_copy, "Facility")
             if acmi_line:
                 lines.append(acmi_line)
+            # 处理设施携带的武器
+            for weapon in facility.get("weapons", []):
+                weapon_acmi = self._extract_entity_acmi(weapon, "Weapon")
+                if weapon_acmi:
+                    lines.append(weapon_acmi)
+
+        # 处理参考点（如果有）
+        for ref_point in scenario.get("referencePoints", []):
+            if ref_point.get("id"):
+                ref_copy = ref_point.copy()
+                ref_copy["altitude"] = 0
+                ref_copy["className"] = "ReferencePoint"
+                acmi_line = self._extract_entity_acmi(ref_copy, "Point")
+                if acmi_line:
+                    lines.append(acmi_line)
 
         return "\n".join(lines) + "\n"
 
