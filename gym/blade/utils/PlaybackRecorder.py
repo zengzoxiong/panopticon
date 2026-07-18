@@ -193,9 +193,13 @@ class PlaybackRecorder:
         if not entity.get("id"):
             return ""
 
-        acmi_id = self._get_acmi_id(entity["id"])
-        longitude = entity.get("longitude", 0)
+        # 过滤无效位置的实体（位置为 0,0 表示未初始化）
         latitude = entity.get("latitude", 0)
+        longitude = entity.get("longitude", 0)
+        if latitude == 0 and longitude == 0:
+            return ""
+
+        acmi_id = self._get_acmi_id(entity["id"])
         altitude = entity.get("altitude", 0)
         heading = entity.get("heading", 0)
         # ACMI 六元组：经度|纬度|高度|滚转|俯仰|偏航
