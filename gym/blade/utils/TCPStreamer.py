@@ -315,10 +315,11 @@ class TCPACMIServer:
         """接受客户端连接并执行握手
 
         根据 Tacview 协议，握手流程为：
-        1. Tacview（客户端）连接后先发送握手
-        2. 本程序（服务器）读取并验证客户端握手
-        3. 本程序发送服务器握手回复
-        4. 握手成功，开始发送 ACMI 数据
+        1. Tacview（客户端）连接
+        2. 本程序（服务器）先发送握手
+        3. Tacview 收到后回复客户端握手
+        4. 本程序读取并验证客户端握手
+        5. 握手成功，开始发送 ACMI 数据
         """
         while self._running:
             try:
@@ -326,19 +327,19 @@ class TCPACMIServer:
                 client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
                 print(f"[TCPACMI] 新连接: {addr}，开始握手...")
 
-                # 步骤 1：读取并验证客户端握手（Tacview 先发送）
-                if not self._read_client_handshake(client):
-                    print(f"[TCPACMI] ✗ 握手失败，拒绝连接: {addr}")
-                    client.close()
-                    continue
-
-                # 步骤 2：发送服务器握手回复
+                # 步骤 1：发送服务器握手（服务器先发送）
                 host_handshake = self._build_host_handshake()
                 try:
                     client.sendall(host_handshake)
                     print(f"[TCPACMI] → 已发送 Host 握手 ({len(host_handshake)} 字节)")
                 except Exception as e:
                     print(f"[TCPACMI] ✗ 发送握手失败: {e}")
+                    client.close()
+                    continue
+
+                # 步骤 2：读取并验证客户端握手回复
+                if not self._read_client_handshake(client):
+                    print(f"[TCPACMI] ✗ 握手失败，拒绝连接: {addr}")
                     client.close()
                     continue
 
