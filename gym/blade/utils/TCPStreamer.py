@@ -234,10 +234,10 @@ class TCPACMIServer:
             self._accept_thread = threading.Thread(target=self._accept_clients, daemon=True)
             self._accept_thread.start()
 
-            print(f"[TCPACMI] ✓ TCP 服务器启动: {self.host}:{self.port}")
+            print(f"[TCPACMI] + TCP 服务器启动: {self.host}:{self.port}")
             return True
         except Exception as e:
-            print(f"[TCPACMI] ✗ 启动失败: {e}")
+            print(f"[TCPACMI] X 启动失败: {e}")
             return False
 
     def _build_host_handshake(self) -> bytes:
@@ -246,10 +246,14 @@ class TCPACMIServer:
         根据 Tacview 协议，服务器握手格式为：
             XtraLib.Stream.0\\n
             Tacview.RealTimeTelemetry.0\\n
+            Host username\\n
+            \\0
         """
         handshake = (
             TACVIEW_HANDSHAKE_LINE1
             + TACVIEW_HANDSHAKE_LINE2
+            + self.host_username + "\n"
+            + TACVIEW_HANDSHAKE_TERMINATOR
         )
         return handshake.encode("utf-8")
 
@@ -275,29 +279,19 @@ class TCPACMIServer:
                     return False
                 data += chunk
 
-            # 解码并分割
+            # 解码并验证
             handshake_text = data.decode("utf-8", errors="replace")
-            lines = handshake_text.split("\n")
 
-            # 至少需要 3 行：协议1、协议2、用户名（密码哈希可选）
-            if len(lines) < 3:
-                print(f"[TCPACMI] 握手失败：数据不完整，收到 {len(lines)} 行")
+            # 验证协议版本（以 XtraLib.Stream.0 开头即可）
+            if not handshake_text.startswith("XtraLib.Stream.0"):
+                print(f"[TCPACMI] 握手失败：协议版本不匹配，收到 '{handshake_text[:50]}'")
                 return False
 
-            # 验证协议版本
-            line1 = lines[0].strip()
-            line2 = lines[1].strip()
+            # 提取客户端用户名（第三行）
+            lines = handshake_text.split("\n")
             client_username = lines[2].strip() if len(lines) > 2 else "Unknown"
 
-            if line1 != "XtraLib.Stream.0":
-                print(f"[TCPACMI] 握手失败：协议版本不匹配，收到 '{line1}'")
-                return False
-
-            if line2 != "Tacview.RealTimeTelemetry.0":
-                print(f"[TCPACMI] 握手失败：遥测协议版本不匹配，收到 '{line2}'")
-                return False
-
-            print(f"[TCPACMI] ✓ 握手成功，客户端: {client_username}")
+            print(f"[TCPACMI] + 握手成功，客户端: {client_username}")
             return True
 
         except socket.timeout:
@@ -315,7 +309,7 @@ class TCPACMIServer:
         2. 本程序（服务器）先发送握手
         3. Tacview 收到后回复客户端握手
         4. 本程序读取并验证客户端握手
-        5. 握手成功，开始发送 ACMI 数据
+        5. 握手成功后立即发送 ACMI 头部
         """
         while self._running:
             try:
@@ -327,36 +321,46 @@ class TCPACMIServer:
                 host_handshake = self._build_host_handshake()
                 try:
                     client.sendall(host_handshake)
-                    print(f"[TCPACMI] → 已发送 Host 握手 ({len(host_handshake)} 字节)")
+                    print(f"[TCPACMI] -> 已发送 Host 握手 ({len(host_handshake)} 字节)")
                 except Exception as e:
-                    print(f"[TCPACMI] ✗ 发送握手失败: {e}")
+                    print(f"[TCPACMI] X 发送握手失败: {e}")
                     client.close()
                     continue
 
                 # 步骤 2：读取并验证客户端握手回复
                 if not self._read_client_handshake(client):
-                    print(f"[TCPACMI] ✗ 握手失败，拒绝连接: {addr}")
+                    print(f"[TCPACMI] X 握手失败，拒绝连接: {addr}")
                     client.close()
                     continue
 
-                # 步骤 3：握手成功，加入客户端列表
+                # 步骤 3：握手成功后立即发送 ACMI 头部（关键！）
+                header = "FileType=text/acmi/tacview\nFileVersion=2.2\n"
+                try:
+                    client.sendall(header.encode("utf-8"))
+                    print(f"[TCPACMI] -> 已发送 ACMI 头部")
+                except Exception as e:
+                    print(f"[TCPACMI] X 发送 ACMI 头部失败: {e}")
+                    client.close()
+                    continue
+
+                # 步骤 4：加入客户端列表
                 with self._lock:
                     self._clients.append(client)
                     self._client_count += 1
-                print(f"[TCPACMI] ✓ 客户端 #{self._client_count} 已就绪: {addr}")
+                print(f"[TCPACMI] + 客户端 #{self._client_count} 已就绪: {addr}")
 
-                # 步骤 4：通知上层（发送 ACMI 头部等）
+                # 步骤 5：通知上层
                 if self.on_client_ready:
                     try:
                         self.on_client_ready(client)
                     except Exception as e:
-                        print(f"[TCPACMI] ✗ 通知上层失败: {e}")
+                        print(f"[TCPACMI] X 通知上层失败: {e}")
 
             except socket.timeout:
                 continue
             except Exception as e:
                 if self._running:
-                    print(f"[TCPACMI] ✗ 接受连接失败: {e}")
+                    print(f"[TCPACMI] X 接受连接失败: {e}")
 
     @property
     def client_count(self) -> int:
@@ -442,35 +446,12 @@ class TCPStreamer:
         return self._tcp_server.start()
 
     def _on_client_ready(self, client_socket: socket.socket):
-        """客户端握手成功后，立即发送 ACMI 头部
+        """客户端握手成功后的回调
 
-        根据 Tacview 协议，握手完成后 Host 应立即开始发送 ACMI 数据，
-        首先是 FileType/FileVersion 头部，然后是元数据和数据帧。
+        注意：ACMI 头部已经在握手成功后立即发送了（在 _accept_clients 中），
+        这里只需要通知上层即可。
         """
-        if not self._header_generated:
-            # 头部还未生成（仿真尚未开始），发送一个最小头部
-            # 这样 Tacview 不会因为没有收到数据而超时断开
-            minimal_header = (
-                "FileType=text/acmi/tacview\n"
-                "FileVersion=2.2\n"
-                "0,ReferenceTime=2024-01-01T00:00:00Z\n"
-                "0,Title=Waiting for simulation data...\n"
-                "\n"
-            )
-            try:
-                client_socket.sendall(minimal_header.encode("utf-8"))
-                print(f"[TCPACMI] ✓ 已向新客户端发送最小头部（等待仿真数据）")
-            except Exception as e:
-                print(f"[TCPACMI] ✗ 发送头部失败: {e}")
-            return
-
-        header = self._acmi_encoder.header
-        if header:
-            try:
-                client_socket.sendall(header.encode("utf-8"))
-                print(f"[TCPACMI] ✓ 已向新客户端发送 ACMI 头部 ({len(header)} 字节)")
-            except Exception as e:
-                print(f"[TCPACMI] ✗ 发送头部失败: {e}")
+        print(f"[TCPACMI] 客户端已就绪，等待仿真数据...")
 
     def stream_step(self, scenario_data: Dict[str, Any], scenario_time: int):
         """流式推送单步数据"""
@@ -516,11 +497,11 @@ class TCPStreamer:
             if self._tcp_server:
                 sent = self._tcp_server.send(acmi_body)
                 if sent > 0 and self._step_count % 50 == 0:
-                    print(f"[TCPACMI] ✓ 已发送到 {sent} 个客户端")
+                    print(f"[TCPACMI] + 已发送到 {sent} 个客户端")
                 elif sent == 0 and self._tcp_server.client_count > 0:
                     print(f"[TCPACMI] ⚠ 发送失败，但有 {self._tcp_server.client_count} 个客户端")
         except Exception as e:
-            print(f"[TCPACMI] ✗ 发送失败: {e}")
+            print(f"[TCPACMI] X 发送失败: {e}")
 
     def stop(self):
         """停止流式传输"""
