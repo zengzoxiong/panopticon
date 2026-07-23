@@ -243,17 +243,13 @@ class TCPACMIServer:
     def _build_host_handshake(self) -> bytes:
         """构建 Host 握手数据包
 
-        格式：
+        根据 Tacview 协议，服务器握手格式为：
             XtraLib.Stream.0\\n
             Tacview.RealTimeTelemetry.0\\n
-            Host username\\n
-            \\0
         """
         handshake = (
             TACVIEW_HANDSHAKE_LINE1
             + TACVIEW_HANDSHAKE_LINE2
-            + self.host_username + "\n"
-            + TACVIEW_HANDSHAKE_TERMINATOR
         )
         return handshake.encode("utf-8")
 
