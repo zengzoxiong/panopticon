@@ -35,7 +35,7 @@ env = gymnasium.make("blade/BLADE-v0", game=game)
 
 # 启动 TCP 流式传输
 if game.start_tcp_streaming():
-    print(f"[Demo] ✓ TCP 流式传输已启动: {stream_config.acmi_host}:{stream_config.acmi_port}")
+    print(f"[Demo] + TCP 流式传输已启动: {stream_config.acmi_host}:{stream_config.acmi_port}")
     print("[Demo] 请在 Tacview 中连接此地址")
 else:
     print("[Demo] ✗ TCP 流式传输启动失败")
