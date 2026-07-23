@@ -18,6 +18,7 @@ from blade.Doctrine import DoctrineType
 from blade.utils.constants import NAUTICAL_MILES_TO_METERS
 from blade.utils.colors import SIDE_COLOR
 from blade.utils.PlaybackRecorder import PlaybackRecorder
+from blade.utils.TCPStreamer import TCPStreamer, StreamConfig
 from blade.utils.utils import (
     get_bearing_between_two_points,
     get_next_coordinates,
@@ -42,6 +43,8 @@ class Game:
         current_scenario: Scenario,
         record_every_seconds: Optional[int] = None,
         recording_export_path: Optional[str] = ".",
+        enable_streaming: bool = False,
+        stream_config: Optional[StreamConfig] = None,
     ):
         self.current_scenario = current_scenario
         self.initial_scenario = current_scenario
@@ -57,6 +60,12 @@ class Game:
             "defaultZoom": 0,
             "currentCameraZoom": 0,
         }
+
+        # 实时流媒体
+        self.tcp_streamer: Optional[TCPStreamer] = None
+        if enable_streaming:
+            self.tcp_streamer = TCPStreamer(stream_config)
+            print("[Game] 实时流媒体已启用")
 
     def remove_aircraft(self, aircraft_id: str) -> None:
         self.current_scenario.aircraft.remove(
@@ -812,6 +821,14 @@ class Game:
         reward = 0
         observation = self._get_observation()
         info = self._get_info()
+
+        # TCP 实时流式输出
+        if self.tcp_streamer:
+            scenario_data = self.export_scenario()
+            self.tcp_streamer.stream_step(
+                scenario_data, self.current_scenario.current_time
+            )
+
         return observation, reward, terminated, truncated, info
 
     def reset(self):
@@ -1226,3 +1243,26 @@ class Game:
 
     def export_recording(self):
         self.recorder.export_recording(self.current_scenario.current_time)
+
+    def start_tcp_streaming(self, config: Optional[StreamConfig] = None) -> bool:
+        """
+        启动实时流式输出
+
+        启用后，每步仿真结束后会自动发送 JSON 和 ACMI 数据。
+
+        :param config: 流配置，为 None 时使用默认配置
+        :return: 是否成功启动
+        """
+        if self.tcp_streamer:
+            self.tcp_streamer.stop()
+        if config:
+            self.tcp_streamer = TCPStreamer(config)
+        if self.tcp_streamer:
+            return self.tcp_streamer.start()
+        return False
+
+    def stop_tcp_streaming(self):
+        """停止实时流式输出"""
+        if self.tcp_streamer:
+            self.tcp_streamer.stop()
+            self.tcp_streamer = None

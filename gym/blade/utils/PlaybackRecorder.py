@@ -202,9 +202,9 @@ class PlaybackRecorder:
         acmi_id = self._get_acmi_id(entity["id"])
         altitude = entity.get("altitude", 0)
         heading = entity.get("heading", 0)
-        # ACMI 六元组：经度|纬度|高度|滚转|俯仰|偏航
-        # 本项目无滚转和俯仰数据，留空
-        coords = f"T={longitude}|{latitude}|{altitude}||{heading}|"
+        # ACMI 六元组：T=经度|纬度|高度|滚转|俯仰|偏航
+        # 格式: T=lon|lat|alt|roll|pitch|yaw
+        coords = f"T={longitude}|{latitude}|{altitude}|||{heading}"
 
         # 基本属性
         class_name = entity.get("className", entity_type)
