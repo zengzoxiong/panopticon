@@ -1,7 +1,7 @@
 {
     "schema_version": 2,
-    "commit": "6d7b72168921a5724665c38e6b14cf7d82f37a73",
-    "indexed_at": "2026-07-23T12:23:58Z",
+    "commit": "cdfd01ab4ed489c112450d176e510d33cac12372",
+    "indexed_at": "2026-07-23T12:24:50Z",
     "project": "S-PROJECT-panopticon",
     "nodes": 2851,
     "edges": 7009,
