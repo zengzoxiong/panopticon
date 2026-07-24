@@ -1765,6 +1765,8 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                 handleTelemetryDisconnect();
               }
             }}
+            telemetryConnected={telemetryConnected}
+            telemetryFrameCount={telemetryFrameCount}
           />
           <Divider
             orientation="vertical"

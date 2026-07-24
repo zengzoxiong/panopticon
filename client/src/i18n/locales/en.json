@@ -353,7 +353,10 @@
     "standaloneMode": "Standalone Mode",
     "realtimeMode": "Real-time Telemetry",
     "realtimeModeTooltip": "Real-time Telemetry - Click to switch to Standalone",
-    "standaloneModeTooltip": "Standalone - Click to switch to Real-time Telemetry"
+    "standaloneModeTooltip": "Standalone - Click to switch to Real-time Telemetry",
+    "telemetryConnected": "Connected",
+    "telemetryDisconnected": "Disconnected",
+    "frameCount": "Frames"
   },
   "layer": {
     "switchMaps": "Switch maps. Shortcut: 5",

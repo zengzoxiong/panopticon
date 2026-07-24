@@ -351,9 +351,12 @@
     "connected": "服务器已连接",
     "down": "服务器离线",
     "standaloneMode": "独立模式",
-    "realtimeMode": "实时遥测模式",
+    "realtimeMode": "实时遥测",
     "realtimeModeTooltip": "实时遥测模式 - 点击切换到独立模式",
-    "standaloneModeTooltip": "独立模式 - 点击切换到实时遥测模式"
+    "standaloneModeTooltip": "独立模式 - 点击切换到实时遥测模式",
+    "telemetryConnected": "已连接",
+    "telemetryDisconnected": "未连接",
+    "frameCount": "帧数"
   },
   "layer": {
     "switchMaps": "切换地图。快捷键：5",

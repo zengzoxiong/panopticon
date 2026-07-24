@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import Chip from "@mui/material/Chip";
 import Tooltip from "@mui/material/Tooltip";
+import Stack from "@mui/material/Stack";
 import { Wifi, WifiOff, Computer } from "@mui/icons-material";
 
 const TIMEOUT_MS = 30000;
@@ -12,6 +13,8 @@ const TIMEOUT_MS = 30000;
 interface HealthCheckProps {
   realtimeMode?: boolean;
   onToggleMode?: (realtimeMode: boolean) => void;
+  telemetryConnected?: boolean;
+  telemetryFrameCount?: number;
 }
 
 export default function HealthCheck(props: HealthCheckProps) {
@@ -57,27 +60,49 @@ export default function HealthCheck(props: HealthCheckProps) {
   // 实时遥测模式下的显示
   if (props.realtimeMode !== undefined) {
     return (
-      <Tooltip
-        title={
-          props.realtimeMode
-            ? t("health.realtimeMode", "实时遥测模式 - 点击切换到独立模式")
-            : t("health.standaloneMode", "独立模式 - 点击切换到实时遥测模式")
-        }
-      >
-        <Chip
-          icon={props.realtimeMode ? <Wifi /> : <Computer />}
-          label={
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Tooltip
+          title={
             props.realtimeMode
-              ? t("health.realtimeMode", "实时遥测")
-              : t("health.standaloneMode", "独立模式")
+              ? t("health.realtimeModeTooltip", "实时遥测模式 - 点击切换到独立模式")
+              : t("health.standaloneModeTooltip", "独立模式 - 点击切换到实时遥测模式")
           }
-          onClick={handleClick}
-          color={props.realtimeMode ? "primary" : "default"}
-          variant={props.realtimeMode ? "filled" : "outlined"}
-          size="small"
-          sx={{ cursor: "pointer" }}
-        />
-      </Tooltip>
+        >
+          <Chip
+            icon={props.realtimeMode ? <Wifi /> : <Computer />}
+            label={
+              props.realtimeMode
+                ? t("health.realtimeMode", "实时遥测")
+                : t("health.standaloneMode", "独立模式")
+            }
+            onClick={handleClick}
+            color={props.realtimeMode ? "primary" : "default"}
+            variant={props.realtimeMode ? "filled" : "outlined"}
+            size="small"
+            sx={{ cursor: "pointer" }}
+          />
+        </Tooltip>
+        {props.realtimeMode && (
+          <>
+            <Chip
+              icon={props.telemetryConnected ? <Wifi /> : <WifiOff />}
+              label={
+                props.telemetryConnected
+                  ? t("health.telemetryConnected", "已连接")
+                  : t("health.telemetryDisconnected", "未连接")
+              }
+              color={props.telemetryConnected ? "success" : "error"}
+              size="small"
+              variant="outlined"
+            />
+            {props.telemetryConnected && (
+              <Typography variant="caption" color="text.secondary">
+                {t("health.frameCount", "帧数")}: {props.telemetryFrameCount || 0}
+              </Typography>
+            )}
+          </>
+        )}
+      </Stack>
     );
   }
 
