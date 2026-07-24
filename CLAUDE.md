@@ -166,10 +166,23 @@ Gym 包提供兼容 OpenAI Gym 的环境：
 
 ## 当前需要完成任务
 - [x] 按照技术文档要求，安装本地依赖
-- [x] 运行前后端，进行demo测试 
+- [x] 运行前后端，进行demo测试
 - [x] 前端增加language设置，允许切换语言（Language）：中文(Chinese)/英语(English)
 - [x] 使用understandanything-skill理清代码依赖，找出代码运行逻辑，找出代码的主入口
 - [x] 修改回放录制相关的gym\blade\utils\PlaybackRecorder.py，支持输出ACMI格式数据供Tacview回放使用
 - [x] 增加实时播放相关的gym\blade\utils\TCPStreamer.py，支持通过TCP格式输出ACMI格式数据，在Tacview上进行实时遥测数据
-- [ ] 修改实时播放相关的gym\blade\utils\TCPStreamer.py，支持通过TCP格式输出JSON格式数据，在client（前端）上进行实时遥测数据
-- [ ] 修改client（前端）上增加实时遥测数据的模式
+- [x] 修改实时播放相关的gym\blade\utils\TCPStreamer.py，支持异步双通道输出（TCP ACMI + WebSocket JSON）
+- [x] 修改client（前端）上增加实时遥测数据的模式（RealtimeTelemetryPlayer）
+
+## 实时遥测架构
+
+异步双通道架构：
+- TCP:42674 - ACMI 格式（Tacview）
+- WebSocket:8765 - JSON 格式（前端）
+- 两个通道独立运行，互不干涉，同时输出同一时刻的数据流
+
+启动方式：
+```bash
+cd gym
+python scripts/simple_demo/demo_realtime_websocket.py
+```
