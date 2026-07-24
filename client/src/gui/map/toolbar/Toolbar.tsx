@@ -1092,7 +1092,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             sideId: 'telemetry',
             aircraft: [],
           }));
-        } else if (obj.type === 'Weapon') {
+        } else if (obj.type.startsWith('Weapon')) {
           scenario.weapons.push(new Weapon({
             id: obj.id,
             name: obj.name,
