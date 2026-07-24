@@ -66,7 +66,8 @@ import { ToastContext } from "@/gui/contextProviders/contexts/ToastContext";
 import EntityIcon from "@/gui/map/toolbar/EntityIcon";
 import { FeatureEntityState } from "@/gui/map/mapLayers/FeatureLayers";
 import RecordingPlayer from "@/gui/map/toolbar/RecordingPlayer";
-import RealtimeTelemetryPlayer from "@/gui/map/toolbar/RealtimeTelemetryPlayer";
+import RealtimeTelemetryPlayerComponent from "@/gui/map/toolbar/RealtimeTelemetryPlayer";
+import RealtimeTelemetryPlayer from "@/game/realtime/RealtimeTelemetryPlayer";
 import blankScenarioJson from "@/scenarios/blank_scenario.json";
 import defaultScenarioJson from "@/scenarios/default_scenario.json";
 import SCSScenarioJson from "@/scenarios/SCS.json";
@@ -998,16 +999,32 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
 
   const [telemetryConnected, setTelemetryConnected] = useState<boolean>(false);
   const [telemetryFrameCount, setTelemetryFrameCount] = useState<number>(0);
+  const [telemetryPlayer, setTelemetryPlayer] = useState<RealtimeTelemetryPlayer | null>(null);
 
   const handleTelemetryConnect = (url: string) => {
-    // TODO: 连接到 WebSocket 服务器
     console.log('Connecting to:', url);
-    setTelemetryConnected(true);
+    const player = new RealtimeTelemetryPlayer();
+    player.onStatus((connected) => {
+      setTelemetryConnected(connected);
+      if (!connected) {
+        setTelemetryFrameCount(0);
+      }
+    });
+    player.onFrame((frame) => {
+      setTelemetryFrameCount(player.getFrameCount());
+      // TODO: 更新地图上的实体位置
+      console.log('收到帧数据:', frame.step, '对象数:', frame.objects.length);
+    });
+    player.connect(url);
+    setTelemetryPlayer(player);
   };
 
   const handleTelemetryDisconnect = () => {
-    // TODO: 断开连接
     console.log('Disconnecting');
+    if (telemetryPlayer) {
+      telemetryPlayer.disconnect();
+      setTelemetryPlayer(null);
+    }
     setTelemetryConnected(false);
     setTelemetryFrameCount(0);
   };
@@ -1015,7 +1032,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
   const realtimeTelemetrySection = () => {
     return (
       <Stack spacing={1} direction={"column"}>
-        <RealtimeTelemetryPlayer
+        <RealtimeTelemetryPlayerComponent
           onConnect={handleTelemetryConnect}
           onDisconnect={handleTelemetryDisconnect}
           connected={telemetryConnected}

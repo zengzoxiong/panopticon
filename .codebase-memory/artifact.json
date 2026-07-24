@@ -1,11 +1,11 @@
 {
     "schema_version": 2,
-    "commit": "23365685174e97606d35e154c6dfa48a08bbcca9",
-    "indexed_at": "2026-07-24T06:38:00Z",
+    "commit": "8c96f52b9032eb9da283b48bca81ed91dfd589e3",
+    "indexed_at": "2026-07-24T06:39:54Z",
     "project": "S-PROJECT-panopticon",
     "nodes": 2847,
-    "edges": 7176,
+    "edges": 7177,
     "original_size": 7995392,
-    "compressed_size": 1386930,
+    "compressed_size": 1387066,
     "compression_level": 3
 }
