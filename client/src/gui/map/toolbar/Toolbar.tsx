@@ -1035,6 +1035,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
       frame.objects.forEach((obj) => {
         // 根据类型添加到不同的数组
         if (obj.type.startsWith('Air+')) {
+          // 飞机类型
           scenario.aircraft.push(new Aircraft({
             id: obj.id,
             name: obj.name,
@@ -1051,19 +1052,8 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             sideColor: obj.color || 'Grey',
             sideId: 'telemetry',
           }));
-        } else if (obj.type === 'Ground+Static' || obj.type === 'Ground+Vehicle') {
-          scenario.facilities.push(new Facility({
-            id: obj.id,
-            name: obj.name,
-            className: obj.type,
-            latitude: obj.latitude,
-            longitude: obj.longitude,
-            altitude: obj.altitude || 0,
-            range: 100,
-            sideColor: obj.color || 'Grey',
-            sideId: 'telemetry',
-          }));
-        } else if (obj.type === 'Sea+Ship') {
+        } else if (obj.type.startsWith('Sea+')) {
+          // 舰艇类型
           scenario.ships.push(new Ship({
             id: obj.id,
             name: obj.name,
@@ -1080,7 +1070,34 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             sideColor: obj.color || 'Grey',
             sideId: 'telemetry',
           }));
+        } else if (obj.type.startsWith('Ground+SAM') || obj.type.startsWith('Ground+Structure')) {
+          // 防空系统和设施
+          scenario.facilities.push(new Facility({
+            id: obj.id,
+            name: obj.name,
+            className: obj.type,
+            latitude: obj.latitude,
+            longitude: obj.longitude,
+            altitude: obj.altitude || 0,
+            range: 100,
+            sideColor: obj.color || 'Grey',
+            sideId: 'telemetry',
+          }));
+        } else if (obj.type === 'Ground+Static' || obj.type === 'Ground+Vehicle') {
+          // 地面静态设施和车辆
+          scenario.facilities.push(new Facility({
+            id: obj.id,
+            name: obj.name,
+            className: obj.type,
+            latitude: obj.latitude,
+            longitude: obj.longitude,
+            altitude: obj.altitude || 0,
+            range: 100,
+            sideColor: obj.color || 'Grey',
+            sideId: 'telemetry',
+          }));
         } else if (obj.type === 'Airbase') {
+          // 空军基地
           scenario.airbases.push(new Airbase({
             id: obj.id,
             name: obj.name,
@@ -1093,6 +1110,7 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             aircraft: [],
           }));
         } else if (obj.type.startsWith('Weapon')) {
+          // 武器类型
           scenario.weapons.push(new Weapon({
             id: obj.id,
             name: obj.name,
@@ -1113,6 +1131,9 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             maxQuantity: 1,
             currentQuantity: 1,
           }));
+        } else if (obj.type === 'Point+Marker') {
+          // 参考点（暂时不处理）
+          console.log('参考点:', obj.name);
         }
       });
 
