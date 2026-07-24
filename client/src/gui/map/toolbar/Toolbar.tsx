@@ -1024,116 +1024,167 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
       // 将遥测数据同步到 game.currentScenario
       const scenario = props.game.currentScenario;
 
-      // 清空现有数据，使用遥测数据
-      scenario.aircraft = [];
-      scenario.ships = [];
-      scenario.facilities = [];
-      scenario.airbases = [];
-      scenario.weapons = [];
+      // 收集当前帧中的实体 ID
+      const currentIds = new Set(frame.objects.map(obj => obj.id));
 
-      // 遍历遥测数据中的对象，创建实体
+      // 更新现有实体，而不是清空重建
+      // 飞机
+      const existingAircraft = new Map(scenario.aircraft.map(a => [a.id, a]));
+      scenario.aircraft = [];
       frame.objects.forEach((obj) => {
-        // 根据类型添加到不同的数组
         if (obj.type.startsWith('Air+')) {
-          // 飞机类型
-          scenario.aircraft.push(new Aircraft({
-            id: obj.id,
-            name: obj.name,
-            className: obj.type,
-            latitude: obj.latitude,
-            longitude: obj.longitude,
-            altitude: obj.altitude || 0,
-            heading: obj.heading || 0,
-            speed: obj.speed || 0,
-            currentFuel: 100,
-            maxFuel: 100,
-            fuelRate: 0,
-            range: 1000,
-            sideColor: obj.color || 'Grey',
-            sideId: 'telemetry',
-          }));
-        } else if (obj.type.startsWith('Sea+')) {
-          // 舰艇类型
-          scenario.ships.push(new Ship({
-            id: obj.id,
-            name: obj.name,
-            className: obj.type,
-            latitude: obj.latitude,
-            longitude: obj.longitude,
-            altitude: obj.altitude || 0,
-            heading: obj.heading || 0,
-            speed: obj.speed || 0,
-            currentFuel: 100,
-            maxFuel: 100,
-            fuelRate: 0,
-            range: 1000,
-            sideColor: obj.color || 'Grey',
-            sideId: 'telemetry',
-          }));
-        } else if (obj.type.startsWith('Ground+SAM') || obj.type.startsWith('Ground+Structure')) {
-          // 防空系统和设施
-          scenario.facilities.push(new Facility({
-            id: obj.id,
-            name: obj.name,
-            className: obj.type,
-            latitude: obj.latitude,
-            longitude: obj.longitude,
-            altitude: obj.altitude || 0,
-            range: 100,
-            sideColor: obj.color || 'Grey',
-            sideId: 'telemetry',
-          }));
-        } else if (obj.type === 'Ground+Static' || obj.type === 'Ground+Vehicle') {
-          // 地面静态设施和车辆
-          scenario.facilities.push(new Facility({
-            id: obj.id,
-            name: obj.name,
-            className: obj.type,
-            latitude: obj.latitude,
-            longitude: obj.longitude,
-            altitude: obj.altitude || 0,
-            range: 100,
-            sideColor: obj.color || 'Grey',
-            sideId: 'telemetry',
-          }));
-        } else if (obj.type === 'Airbase') {
-          // 空军基地
-          scenario.airbases.push(new Airbase({
-            id: obj.id,
-            name: obj.name,
-            className: obj.type,
-            latitude: obj.latitude,
-            longitude: obj.longitude,
-            altitude: obj.altitude || 0,
-            sideColor: obj.color || 'Grey',
-            sideId: 'telemetry',
-            aircraft: [],
-          }));
-        } else if (obj.type.startsWith('Weapon')) {
-          // 武器类型
-          scenario.weapons.push(new Weapon({
-            id: obj.id,
-            name: obj.name,
-            className: obj.type,
-            latitude: obj.latitude,
-            longitude: obj.longitude,
-            altitude: obj.altitude || 0,
-            heading: obj.heading || 0,
-            speed: obj.speed || 0,
-            currentFuel: 100,
-            maxFuel: 100,
-            fuelRate: 0,
-            range: 100,
-            sideColor: obj.color || 'Grey',
-            sideId: 'telemetry',
-            targetId: '',
-            lethality: 0,
-            maxQuantity: 1,
-            currentQuantity: 1,
-          }));
-        } else if (obj.type === 'Point+Marker') {
-          // 参考点（暂时不处理）
-          console.log('参考点:', obj.name);
+          const existing = existingAircraft.get(obj.id);
+          if (existing) {
+            // 更新现有实体
+            existing.latitude = obj.latitude;
+            existing.longitude = obj.longitude;
+            existing.altitude = obj.altitude || 0;
+            existing.heading = obj.heading || 0;
+            if (obj.speed) existing.speed = obj.speed;
+            scenario.aircraft.push(existing);
+          } else {
+            // 创建新实体
+            scenario.aircraft.push(new Aircraft({
+              id: obj.id,
+              name: obj.name,
+              className: obj.type,
+              latitude: obj.latitude,
+              longitude: obj.longitude,
+              altitude: obj.altitude || 0,
+              heading: obj.heading || 0,
+              speed: obj.speed || 0,
+              currentFuel: 100,
+              maxFuel: 100,
+              fuelRate: 0,
+              range: 1000,
+              sideColor: obj.color || 'Grey',
+              sideId: 'telemetry',
+            }));
+          }
+        }
+      });
+
+      // 舰艇
+      const existingShips = new Map(scenario.ships.map(s => [s.id, s]));
+      scenario.ships = [];
+      frame.objects.forEach((obj) => {
+        if (obj.type.startsWith('Sea+')) {
+          const existing = existingShips.get(obj.id);
+          if (existing) {
+            existing.latitude = obj.latitude;
+            existing.longitude = obj.longitude;
+            existing.heading = obj.heading || 0;
+            if (obj.speed) existing.speed = obj.speed;
+            scenario.ships.push(existing);
+          } else {
+            scenario.ships.push(new Ship({
+              id: obj.id,
+              name: obj.name,
+              className: obj.type,
+              latitude: obj.latitude,
+              longitude: obj.longitude,
+              altitude: obj.altitude || 0,
+              heading: obj.heading || 0,
+              speed: obj.speed || 0,
+              currentFuel: 100,
+              maxFuel: 100,
+              fuelRate: 0,
+              range: 1000,
+              sideColor: obj.color || 'Grey',
+              sideId: 'telemetry',
+            }));
+          }
+        }
+      });
+
+      // 设施（防空系统、地面设施等）
+      const existingFacilities = new Map(scenario.facilities.map(f => [f.id, f]));
+      scenario.facilities = [];
+      frame.objects.forEach((obj) => {
+        if (obj.type.startsWith('Ground+SAM') || obj.type.startsWith('Ground+Structure') ||
+            obj.type === 'Ground+Static' || obj.type === 'Ground+Vehicle') {
+          const existing = existingFacilities.get(obj.id);
+          if (existing) {
+            existing.latitude = obj.latitude;
+            existing.longitude = obj.longitude;
+            scenario.facilities.push(existing);
+          } else {
+            scenario.facilities.push(new Facility({
+              id: obj.id,
+              name: obj.name,
+              className: obj.type,
+              latitude: obj.latitude,
+              longitude: obj.longitude,
+              altitude: obj.altitude || 0,
+              range: 100,
+              sideColor: obj.color || 'Grey',
+              sideId: 'telemetry',
+            }));
+          }
+        }
+      });
+
+      // 空军基地
+      const existingAirbases = new Map(scenario.airbases.map(a => [a.id, a]));
+      scenario.airbases = [];
+      frame.objects.forEach((obj) => {
+        if (obj.type === 'Airbase') {
+          const existing = existingAirbases.get(obj.id);
+          if (existing) {
+            existing.latitude = obj.latitude;
+            existing.longitude = obj.longitude;
+            scenario.airbases.push(existing);
+          } else {
+            scenario.airbases.push(new Airbase({
+              id: obj.id,
+              name: obj.name,
+              className: obj.type,
+              latitude: obj.latitude,
+              longitude: obj.longitude,
+              altitude: obj.altitude || 0,
+              sideColor: obj.color || 'Grey',
+              sideId: 'telemetry',
+              aircraft: [],
+            }));
+          }
+        }
+      });
+
+      // 武器
+      const existingWeapons = new Map(scenario.weapons.map(w => [w.id, w]));
+      scenario.weapons = [];
+      frame.objects.forEach((obj) => {
+        if (obj.type.startsWith('Weapon')) {
+          const existing = existingWeapons.get(obj.id);
+          if (existing) {
+            existing.latitude = obj.latitude;
+            existing.longitude = obj.longitude;
+            existing.altitude = obj.altitude || 0;
+            existing.heading = obj.heading || 0;
+            if (obj.speed) existing.speed = obj.speed;
+            scenario.weapons.push(existing);
+          } else {
+            scenario.weapons.push(new Weapon({
+              id: obj.id,
+              name: obj.name,
+              className: obj.type,
+              latitude: obj.latitude,
+              longitude: obj.longitude,
+              altitude: obj.altitude || 0,
+              heading: obj.heading || 0,
+              speed: obj.speed || 0,
+              currentFuel: 100,
+              maxFuel: 100,
+              fuelRate: 0,
+              range: 100,
+              sideColor: obj.color || 'Grey',
+              sideId: 'telemetry',
+              targetId: '',
+              lethality: 0,
+              maxQuantity: 1,
+              currentQuantity: 1,
+            }));
+          }
         }
       });
 
