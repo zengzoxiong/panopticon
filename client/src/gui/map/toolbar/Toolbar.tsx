@@ -23,6 +23,11 @@ import List from "@mui/material/List";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Game from "@/game/Game";
+import Aircraft from "@/game/units/Aircraft";
+import Ship from "@/game/units/Ship";
+import Facility from "@/game/units/Facility";
+import Airbase from "@/game/units/Airbase";
+import Weapon from "@/game/units/Weapon";
 import { AircraftDb, FacilityDb, ShipDb } from "@/game/db/UnitDb";
 import { APP_DRAWER_WIDTH } from "@/utils/constants";
 import PanopticonLogoSvg from "@/gui/assets/svg/panopticon.svg?react";
@@ -1003,7 +1008,6 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
   const [telemetryConnected, setTelemetryConnected] = useState<boolean>(false);
   const [telemetryFrameCount, setTelemetryFrameCount] = useState<number>(0);
   const [telemetryPlayer, setTelemetryPlayer] = useState<RealtimeTelemetryPlayer | null>(null);
-  const [telemetryObjects, setTelemetryObjects] = useState<Map<string, any>>(new Map());
 
   const handleTelemetryConnect = (url: string) => {
     console.log('Connecting to:', url);
@@ -1012,18 +1016,10 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
       setTelemetryConnected(connected);
       if (!connected) {
         setTelemetryFrameCount(0);
-        setTelemetryObjects(new Map());
       }
     });
     player.onFrame((frame) => {
       setTelemetryFrameCount(player.getFrameCount());
-
-      // 更新遥测对象 Map
-      const newObjects = new Map(telemetryObjects);
-      frame.objects.forEach((obj) => {
-        newObjects.set(obj.id, obj);
-      });
-      setTelemetryObjects(newObjects);
 
       // 将遥测数据同步到 game.currentScenario
       const scenario = props.game.currentScenario;
@@ -1037,30 +1033,86 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
 
       // 遍历遥测数据中的对象，创建实体
       frame.objects.forEach((obj) => {
-        const entityData = {
-          id: obj.id,
-          name: obj.name,
-          className: obj.type,
-          latitude: obj.latitude,
-          longitude: obj.longitude,
-          altitude: obj.altitude || 0,
-          heading: obj.heading || 0,
-          speed: obj.speed || 0,
-          sideColor: obj.color || 'Grey',
-          sideId: 'telemetry',
-        };
-
         // 根据类型添加到不同的数组
         if (obj.type.startsWith('Air+')) {
-          scenario.aircraft.push(entityData);
+          scenario.aircraft.push(new Aircraft({
+            id: obj.id,
+            name: obj.name,
+            className: obj.type,
+            latitude: obj.latitude,
+            longitude: obj.longitude,
+            altitude: obj.altitude || 0,
+            heading: obj.heading || 0,
+            speed: obj.speed || 0,
+            currentFuel: 100,
+            maxFuel: 100,
+            fuelRate: 0,
+            range: 1000,
+            sideColor: obj.color || 'Grey',
+            sideId: 'telemetry',
+          }));
         } else if (obj.type === 'Ground+Static' || obj.type === 'Ground+Vehicle') {
-          scenario.facilities.push(entityData);
+          scenario.facilities.push(new Facility({
+            id: obj.id,
+            name: obj.name,
+            className: obj.type,
+            latitude: obj.latitude,
+            longitude: obj.longitude,
+            altitude: obj.altitude || 0,
+            range: 100,
+            sideColor: obj.color || 'Grey',
+            sideId: 'telemetry',
+          }));
         } else if (obj.type === 'Sea+Ship') {
-          scenario.ships.push(entityData);
+          scenario.ships.push(new Ship({
+            id: obj.id,
+            name: obj.name,
+            className: obj.type,
+            latitude: obj.latitude,
+            longitude: obj.longitude,
+            altitude: obj.altitude || 0,
+            heading: obj.heading || 0,
+            speed: obj.speed || 0,
+            currentFuel: 100,
+            maxFuel: 100,
+            fuelRate: 0,
+            range: 1000,
+            sideColor: obj.color || 'Grey',
+            sideId: 'telemetry',
+          }));
         } else if (obj.type === 'Airbase') {
-          scenario.airbases.push(entityData);
+          scenario.airbases.push(new Airbase({
+            id: obj.id,
+            name: obj.name,
+            className: obj.type,
+            latitude: obj.latitude,
+            longitude: obj.longitude,
+            altitude: obj.altitude || 0,
+            sideColor: obj.color || 'Grey',
+            sideId: 'telemetry',
+            aircraft: [],
+          }));
         } else if (obj.type === 'Weapon') {
-          scenario.weapons.push(entityData);
+          scenario.weapons.push(new Weapon({
+            id: obj.id,
+            name: obj.name,
+            className: obj.type,
+            latitude: obj.latitude,
+            longitude: obj.longitude,
+            altitude: obj.altitude || 0,
+            heading: obj.heading || 0,
+            speed: obj.speed || 0,
+            currentFuel: 100,
+            maxFuel: 100,
+            fuelRate: 0,
+            range: 100,
+            sideColor: obj.color || 'Grey',
+            sideId: 'telemetry',
+            targetId: '',
+            lethality: 0,
+            maxQuantity: 1,
+            currentQuantity: 1,
+          }));
         }
       });
 
@@ -1079,7 +1131,6 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
     }
     setTelemetryConnected(false);
     setTelemetryFrameCount(0);
-    setTelemetryObjects(new Map());
   };
 
   const realtimeTelemetrySection = () => {
