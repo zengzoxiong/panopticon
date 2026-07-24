@@ -22,12 +22,22 @@ Tacview 实时遥测协议（完整流程）：
 import socket
 import threading
 import json
-import asyncio
-import websockets
+import logging
 from dataclasses import dataclass, field
 from typing import Any, Dict, Optional, List, Callable, Set
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+import asyncio
+import websockets
 
 from blade.utils.PlaybackRecorder import ACMI_TYPE_MAPPING, ACMI_COLOR_MAPPING
+
+# 配置日志
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(name)s] %(message)s',
+    datefmt='%H:%M:%S'
+)
+logger = logging.getLogger('TCPStreamer')
 
 # Tacview 实时遥测协议常量
 TACVIEW_HANDSHAKE_LINE1 = "XtraLib.Stream.0\n"
@@ -204,20 +214,13 @@ class StreamingACMIEncoder:
             if len(lines) > 1:
                 return "\n".join(lines) + "\n"
         except Exception as e:
-            print(f"[ACMI Encoder] 编码错误: {e}")
+            logger.error(f"ACMI 编码错误: {e}")
 
         return ""
 
 
 class TCPACMIServer:
-    """TCP ACMI 服务器，实现 Tacview 实时遥测协议
-
-    协议流程：
-    1. 客户端连接
-    2. 服务器发送握手：XtraLib.Stream.0\\nTacview.RealTimeTelemetry.0\\nHost用户名\\n\\0
-    3. 客户端回复握手：XtraLib.Stream.0\\nTacview.RealTimeTelemetry.0\\nClient用户名\\n密码哈希\\0
-    4. 握手成功后，服务器开始发送 ACMI 数据
-    """
+    """TCP ACMI 服务器，实现 Tacview 实时遥测协议"""
 
     def __init__(self, host: str, port: int, host_username: str = "Panopticon BLADE"):
         self.host = host
@@ -245,21 +248,14 @@ class TCPACMIServer:
             self._accept_thread = threading.Thread(target=self._accept_clients, daemon=True)
             self._accept_thread.start()
 
-            print(f"[TCPACMI] + TCP 服务器启动: {self.host}:{self.port}")
+            logger.info(f"TCP 服务器启动: {self.host}:{self.port}")
             return True
         except Exception as e:
-            print(f"[TCPACMI] X 启动失败: {e}")
+            logger.error(f"TCP 启动失败: {e}")
             return False
 
     def _build_host_handshake(self) -> bytes:
-        """构建 Host 握手数据包
-
-        根据 Tacview 协议，服务器握手格式为：
-            XtraLib.Stream.0\\n
-            Tacview.RealTimeTelemetry.0\\n
-            Host username\\n
-            \\0
-        """
+        """构建 Host 握手数据包"""
         handshake = (
             TACVIEW_HANDSHAKE_LINE1
             + TACVIEW_HANDSHAKE_LINE2
@@ -269,88 +265,67 @@ class TCPACMIServer:
         return handshake.encode("utf-8")
 
     def _read_client_handshake(self, client: socket.socket) -> bool:
-        """读取并验证客户端握手数据
-
-        客户端握手格式：
-            XtraLib.Stream.0\\n
-            Tacview.RealTimeTelemetry.0\\n
-            Client username\\n
-            password_hash\\0
-
-        Returns:
-            bool: 握手是否成功
-        """
+        """读取并验证客户端握手数据"""
         try:
-            client.settimeout(10.0)  # 握手超时 10 秒
+            client.settimeout(10.0)
             data = b""
             while b"\0" not in data:
                 chunk = client.recv(4096)
                 if not chunk:
-                    print(f"[TCPACMI] 握手失败：客户端断开连接")
+                    logger.info("握手失败：客户端断开连接")
                     return False
                 data += chunk
 
-            # 解码并验证
             handshake_text = data.decode("utf-8", errors="replace")
 
-            # 验证协议版本（以 XtraLib.Stream.0 开头即可）
             if not handshake_text.startswith("XtraLib.Stream.0"):
-                print(f"[TCPACMI] 握手失败：协议版本不匹配，收到 '{handshake_text[:50]}'")
+                logger.info(f"握手失败：协议版本不匹配，收到 '{handshake_text[:50]}'")
                 return False
 
-            # 提取客户端用户名（第三行）
             lines = handshake_text.split("\n")
             client_username = lines[2].strip() if len(lines) > 2 else "Unknown"
 
-            print(f"[TCPACMI] + 握手成功，客户端: {client_username}")
+            logger.info(f"握手成功，客户端: {client_username}")
             return True
 
         except socket.timeout:
-            print(f"[TCPACMI] 握手超时")
+            logger.info("握手超时")
             return False
         except Exception as e:
-            print(f"[TCPACMI] 握手异常: {e}")
+            logger.error(f"握手异常: {e}")
             return False
 
     def _accept_clients(self):
-        """接受客户端连接并执行握手
-
-        根据 Tacview 协议，握手流程为：
-        1. Tacview（客户端）连接
-        2. 本程序（服务器）先发送握手
-        3. Tacview 收到后回复客户端握手
-        4. 本程序读取并验证客户端握手
-        5. 握手成功后立即发送 ACMI 头部
-        """
+        """接受客户端连接并执行握手"""
         while self._running:
             try:
                 client, addr = self._server_socket.accept()
                 client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-                print(f"[TCPACMI] 新连接: {addr}，开始握手...")
+                logger.info(f"新连接: {addr}，开始握手...")
 
-                # 步骤 1：发送服务器握手（服务器先发送）
+                # 步骤 1：发送服务器握手
                 host_handshake = self._build_host_handshake()
                 try:
                     client.sendall(host_handshake)
-                    print(f"[TCPACMI] -> 已发送 Host 握手 ({len(host_handshake)} 字节)")
+                    logger.info(f"已发送 Host 握手 ({len(host_handshake)} 字节)")
                 except Exception as e:
-                    print(f"[TCPACMI] X 发送握手失败: {e}")
+                    logger.error(f"发送握手失败: {e}")
                     client.close()
                     continue
 
                 # 步骤 2：读取并验证客户端握手回复
                 if not self._read_client_handshake(client):
-                    print(f"[TCPACMI] X 握手失败，拒绝连接: {addr}")
+                    logger.info(f"握手失败，拒绝连接: {addr}")
                     client.close()
                     continue
 
-                # 步骤 3：握手成功后立即发送 ACMI 头部（关键！）
+                # 步骤 3：握手成功后立即发送 ACMI 头部
                 header = "FileType=text/acmi/tacview\nFileVersion=2.2\n"
                 try:
                     client.sendall(header.encode("utf-8"))
-                    print(f"[TCPACMI] -> 已发送 ACMI 头部")
+                    logger.info("已发送 ACMI 头部")
                 except Exception as e:
-                    print(f"[TCPACMI] X 发送 ACMI 头部失败: {e}")
+                    logger.error(f"发送 ACMI 头部失败: {e}")
                     client.close()
                     continue
 
@@ -358,20 +333,20 @@ class TCPACMIServer:
                 with self._lock:
                     self._clients.append(client)
                     self._client_count += 1
-                print(f"[TCPACMI] + 客户端 #{self._client_count} 已就绪: {addr}")
+                logger.info(f"客户端 #{self._client_count} 已就绪: {addr}")
 
                 # 步骤 5：通知上层
                 if self.on_client_ready:
                     try:
                         self.on_client_ready(client)
                     except Exception as e:
-                        print(f"[TCPACMI] X 通知上层失败: {e}")
+                        logger.error(f"通知上层失败: {e}")
 
             except socket.timeout:
                 continue
             except Exception as e:
                 if self._running:
-                    print(f"[TCPACMI] X 接受连接失败: {e}")
+                    logger.error(f"接受连接失败: {e}")
 
     @property
     def client_count(self) -> int:
@@ -392,15 +367,15 @@ class TCPACMIServer:
                 return 0
 
             data_bytes = data.encode("utf-8")
-            for client in self._clients[:]:  # 使用副本遍历
+            for client in self._clients[:]:
                 try:
                     client.sendall(data_bytes)
                     sent_count += 1
                 except (ConnectionResetError, ConnectionAbortedError, BrokenPipeError) as e:
-                    print(f"[TCPACMI] 客户端断开: {e}")
+                    logger.info(f"客户端断开: {e}")
                     disconnected.append(client)
                 except Exception as e:
-                    print(f"[TCPACMI] 发送错误: {e}")
+                    logger.error(f"发送错误: {e}")
                     disconnected.append(client)
 
             for client in disconnected:
@@ -431,38 +406,34 @@ class TCPACMIServer:
                 pass
             self._server_socket = None
 
-        print("[TCPACMI] 服务器已停止")
+        logger.info("TCP 服务器已停止")
 
 
 class WebSocketServer:
-    """WebSocket 服务器，向前端推送 JSON 格式的实时数据
-
-    异步运行，与 TCP 服务器互不干涉。
-    """
+    """WebSocket 服务器，向前端推送 JSON 格式的实时数据"""
 
     def __init__(self, host: str = "127.0.0.1", port: int = 8765):
         self.host = host
         self.port = port
-        self._clients: Set[websockets.WebSocketServerProtocol] = set()
+        self._clients: Set[Any] = set()
         self._running = False
-        self._server = None
-        self._loop: Optional[asyncio.AbstractEventLoop] = None
         self._thread: Optional[threading.Thread] = None
+        self._loop: Optional[asyncio.AbstractEventLoop] = None
 
     def start(self) -> bool:
-        """启动 WebSocket 服务器（在新线程中运行）"""
+        """启动 WebSocket 服务器"""
         try:
             self._running = True
-            self._thread = threading.Thread(target=self._run_server, daemon=True)
+            self._thread = threading.Thread(target=self._run, daemon=True)
             self._thread.start()
-            print(f"[WebSocket] + WebSocket 服务器启动: ws://{self.host}:{self.port}")
+            logger.info(f"WebSocket 服务器启动: ws://{self.host}:{self.port}")
             return True
         except Exception as e:
-            print(f"[WebSocket] X 启动失败: {e}")
+            logger.error(f"WebSocket 启动失败: {e}")
             return False
 
-    def _run_server(self):
-        """在新线程中运行 WebSocket 服务器"""
+    def _run(self):
+        """在新线程中运行"""
         self._loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self._loop)
         self._loop.run_until_complete(self._serve())
@@ -476,23 +447,22 @@ class WebSocketServer:
             ping_interval=20,
             ping_timeout=10,
         ):
-            print(f"[WebSocket] 服务器正在监听 ws://{self.host}:{self.port}")
+            logger.info(f"WebSocket 正在监听 ws://{self.host}:{self.port}")
             await asyncio.Future()  # 永远运行
 
-    async def _handle_client(self, websocket: websockets.WebSocketServerProtocol):
+    async def _handle_client(self, websocket):
         """处理新的 WebSocket 客户端连接"""
         self._clients.add(websocket)
         client_addr = websocket.remote_address
-        print(f"[WebSocket] 新客户端连接: {client_addr}")
+        logger.info(f"WebSocket 新客户端: {client_addr}")
         try:
             async for message in websocket:
-                # 接收客户端消息（目前不需要处理）
-                pass
+                pass  # 接收客户端消息（目前不需要处理）
         except websockets.exceptions.ConnectionClosed:
             pass
         finally:
             self._clients.discard(websocket)
-            print(f"[WebSocket] 客户端断开: {client_addr}")
+            logger.info(f"WebSocket 客户端断开: {client_addr}")
 
     def send(self, data: Dict[str, Any]) -> int:
         """向所有客户端发送 JSON 数据"""
@@ -507,9 +477,8 @@ class WebSocketServer:
             nonlocal sent_count
             if not self._clients:
                 return
-            # 使用 asyncio.gather 并发发送
             tasks = []
-            for client in self._clients.copy():
+            for client in list(self._clients):
                 try:
                     tasks.append(client.send(json_str))
                 except:
@@ -537,7 +506,7 @@ class WebSocketServer:
         self._running = False
         if self._loop:
             self._loop.call_soon_threadsafe(self._loop.stop)
-        print("[WebSocket] 服务器已停止")
+        logger.info("WebSocket 服务器已停止")
 
 
 class StreamingJSONEncoder:
@@ -613,7 +582,7 @@ class StreamingJSONEncoder:
                         objects.append(weapon_obj)
 
         except Exception as e:
-            print(f"[JSON Encoder] 编码错误: {e}")
+            logger.error(f"JSON 编码错误: {e}")
 
         return {
             "timestamp": scenario_time,
@@ -627,7 +596,7 @@ class StreamingJSONEncoder:
         if not entity.get("id"):
             return None
 
-        # 过滤无效位置的实体（位置为 0,0 表示未初始化）
+        # 过滤无效位置的实体
         latitude = entity.get("latitude", 0)
         longitude = entity.get("longitude", 0)
         if latitude == 0 and longitude == 0:
@@ -700,86 +669,77 @@ class TCPStreamer:
 
     def _on_tcp_client_ready(self, client_socket: socket.socket):
         """TCP 客户端握手成功后的回调"""
-        print(f"[TCPACMI] 客户端已就绪，等待仿真数据...")
+        logger.info("TCP 客户端已就绪，等待仿真数据...")
 
     def stream_step(self, scenario_data: Dict[str, Any], scenario_time: int):
         """流式推送单步数据（同时推送到 TCP 和 WebSocket）"""
         self._step_count += 1
+        logger.debug(f"stream_step 调用: step={self._step_count}, send_interval={self.config.send_interval}")
         if self._step_count % self.config.send_interval != 0:
             return
 
-        # 异步推送到两个通道（互不干涉）
+        # 异步推送到两个通道
         self._send_acmi(scenario_data, scenario_time)
         self._send_json(scenario_data, scenario_time)
 
     def _send_acmi(self, scenario_data: Dict[str, Any], scenario_time: int):
         """通过 TCP 发送 ACMI 数据"""
         try:
-            # 检查是否有客户端连接
             if self._tcp_server and self._tcp_server.client_count == 0:
                 if self._step_count % 100 == 0:
-                    print(f"[TCPACMI] 等待 Tacview 连接...")
+                    logger.info("等待 Tacview 连接...")
                 return
 
-            # 首次调用时生成头部
             if not self._header_generated:
                 current_scenario = scenario_data.get("currentScenario", {})
                 self._scenario_name = current_scenario.get("name", "Panopticon Simulation")
                 self._acmi_encoder.encode_header(self._scenario_name, scenario_time)
                 self._header_generated = True
-                print(f"[TCPACMI] ACMI 头部已生成: {self._scenario_name}")
+                logger.info(f"ACMI 头部已生成: {self._scenario_name}")
 
-            # 编码当前步的数据帧
             acmi_body = self._acmi_encoder.encode_step(scenario_data, scenario_time)
 
             if not acmi_body:
                 return
 
-            # 调试：打印发送的数据
             if self._step_count <= 5 or self._step_count % 50 == 0:
-                print(f"\n[TCPACMI] === 步骤 {self._step_count} ===")
-                print(f"[TCPACMI] 客户端数: {self._tcp_server.client_count}")
-                print(f"[TCPACMI] 数据帧长度: {len(acmi_body)} 字节")
+                logger.info(f"[TCP] 步骤 {self._step_count}, 客户端: {self._tcp_server.client_count}")
 
             if self._tcp_server:
                 sent = self._tcp_server.send(acmi_body)
                 if sent > 0 and self._step_count % 50 == 0:
-                    print(f"[TCPACMI] + 已发送到 {sent} 个客户端")
+                    logger.info(f"[TCP] 已发送到 {sent} 个客户端")
         except Exception as e:
-            print(f"[TCPACMI] X 发送失败: {e}")
+            logger.error(f"TCP 发送失败: {e}")
 
     def _send_json(self, scenario_data: Dict[str, Any], scenario_time: int):
         """通过 WebSocket 发送 JSON 数据"""
         try:
-            # 检查是否有客户端连接
+            logger.debug(f"[WS] _send_json 调用: step={self._step_count}")
             if self._ws_server and self._ws_server.client_count == 0:
                 if self._step_count % 100 == 0:
-                    print(f"[WebSocket] 等待前端连接...")
+                    logger.info("等待前端 WebSocket 连接...")
                 return
 
-            # 编码当前步的数据帧
             json_data = self._json_encoder.encode_step(scenario_data, scenario_time, self._step_count)
 
             if not json_data or not json_data.get("objects"):
                 return
 
-            # 调试：打印发送的数据
             if self._step_count <= 5 or self._step_count % 50 == 0:
-                print(f"\n[WebSocket] === 步骤 {self._step_count} ===")
-                print(f"[WebSocket] 客户端数: {self._ws_server.client_count}")
-                print(f"[WebSocket] 对象数: {len(json_data['objects'])}")
+                logger.info(f"[WS] 步骤 {self._step_count}, 客户端: {self._ws_server.client_count}, 对象: {len(json_data['objects'])}")
 
             if self._ws_server:
                 sent = self._ws_server.send(json_data)
                 if sent > 0 and self._step_count % 50 == 0:
-                    print(f"[WebSocket] + 已发送到 {sent} 个客户端")
+                    logger.info(f"[WS] 已发送到 {sent} 个客户端")
         except Exception as e:
-            print(f"[WebSocket] X 发送失败: {e}")
+            logger.error(f"WebSocket 发送失败: {e}")
 
     def stop(self):
-        """停止流式传输（同时停止 TCP 和 WebSocket）"""
+        """停止流式传输"""
         if self._tcp_server:
             self._tcp_server.stop()
         if self._ws_server:
             self._ws_server.stop()
-        print("[TCPStreamer] 已停止")
+        logger.info("TCPStreamer 已停止")
