@@ -42,7 +42,8 @@
     "sections": {
       "recording": "Recording",
       "entities": "Entities",
-      "missions": "Missions"
+      "missions": "Missions",
+      "realtimeTelemetry": "Real-time Telemetry"
     },
     "drawer": {
       "openDrawer": "Open Drawer",
@@ -80,6 +81,7 @@
     "scenarioNameHelp": "Letters, numbers, Chinese characters, \":,-\" allowed, max 25",
     "undoTooltip": "Undo",
     "toggleSpeed": "Toggle Scenario Speed",
+    "realtimeConnected": "Real-time Telemetry Connected",
     "godModeToast": "God Mode: {{status}}",
     "eraserToast": "Eraser: {{status}}",
     "on": "ON",
@@ -347,7 +349,11 @@
     "standalone": "Standalone mode",
     "connecting": "Connecting to server...",
     "connected": "Server connected",
-    "down": "Server down"
+    "down": "Server down",
+    "standaloneMode": "Standalone Mode",
+    "realtimeMode": "Real-time Telemetry",
+    "realtimeModeTooltip": "Real-time Telemetry - Click to switch to Standalone",
+    "standaloneModeTooltip": "Standalone - Click to switch to Real-time Telemetry"
   },
   "layer": {
     "switchMaps": "Switch maps. Shortcut: 5",

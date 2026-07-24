@@ -42,7 +42,8 @@
     "sections": {
       "recording": "录制",
       "entities": "实体",
-      "missions": "任务"
+      "missions": "任务",
+      "realtimeTelemetry": "实时遥测"
     },
     "drawer": {
       "openDrawer": "打开侧边栏",
@@ -80,6 +81,7 @@
     "scenarioNameHelp": "允许字母、数字、中文和 \":,-\"，最多25个字符",
     "undoTooltip": "撤销",
     "toggleSpeed": "切换想定速度",
+    "realtimeConnected": "实时遥测已连接",
     "godModeToast": "上帝模式：{{status}}",
     "eraserToast": "橡皮擦：{{status}}",
     "on": "开启",
@@ -347,7 +349,11 @@
     "standalone": "独立模式",
     "connecting": "正在连接服务器...",
     "connected": "服务器已连接",
-    "down": "服务器离线"
+    "down": "服务器离线",
+    "standaloneMode": "独立模式",
+    "realtimeMode": "实时遥测模式",
+    "realtimeModeTooltip": "实时遥测模式 - 点击切换到独立模式",
+    "standaloneModeTooltip": "独立模式 - 点击切换到实时遥测模式"
   },
   "layer": {
     "switchMaps": "切换地图。快捷键：5",

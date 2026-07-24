@@ -250,6 +250,9 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
   const [scenarioEditNameAnchorEl, setScenarioEditNameAnchorEl] =
     useState<null | HTMLElement>(null);
 
+  // 实时遥测模式状态
+  const [realtimeMode, setRealtimeMode] = useState<boolean>(false);
+
   const handleOpenScenarioEditNameMenu = (
     event: React.MouseEvent<HTMLElement>
   ) => {
@@ -1649,7 +1652,19 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
             />
           </Stack>
           <Box sx={{ flexGrow: 1 }} />
-          <HealthCheck />
+          <HealthCheck
+            realtimeMode={realtimeMode}
+            onToggleMode={(mode) => {
+              setRealtimeMode(mode);
+              if (mode) {
+                // 切换到实时遥测模式时，自动连接 WebSocket
+                handleTelemetryConnect("ws://127.0.0.1:8765");
+              } else {
+                // 切换到独立模式时，断开 WebSocket
+                handleTelemetryDisconnect();
+              }
+            }}
+          />
           <Divider
             orientation="vertical"
             variant="middle"
@@ -1709,68 +1724,82 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   alignItems: "center",
                 }}
               >
-                <Tooltip title={t('toolbar.file.newScenario')}>
-                  <IconButton onClick={newScenario}>
-                    <InsertDriveFileIcon
-                      fontSize="medium"
-                      sx={{ color: "#000000" }}
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title={t('toolbar.file.loadScenario')}>
-                  <IconButton onClick={handleLoadScenarioIconClick}>
-                    <UploadFileOutlinedIcon
-                      fontSize="medium"
-                      sx={{ color: "#171717" }}
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip
-                  title={
-                    isAuthenticated
-                      ? cloudScenarios.length > 4
-                        ? t('toolbar.cloudSaveLimit')
-                        : t('toolbar.file.saveToCloud')
-                      : t('toolbar.loginToSave')
-                  }
-                >
-                  <IconButton onClick={saveScenarioToCloud}>
-                    <Save
-                      fontSize="medium"
-                      sx={{
-                        color: isAuthenticated
-                          ? "#171717"
-                          : COLOR_PALETTE.DARK_GRAY,
-                      }}
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip
-                  title={
-                    isAuthenticated || import.meta.env.VITE_ENV !== "production"
-                      ? t('toolbar.file.downloadScenario')
-                      : t('toolbar.loginToDownload')
-                  }
-                >
-                  <IconButton onClick={exportScenario}>
-                    <FileDownloadOutlinedIcon
-                      fontSize="medium"
-                      sx={{
-                        color:
-                          isAuthenticated ||
-                          import.meta.env.VITE_ENV !== "production"
-                            ? "#171717"
-                            : COLOR_PALETTE.DARK_GRAY,
-                      }}
-                    />
-                  </IconButton>
-                </Tooltip>
-                {/* Scenario Name Edit Menu/Button  */}
-                <Tooltip title={t('toolbar.file.scenarioName')}>
-                  <IconButton onClick={handleOpenScenarioEditNameMenu}>
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
+                {/* 非实时遥测模式下显示的按钮 */}
+                {!realtimeMode && (
+                  <>
+                    <Tooltip title={t('toolbar.file.newScenario')}>
+                      <IconButton onClick={newScenario}>
+                        <InsertDriveFileIcon
+                          fontSize="medium"
+                          sx={{ color: "#000000" }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t('toolbar.file.loadScenario')}>
+                      <IconButton onClick={handleLoadScenarioIconClick}>
+                        <UploadFileOutlinedIcon
+                          fontSize="medium"
+                          sx={{ color: "#171717" }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      title={
+                        isAuthenticated
+                          ? cloudScenarios.length > 4
+                            ? t('toolbar.cloudSaveLimit')
+                            : t('toolbar.file.saveToCloud')
+                          : t('toolbar.loginToSave')
+                      }
+                    >
+                      <IconButton onClick={saveScenarioToCloud}>
+                        <Save
+                          fontSize="medium"
+                          sx={{
+                            color: isAuthenticated
+                              ? "#171717"
+                              : COLOR_PALETTE.DARK_GRAY,
+                          }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      title={
+                        isAuthenticated || import.meta.env.VITE_ENV !== "production"
+                          ? t('toolbar.file.downloadScenario')
+                          : t('toolbar.loginToDownload')
+                      }
+                    >
+                      <IconButton onClick={exportScenario}>
+                        <FileDownloadOutlinedIcon
+                          fontSize="medium"
+                          sx={{
+                            color:
+                              isAuthenticated ||
+                              import.meta.env.VITE_ENV !== "production"
+                                ? "#171717"
+                                : COLOR_PALETTE.DARK_GRAY,
+                          }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    {/* Scenario Name Edit Menu/Button  */}
+                    <Tooltip title={t('toolbar.file.scenarioName')}>
+                      <IconButton onClick={handleOpenScenarioEditNameMenu}>
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                )}
+                {/* 实时遥测模式下显示的状态 */}
+                {realtimeMode && (
+                  <Chip
+                    icon={<Wifi />}
+                    label={t('toolbar.realtimeConnected', '实时遥测已连接')}
+                    color="primary"
+                    size="small"
+                  />
+                )}
               </Stack>
             </CardActions>
             <Menu
@@ -1844,19 +1873,24 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                   alignItems: "center",
                 }}
               >
-                <Tooltip title={t('toolbar.scenario.step')}>
-                  <IconButton onClick={handleStepClick}>
-                    <SkipNext />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title={t('toolbar.scenario.restart')}>
-                  <IconButton onClick={reloadScenario}>
-                    <RestartAltIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title={t('toolbar.undoTooltip')}>
-                  <IconButton onClick={handleUndo}>{<Undo />}</IconButton>
-                </Tooltip>
+                {/* 非实时遥测模式下显示的按钮 */}
+                {!realtimeMode && (
+                  <>
+                    <Tooltip title={t('toolbar.scenario.step')}>
+                      <IconButton onClick={handleStepClick}>
+                        <SkipNext />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t('toolbar.scenario.restart')}>
+                      <IconButton onClick={reloadScenario}>
+                        <RestartAltIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t('toolbar.undoTooltip')}>
+                      <IconButton onClick={handleUndo}>{<Undo />}</IconButton>
+                    </Tooltip>
+                  </>
+                )}
                 <Tooltip
                   title={!scenarioPaused ? t('toolbar.scenario.pause') : t('toolbar.scenario.play')}
                 >
@@ -1864,16 +1898,19 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
                     {!scenarioPaused ? <Pause /> : <PlayArrow />}
                   </IconButton>
                 </Tooltip>
-                <Tooltip title={t('toolbar.toggleSpeed')}>
-                  <Chip
-                    onClick={props.toggleScenarioTimeCompressionOnClick}
-                    variant="outlined"
-                    label={props.scenarioTimeCompression + "x"}
-                    sx={{
-                      minWidth: "52px",
-                    }}
-                  />
-                </Tooltip>
+                {/* 非实时遥测模式下显示的速度控制 */}
+                {!realtimeMode && (
+                  <Tooltip title={t('toolbar.toggleSpeed')}>
+                    <Chip
+                      onClick={props.toggleScenarioTimeCompressionOnClick}
+                      variant="outlined"
+                      label={props.scenarioTimeCompression + "x"}
+                      sx={{
+                        minWidth: "52px",
+                      }}
+                    />
+                  </Tooltip>
+                )}
               </Stack>
             </CardActions>
           </Stack>
@@ -1903,18 +1940,15 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
               </ListSubheader>
             }
           >
-            <ToolbarCollapsible
-              title={t('toolbar.sections.recording')}
-              prependIcon={RadioButtonCheckedIcon}
-              content={recordingSection()}
-              open={false}
-            />
-            <ToolbarCollapsible
-              title={t('toolbar.sections.realtimeTelemetry', 'Real-time Telemetry')}
-              prependIcon={Wifi}
-              content={realtimeTelemetrySection()}
-              open={false}
-            />
+            {/* 非实时遥测模式下显示录制部分 */}
+            {!realtimeMode && (
+              <ToolbarCollapsible
+                title={t('toolbar.sections.recording')}
+                prependIcon={RadioButtonCheckedIcon}
+                content={recordingSection()}
+                open={false}
+              />
+            )}
             <ToolbarCollapsible
               title={t('toolbar.sections.entities')}
               prependIcon={DocumentScannerOutlinedIcon}
