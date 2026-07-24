@@ -1015,8 +1015,59 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
     });
     player.onFrame((frame) => {
       setTelemetryFrameCount(player.getFrameCount());
-      // TODO: 更新地图上的实体位置
-      console.log('收到帧数据:', frame.step, '对象数:', frame.objects.length);
+
+      // 更新地图上的实体位置
+      const scenario = props.game.currentScenario;
+
+      // 遍历遥测数据中的对象
+      frame.objects.forEach((obj) => {
+        // 根据类型更新不同的实体
+        if (obj.type.startsWith('Air+')) {
+          // 更新飞机
+          const aircraft = scenario.aircraft.find(a => a.id === obj.id);
+          if (aircraft) {
+            aircraft.latitude = obj.latitude;
+            aircraft.longitude = obj.longitude;
+            aircraft.altitude = obj.altitude;
+            aircraft.heading = obj.heading;
+            if (obj.speed) aircraft.speed = obj.speed;
+          }
+        } else if (obj.type === 'Ground+Static' || obj.type === 'Ground+Vehicle') {
+          // 更新设施
+          const facility = scenario.facilities.find(f => f.id === obj.id);
+          if (facility) {
+            facility.latitude = obj.latitude;
+            facility.longitude = obj.longitude;
+          }
+        } else if (obj.type === 'Sea+Ship') {
+          // 更新舰艇
+          const ship = scenario.ships.find(s => s.id === obj.id);
+          if (ship) {
+            ship.latitude = obj.latitude;
+            ship.longitude = obj.longitude;
+            ship.heading = obj.heading;
+          }
+        } else if (obj.type === 'Airbase') {
+          // 更新空军基地
+          const airbase = scenario.airbases.find(a => a.id === obj.id);
+          if (airbase) {
+            airbase.latitude = obj.latitude;
+            airbase.longitude = obj.longitude;
+          }
+        } else if (obj.type === 'Weapon') {
+          // 更新武器
+          const weapon = scenario.weapons.find(w => w.id === obj.id);
+          if (weapon) {
+            weapon.latitude = obj.latitude;
+            weapon.longitude = obj.longitude;
+            weapon.altitude = obj.altitude;
+            weapon.heading = obj.heading;
+          }
+        }
+      });
+
+      // 刷新地图显示
+      props.refreshAllLayers();
     });
     player.connect(url);
     setTelemetryPlayer(player);
