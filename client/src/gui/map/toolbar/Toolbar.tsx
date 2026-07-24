@@ -48,6 +48,7 @@ import {
   SkipNext,
   Storage,
   Undo,
+  Wifi,
 } from "@mui/icons-material";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
@@ -65,6 +66,7 @@ import { ToastContext } from "@/gui/contextProviders/contexts/ToastContext";
 import EntityIcon from "@/gui/map/toolbar/EntityIcon";
 import { FeatureEntityState } from "@/gui/map/mapLayers/FeatureLayers";
 import RecordingPlayer from "@/gui/map/toolbar/RecordingPlayer";
+import RealtimeTelemetryPlayer from "@/gui/map/toolbar/RealtimeTelemetryPlayer";
 import blankScenarioJson from "@/scenarios/blank_scenario.json";
 import defaultScenarioJson from "@/scenarios/default_scenario.json";
 import SCSScenarioJson from "@/scenarios/SCS.json";
@@ -994,6 +996,35 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
     );
   };
 
+  const [telemetryConnected, setTelemetryConnected] = useState<boolean>(false);
+  const [telemetryFrameCount, setTelemetryFrameCount] = useState<number>(0);
+
+  const handleTelemetryConnect = (url: string) => {
+    // TODO: 连接到 WebSocket 服务器
+    console.log('Connecting to:', url);
+    setTelemetryConnected(true);
+  };
+
+  const handleTelemetryDisconnect = () => {
+    // TODO: 断开连接
+    console.log('Disconnecting');
+    setTelemetryConnected(false);
+    setTelemetryFrameCount(0);
+  };
+
+  const realtimeTelemetrySection = () => {
+    return (
+      <Stack spacing={1} direction={"column"}>
+        <RealtimeTelemetryPlayer
+          onConnect={handleTelemetryConnect}
+          onDisconnect={handleTelemetryDisconnect}
+          connected={telemetryConnected}
+          frameCount={telemetryFrameCount}
+        />
+      </Stack>
+    );
+  };
+
   const missionSection = () => {
     const currentSideId = props.game.currentScenario.getSide(
       props.game.currentSideId
@@ -1859,6 +1890,12 @@ export default function Toolbar(props: Readonly<ToolBarProps>) {
               title={t('toolbar.sections.recording')}
               prependIcon={RadioButtonCheckedIcon}
               content={recordingSection()}
+              open={false}
+            />
+            <ToolbarCollapsible
+              title={t('toolbar.sections.realtimeTelemetry', 'Real-time Telemetry')}
+              prependIcon={Wifi}
+              content={realtimeTelemetrySection()}
               open={false}
             />
             <ToolbarCollapsible

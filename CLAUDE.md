@@ -168,4 +168,8 @@ Gym 包提供兼容 OpenAI Gym 的环境：
 - [x] 按照技术文档要求，安装本地依赖
 - [x] 运行前后端，进行demo测试 
 - [x] 前端增加language设置，允许切换语言（Language）：中文(Chinese)/英语(English)
-- [ ] 使用understandanything-skill理清代码依赖，找出代码运行逻辑，找出代码的主入口
+- [x] 使用understandanything-skill理清代码依赖，找出代码运行逻辑，找出代码的主入口
+- [x] 修改回放录制相关的gym\blade\utils\PlaybackRecorder.py，支持输出ACMI格式数据供Tacview回放使用
+- [x] 增加实时播放相关的gym\blade\utils\TCPStreamer.py，支持通过TCP格式输出ACMI格式数据，在Tacview上进行实时遥测数据
+- [ ] 修改实时播放相关的gym\blade\utils\TCPStreamer.py，支持通过TCP格式输出JSON格式数据，在client（前端）上进行实时遥测数据
+- [ ] 修改client（前端）上增加实时遥测数据的模式
